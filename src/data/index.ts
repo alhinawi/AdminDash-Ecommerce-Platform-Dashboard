@@ -63,7 +63,7 @@ export const productList: IProduct[] = [
       "Vibrant visuals and built-in acoustic excellence Modern lifestyle-inspired design with ultra-thin bezels lets you enjoy the stunning display with fewer distractions. Enjoy stunning audio with integrated dual 5W speakers with wide dynamic range. Simple options of 5 preset and 1 customizable audio profiles to suit every moment. Experience vibrant, consistent colors across a wide viewing angle enabled by in-plane switching technology with 99% sRGB color coverage.",
     imageURL: product4,
     price: "1500",
-    colors: [],
+    colors: ["#121212", "#C0C0C0"],
     category: {
       name: "PC Desktop",
       imageURL: product4,
@@ -126,7 +126,7 @@ export const productList: IProduct[] = [
       "Vibrant visuals and built-in acoustic excellence Modern lifestyle-inspired design with ultra-thin bezels lets you enjoy the stunning display with fewer distractions. Enjoy stunning audio with integrated dual 5W speakers with wide dynamic range. Simple options of 5 preset and 1 customizable audio profiles to suit every moment. Experience vibrant, consistent colors across a wide viewing angle enabled by in-plane switching technology with 99% sRGB color coverage.",
     imageURL: product4,
     price: "1500",
-    colors: [],
+    colors: ["#121212", "#C0C0C0"],
     category: {
       name: "PC Desktop",
       imageURL: product4,
