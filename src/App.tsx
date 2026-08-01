@@ -1,18 +1,19 @@
-import { useState } from "react";
-import { productList, formInputsList, colors } from "./data";
-import type { IProduct } from "./interfaces";
 import type { ChangeEvent, SubmitEvent } from "react";
+import { useState } from "react";
+import { v4 as uuid } from "uuid";
 import ProductCard from "./components/ProductCard";
+import Button from "./components/ui/Button";
+import ColorCircle from "./components/ui/ColorCircle";
 import ErrorMessage from "./components/ui/ErrorMessage";
 import Input from "./components/ui/Input";
 import Modal from "./components/ui/Modal";
-import Button from "./components/ui/Button";
+import Select from "./components/ui/Select";
+import { categories, colors, formInputsList, productList } from "./data";
+import type { Product } from "./interfaces";
 import { productValidation } from "./schema";
-import ColorCircle from "./components/ui/ColorCircle";
-import { v4 as uuid } from "uuid";
 
 function App() {
-  const defaultProduct: IProduct = {
+  const defaultProduct: Product = {
     title: "",
     description: "",
     imageURL: "",
@@ -26,15 +27,17 @@ function App() {
 
   /* ------- STATE -------  */
   const [isOpen, setIsOpen] = useState(false);
-  const [products, setProducts] = useState<IProduct[]>(productList);
-  const [product, setProduct] = useState<IProduct>(defaultProduct);
+  const [products, setProducts] = useState<Product[]>(productList);
+  const [product, setProduct] = useState<Product>(defaultProduct);
   const [errors, setErrors] = useState({
     title: "",
     description: "",
     imageURL: "",
     price: "",
+    colors: "",
   });
   const [tempColors, settempColors] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
   /* ------- HANDLER -------  */
 
@@ -59,7 +62,7 @@ function App() {
     e.preventDefault();
     const { title, description, imageURL, price } = product;
 
-    const errors = productValidation({ title, description, imageURL, price });
+    const errors = productValidation({ title, description, imageURL, price, colors: tempColors });
     console.log(errors);
 
     const hasErrors = Object.values(errors).some((error) => error !== "");
@@ -67,7 +70,13 @@ function App() {
 
     if (!hasErrors) {
       setProducts((prevProducts) => [
-        { ...product, id: uuid(), colors: tempColors }, ...prevProducts,
+        {
+          ...product,
+          id: uuid(),
+          colors: tempColors,
+          category: selectedCategory,
+        },
+        ...prevProducts,
       ]);
       setProduct(defaultProduct);
       settempColors([]);
@@ -97,7 +106,7 @@ function App() {
   ));
 
   const renderFormInputs = formInputsList.map((input) => (
-    <div className="flex flex-col " key={input.id}>
+    <div className="flex flex-col" key={input.id}>
       <label
         htmlFor={input.id}
         className="mb-0.5 text-sm font-medium text-gray-700"
@@ -119,6 +128,7 @@ function App() {
     <ColorCircle
       color={color}
       key={color}
+      className="active:scale-90 active:ring-3"
       onClick={() =>
         settempColors((prevColors) => {
           if (prevColors.includes(color)) {
@@ -133,37 +143,44 @@ function App() {
   return (
     <main className="container mx-auto p-5">
       <Button
-        className="bg-indigo-700 hover:bg-indigo-800 mb-3 mx-auto block"
+        className="mx-auto mb-3 block bg-indigo-700 hover:bg-indigo-800"
         width="w-fit"
         onClick={open}
       >
         Add Product
       </Button>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4  gap-2 md:gap-4 rounded-md">
+      <div className="grid grid-cols-1 gap-2 rounded-md sm:grid-cols-2 md:grid-cols-3 md:gap-4 xl:grid-cols-4">
         {renderProductList}
       </div>
       <Modal isOpen={isOpen} closeModal={closeModal} title="Add A New Product">
-        <form className="flex flex-col gap-y-3 " onSubmit={onSubmitHandler}>
+        <form className="flex flex-col gap-y-3" onSubmit={onSubmitHandler}>
           {renderFormInputs}
-          <div className="flex gap-x-1 flex-wrap justify-center">
+          <Select
+            selected={selectedCategory}
+            setSelected={setSelectedCategory}
+          />
+          <div className="flex flex-wrap justify-center gap-x-1">
             {RenderProductColors}
           </div>
-          <div className="flex items-center flex-wrap gap-2 justify-center">
-            {tempColors.map((color) => (
-              <span
-                key={color}
-                className="rounded-md px-2 py-1 text-xs font-stretch-50% text-white cursor-pointer"
-                style={{ backgroundColor: color }}
-                onClick={() => removeColorHandler(color)}
-              >
-                {color}
-              </span>
-            ))}
-          </div>
+          {tempColors.length > 0 && (
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              {tempColors.map((color) => (
+                <span
+                  key={color}
+                  className="cursor-pointer rounded-md px-2 py-1 text-xs text-white font-stretch-50%"
+                  style={{ backgroundColor: color }}
+                  onClick={() => removeColorHandler(color)}
+                >
+                  {color}
+                </span>
+              ))}
+            </div>
+          )}
+          <ErrorMessage msg={errors.colors} />
           <div className="flex gap-x-3">
             <Button
-              className="bg-gray-400  hover:bg-gray-500"
+              className="bg-gray-400 hover:bg-gray-500"
               type="button"
               onClick={onCancelHandler}
             >

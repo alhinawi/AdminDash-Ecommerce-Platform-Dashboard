@@ -7,6 +7,7 @@ export const productValidation = (product: ProductFormFields) => {
         description: "",
         imageURL: "",
         price: "",
+        colors: "",
     }
 
     const validUrl = /^(ftp|http|https):\/\/[^ "]+$/.test(product.imageURL);
@@ -26,6 +27,10 @@ export const productValidation = (product: ProductFormFields) => {
     if(!product.price.trim() || isNaN(Number(product.price))) {
         errors.price = "Valid price is required!";
     }
+
+    if (!product.colors.length) {
+        errors.colors = "Please select at least one color!";
+    }
     
     return errors;
-}
+}

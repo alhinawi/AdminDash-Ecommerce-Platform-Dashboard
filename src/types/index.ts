@@ -1,8 +1,8 @@
-import type { IProduct } from "../interfaces";
+import type { Product } from "../interfaces";
 
 export type ProductFormFields = Pick<
-  IProduct,
-  "title" | "description" | "imageURL" | "price"
+  Product,
+  "title" | "description" | "imageURL" | "price" | "colors"
 >;
 
 export type ProductFormErrors = Record<keyof ProductFormFields, string>;

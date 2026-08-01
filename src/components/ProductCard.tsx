@@ -1,10 +1,10 @@
 import Button from "./ui/Button";
 import Image from "./Image";
 import ColorCircle from "./ui/ColorCircle";
-import type { IProduct } from "../interfaces";
+import type { Product } from "../interfaces";
 
 interface Props {
-  product?: IProduct;
+  product?: Product;
 }
 
 const ProductCard = ({ product }: Props) => {
@@ -12,11 +12,10 @@ const ProductCard = ({ product }: Props) => {
 
   const { imageURL, title, description, price, colors, category } = product;
 
-
   /* ------- RENDER -------  */
 
   const renderProductColors = colors.map((color) => (
-    <ColorCircle key={color} color={color} />  
+    <ColorCircle key={color} color={color}/>
   ));
 
   return (
@@ -36,8 +35,8 @@ const ProductCard = ({ product }: Props) => {
       <div className="flex gap-x-2  items-center justify-between">
         <span className="text-lg text-indigo-600 font-semibold ">{price}$</span>
         <Image
-          imageSrc={imageURL}
-          altText={product.title}
+          imageSrc={category.imageURL}
+          altText={category.name}
           className="w-10 h-10 rounded-full object-bottom cursor-pointer"
         />
       </div>

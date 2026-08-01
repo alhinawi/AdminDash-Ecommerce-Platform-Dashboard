@@ -1,6 +1,6 @@
 import type { ProductFormFields } from "../types";
 
-export interface IProduct {
+export interface Product {
   id?: string;
   title: string;
   description: string;
@@ -13,14 +13,14 @@ export interface IProduct {
   };
 }
 
-export interface IFormInput {
+export interface FormInput {
   id: string;
   name: keyof ProductFormFields;
   label: string;
   type: string;
 }
 
-export interface ICategory {
+export interface Category {
   id: string;
   name: string;
   imageURL: string;
