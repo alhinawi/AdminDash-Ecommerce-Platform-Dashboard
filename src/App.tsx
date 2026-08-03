@@ -2,6 +2,7 @@ import type { ChangeEvent, SubmitEvent } from "react";
 import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import AnalyticsCharts from "./components/AnalyticsCharts";
+import FilterBar from "./components/FilterBar";
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import KpiStats from "./components/KpiStats";
@@ -13,6 +14,7 @@ import ErrorMessage from "./components/ui/ErrorMessage";
 import Input from "./components/ui/Input";
 import Modal from "./components/ui/Modal";
 import Select from "./components/ui/Select";
+import Toast, { type ToastMessage } from "./components/ui/Toast";
 import { categories, colors, formInputsList, productList } from "./data";
 import type { Product } from "./interfaces";
 import { productValidation } from "./schema";
@@ -65,6 +67,27 @@ function App() {
   const [tempColors, settempColors] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
+  /* ------- SEARCH & FILTER STATE ------- */
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterCategory, setFilterCategory] = useState("all");
+  const [sortBy, setSortBy] = useState("default");
+
+  /* ------- TOAST NOTIFICATIONS STATE ------- */
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
+
+  const addToast = (
+    type: "success" | "error" | "info",
+    title: string,
+    message: string
+  ) => {
+    const id = uuid();
+    setToasts((prev) => [...prev, { id, type, title, message }]);
+  };
+
+  const dismissToast = (id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
+
   /* ------- HANDLER -------  */
 
   const open = () => setIsOpen(true);
@@ -95,27 +118,34 @@ function App() {
       price,
       colors: tempColors,
     });
-    console.log(errors);
 
     const hasErrors = Object.values(errors).some((error) => error !== "");
-    console.log(hasErrors);
 
     if (!hasErrors) {
-      setProducts((prevProducts) => [
-        {
-          ...product,
-          id: uuid(),
-          colors: tempColors,
-          category: selectedCategory,
-        },
-        ...prevProducts,
-      ]);
+      const newProduct: Product = {
+        ...product,
+        id: uuid(),
+        colors: tempColors,
+        category: selectedCategory,
+      };
+
+      setProducts((prevProducts) => [newProduct, ...prevProducts]);
       setProduct(defaultProduct);
       settempColors([]);
       closeModal();
+
+      addToast(
+        "success",
+        "Product Created! 🎉",
+        `"${title}" has been added to the catalog.`
+      );
     } else {
       setErrors(errors);
-      console.log("Form has errors. Please fix them before submitting.");
+      addToast(
+        "error",
+        "Validation Failed ⚠️",
+        "Please check the form inputs before submitting."
+      );
     }
   };
 
@@ -131,9 +161,28 @@ function App() {
     );
   };
 
+  /* ------- FILTER & SORT COMPUTATION ------- */
+  const filteredProducts = products
+    .filter((p) => {
+      const matchesSearch =
+        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.description.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory =
+        filterCategory === "all" ||
+        p.category.name.toLowerCase() === filterCategory.toLowerCase();
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => {
+      if (sortBy === "price-asc") return Number(a.price) - Number(b.price);
+      if (sortBy === "price-desc") return Number(b.price) - Number(a.price);
+      if (sortBy === "title-asc") return a.title.localeCompare(b.title);
+      if (sortBy === "title-desc") return b.title.localeCompare(a.title);
+      return 0;
+    });
+
   /* ------- RENDER -------  */
 
-  const renderProductList = products.map((product) => (
+  const renderProductList = filteredProducts.map((product) => (
     <ProductCard key={product.id} product={product} />
   ));
 
@@ -141,7 +190,7 @@ function App() {
     <div className="flex flex-col" key={input.id}>
       <label
         htmlFor={input.id}
-        className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-gray-700"
+        className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-gray-700 dark:text-slate-300"
       >
         {input.label}
       </label>
@@ -173,7 +222,7 @@ function App() {
   ));
 
   return (
-    <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 flex flex-col font-sans text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 flex flex-col font-sans text-slate-900 dark:text-slate-100 transition-colors duration-300 relative">
       <Navbar
         onAddProduct={open}
         darkMode={darkMode}
@@ -191,15 +240,57 @@ function App() {
           <AnalyticsCharts products={products} />
         </div>
 
-        <div
-          id="products-grid"
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
-        >
-          {renderProductList}
-        </div>
+        {/* Filter, Search & Sort Control Bar */}
+        <FilterBar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          selectedCategory={filterCategory}
+          setSelectedCategory={setFilterCategory}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          categories={categories}
+          totalResults={filteredProducts.length}
+          totalProducts={products.length}
+        />
+
+        {/* Products Grid */}
+        {filteredProducts.length > 0 ? (
+          <div
+            id="products-grid"
+            className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
+          >
+            {renderProductList}
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-dashed border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-12 text-center my-6">
+            <span className="text-3xl">🔍</span>
+            <h4 className="mt-3 text-base font-bold text-gray-900 dark:text-white">
+              No products found
+            </h4>
+            <p className="mt-1 text-xs text-gray-500 dark:text-slate-400">
+              No items match your search query or filter criteria. Try resetting filters.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setSearchQuery("");
+                setFilterCategory("all");
+                setSortBy("default");
+              }}
+              className="mt-4 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-md shadow-indigo-600/20 hover:bg-indigo-700 transition-all cursor-pointer"
+            >
+              Reset Filters
+            </button>
+          </div>
+        )}
       </main>
 
       <Footer />
+
+      {/* Floating Toast Notifications */}
+      <Toast toasts={toasts} onDismiss={dismissToast} />
+
+      {/* Modal */}
       <Modal isOpen={isOpen} closeModal={closeModal} title="Add A New Product">
         <form className="flex flex-col gap-y-3" onSubmit={onSubmitHandler}>
           {renderFormInputs}
@@ -238,7 +329,7 @@ function App() {
           <ErrorMessage msg={errors.colors} />
           <div className="flex items-center gap-x-3 pt-2">
             <Button
-              className="bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 border border-gray-200"
+              className="bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700"
               type="button"
               onClick={onCancelHandler}
             >

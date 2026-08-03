@@ -1,8 +1,4 @@
 import { v4 as uuid } from "uuid";
-import product1 from "../assets/images/product-1.avif";
-import product2 from "../assets/images/product-2.avif";
-import product3 from "../assets/images/product-3.avif";
-
 import type { Category, FormInput, Product } from "../interfaces";
 
 export const productList: Product[] = [
@@ -68,10 +64,10 @@ export const productList: Product[] = [
   },
   {
     id: uuid(),
-    title: "Nike Free RN Flyknit - Red Running Shoes",
+    title: "Neon Pulse High-Top Sneakers | Limited Edition Blue Glow",
     description:
-      "Lightweight, flexible, and designed for maximum comfort, the Nike Free RN Flyknit combines modern style with exceptional performance for everyday running and training.",
-    imageURL: product1,
+      "Step into the future with the Neon Pulse High-Top Sneakers. Featuring a bold black design with stunning blue LED-inspired details, these sneakers combine style, comfort, and a futuristic aesthetic. Designed for trendsetters who want to stand out, they deliver premium comfort and an eye-catching glow effect that turns every step into a statement.",
+    imageURL: "https://i.pinimg.com/1200x/69/7e/93/697e93eb1a36e81230adffb95744a273.jpg",
     price: "350",
     colors: [
       "#A31ACB",
@@ -96,13 +92,13 @@ export const productList: Product[] = [
     title: "Chevrolet Camaro SS 2018 - Blue Sports Coupe",
     description:
       "Turn heads with the Chevrolet Camaro SS, featuring a bold blue finish, muscular styling, and exhilarating performance. Built for drivers who crave power, speed, and modern design.",
-    imageURL: product2,
+    imageURL: "https://i.pinimg.com/736x/de/73/0f/de730f1c22eb922ced60489cbf7664fd.jpg",
     price: "500000",
     colors: ["#FF0032", "#2563eb", "#FF6E31"],
     category: {
       name: "Automotors",
       imageURL:
-        "https://images.unsplash.com/photo-1542362567-b07e54358753?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2Fyc3xlbnwwfHwwfHx8MA%3D%3D",
+        "https://i.pinimg.com/736x/a3/c9/d0/a3c9d00d8dc9b8ac41d99b7dd429c43f.jpg",
     },
   },
   {
@@ -110,13 +106,13 @@ export const productList: Product[] = [
     title: "Ferrari LaFerrari 2015 - Red Hypercar",
     description:
       "Experience the power and elegance of the Ferrari LaFerrari. Featuring a stunning red exterior, aerodynamic design, and world-class performance, this iconic hypercar combines luxury, speed, and innovation in one",
-    imageURL: product3,
+    imageURL: "https://i.pinimg.com/1200x/c5/99/ac/c599acf8081d342a112693fdc91f69c0.jpg",
     price: "120000",
     colors: ["#A31ACB", "#3C2A21", "#1F8A70", "#820000", "#FF0032"],
     category: {
       name: "Automotors",
       imageURL:
-        "https://images.unsplash.com/photo-1542362567-b07e54358753?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2Fyc3xlbnwwfHwwfHx8MA%3D%3D",
+        "https://i.pinimg.com/736x/a3/c9/d0/a3c9d00d8dc9b8ac41d99b7dd429c43f.jpg",
     },
   },
   {
@@ -272,7 +268,7 @@ export const categories: Category[] = [
     id: uuid(),
     name: "Automotors",
     imageURL:
-      "https://images.unsplash.com/photo-1542362567-b07e54358753?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2Fyc3xlbnwwfHwwfHx8MA%3D%3D",
+      "https://i.pinimg.com/736x/a3/c9/d0/a3c9d00d8dc9b8ac41d99b7dd429c43f.jpg",
   },
   {
     id: uuid(),
