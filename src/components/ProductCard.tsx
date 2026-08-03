@@ -34,12 +34,12 @@ const ProductCard = ({ product }: Props) => {
         <h3 className="line-clamp-1 text-base font-bold text-gray-900 dark:text-white transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
           {title}
         </h3>
-        <p className="line-clamp-2 min-h-[32px] text-xs leading-relaxed text-gray-600 dark:text-slate-300 wrap-break-word">
+        <p className="line-clamp-2 min-h-8 text-xs leading-relaxed text-gray-600 dark:text-slate-300 wrap-break-word">
           {description}
         </p>
 
         {/* Color Circles */}
-        <div className="flex items-center gap-1.5 flex-wrap min-h-[22px] py-1">
+        <div className="flex items-center gap-1.5 flex-wrap min-h-5.5 py-1">
           {colors.length > 0 ? (
             renderProductColors
           ) : (
@@ -68,17 +68,19 @@ const ProductCard = ({ product }: Props) => {
         {/* Actions */}
         <div className="flex items-center gap-x-2.5 pt-3">
           <Button
+            type="button"
             className="bg-indigo-600 text-xs font-semibold tracking-wider text-white shadow-xs shadow-indigo-600/20 hover:bg-indigo-700 hover:shadow-md transition-all duration-200"
             onClick={() => {
-              console.log("clicked");
+              /* Edit handler placeholder */
             }}
           >
             EDIT
           </Button>
           <Button
+            type="button"
             className="bg-rose-600 text-xs font-semibold tracking-wider text-white shadow-xs shadow-rose-600/20 hover:bg-rose-700 hover:shadow-md transition-all duration-200"
             onClick={() => {
-              alert("clicked");
+              /* Delete handler placeholder */
             }}
           >
             DELETE

@@ -100,7 +100,7 @@ export const productList: Product[] = [
     price: "500000",
     colors: ["#FF0032", "#2563eb", "#FF6E31"],
     category: {
-      name: "Cars",
+      name: "Automotors",
       imageURL:
         "https://images.unsplash.com/photo-1542362567-b07e54358753?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2Fyc3xlbnwwfHwwfHx8MA%3D%3D",
     },
@@ -114,7 +114,7 @@ export const productList: Product[] = [
     price: "120000",
     colors: ["#A31ACB", "#3C2A21", "#1F8A70", "#820000", "#FF0032"],
     category: {
-      name: "Cars",
+      name: "Automotors",
       imageURL:
         "https://images.unsplash.com/photo-1542362567-b07e54358753?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2Fyc3xlbnwwfHwwfHx8MA%3D%3D",
     },
@@ -270,7 +270,7 @@ export const categories: Category[] = [
   },
   {
     id: uuid(),
-    name: "Cars",
+    name: "Automotors",
     imageURL:
       "https://images.unsplash.com/photo-1542362567-b07e54358753?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2Fyc3xlbnwwfHwwfHx8MA%3D%3D",
   },

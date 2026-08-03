@@ -5,7 +5,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Brand Col */}
           <div className="md:col-span-1">
-            <div className="flex items-center gap-x-2.5 mb-4">
+            <div className="mb-4 flex items-center gap-x-2.5">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-tr from-indigo-500 to-purple-500 text-white shadow-md">
                 <svg
                   className="h-5 w-5"
@@ -21,23 +21,24 @@ const Footer = () => {
                   />
                 </svg>
               </div>
-              <span className="text-lg font-bold text-white tracking-tight">
+              <span className="text-lg font-bold tracking-tight text-white">
                 Product<span className="text-indigo-400">Hub</span>
               </span>
             </div>
             <p className="text-xs leading-relaxed text-slate-400">
-              Manage, organize, and showcase your modern product collections with high-performance dashboard tools.
+              Manage, organize, and showcase your modern product collections
+              with high-performance dashboard tools.
             </p>
           </div>
 
           {/* Links Col 1 */}
           <div>
-            <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-200">
+            <h4 className="mb-3 text-xs font-semibold tracking-wider text-slate-200 uppercase">
               Quick Links
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="transition-colors hover:text-white">
                   Product Catalog
                 </a>
               </li>
@@ -46,9 +47,11 @@ const Footer = () => {
                   href="#products-grid"
                   onClick={(e) => {
                     e.preventDefault();
-                    document.getElementById("products-grid")?.scrollIntoView({ behavior: "smooth" });
+                    document
+                      .getElementById("products-grid")
+                      ?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="hover:text-white transition-colors"
+                  className="transition-colors hover:text-white"
                 >
                   All Products
                 </a>
@@ -58,9 +61,11 @@ const Footer = () => {
                   href="#categories-section"
                   onClick={(e) => {
                     e.preventDefault();
-                    document.getElementById("categories-section")?.scrollIntoView({ behavior: "smooth" });
+                    document
+                      .getElementById("categories-section")
+                      ?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="hover:text-white transition-colors"
+                  className="transition-colors hover:text-white"
                 >
                   Categories
                 </a>
@@ -70,9 +75,11 @@ const Footer = () => {
                   href="#analytics-section"
                   onClick={(e) => {
                     e.preventDefault();
-                    document.getElementById("analytics-section")?.scrollIntoView({ behavior: "smooth" });
+                    document
+                      .getElementById("analytics-section")
+                      ?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="hover:text-white transition-colors"
+                  className="transition-colors hover:text-white"
                 >
                   Analytics & Reports
                 </a>
@@ -82,27 +89,27 @@ const Footer = () => {
 
           {/* Links Col 2 */}
           <div>
-            <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-200">
+            <h4 className="mb-3 text-xs font-semibold tracking-wider text-slate-200 uppercase">
               Categories
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="transition-colors hover:text-white">
                   Electronics
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="transition-colors hover:text-white">
                   Clothes & Fashion
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="transition-colors hover:text-white">
                   Furniture & Decor
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="transition-colors hover:text-white">
                   Cars & Vehicles
                 </a>
               </li>
@@ -111,27 +118,27 @@ const Footer = () => {
 
           {/* Links Col 3 */}
           <div>
-            <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-200">
+            <h4 className="mb-3 text-xs font-semibold tracking-wider text-slate-200 uppercase">
               Support
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="transition-colors hover:text-white">
                   Documentation
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="transition-colors hover:text-white">
                   API Reference
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="transition-colors hover:text-white">
                   Help Center
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="transition-colors hover:text-white">
                   Privacy Policy
                 </a>
               </li>
@@ -140,16 +147,16 @@ const Footer = () => {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-y-3">
+        <div className="mt-12 flex flex-col items-center justify-between gap-y-3 border-t border-slate-800 pt-6 text-xs text-slate-500 sm:flex-row">
           <p>© {new Date().getFullYear()} ProductHub. All rights reserved.</p>
           <div className="flex gap-x-4">
-            <a href="#" className="hover:text-slate-400 transition-colors">
+            <a href="#" className="transition-colors hover:text-slate-400">
               Terms
             </a>
-            <a href="#" className="hover:text-slate-400 transition-colors">
+            <a href="#" className="transition-colors hover:text-slate-400">
               Privacy
             </a>
-            <a href="#" className="hover:text-slate-400 transition-colors">
+            <a href="#" className="transition-colors hover:text-slate-400">
               Cookies
             </a>
           </div>

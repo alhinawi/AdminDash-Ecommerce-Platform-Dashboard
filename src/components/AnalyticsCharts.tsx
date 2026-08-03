@@ -5,8 +5,34 @@ interface AnalyticsChartsProps {
   products: Product[];
 }
 
+const CATEGORY_COLOR_MAP: Record<string, string> = {
+  electronics: "#3b82f6", // Vibrant Tech Royal Blue
+  clothes: "#10b981", // Emerald Green
+  photography: "#f59e0b", // Warm Gold / Amber
+  furniture: "#f43f5e", // Rose Red
+  sneakers: "#06b6d4", // Cyan Sky
+  cars: "#8b5cf6", // Electric Purple
+  accessories: "#ea580c", // Sunset Orange
+};
+
+const DISTINCT_PALETTE = [
+  "#3b82f6", // Blue
+  "#10b981", // Emerald
+  "#f59e0b", // Amber
+  "#f43f5e", // Rose
+  "#06b6d4", // Cyan
+  "#8b5cf6", // Violet
+  "#ea580c", // Orange
+  "#0d9488", // Teal
+  "#d946ef", // Fuchsia
+  "#0284c7", // Sky
+  "#65a30d", // Lime
+  "#ec4899", // Pink
+];
+
 const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
   const [activeTab, setActiveTab] = useState<"overview" | "categories" | "pricing">("overview");
+  const [hoveredSlice, setHoveredSlice] = useState<number | null>(null);
 
   const totalProductsCount = products.length || 1;
   const totalCatalogWorth = products.reduce((sum, item) => sum + (Number(item.price) || 0), 0) || 1;
@@ -22,25 +48,33 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
     return acc;
   }, {} as Record<string, { count: number; totalValue: number; imageURL?: string }>);
 
-  const categoryList = Object.entries(categoryStats).map(([name, data]) => ({
-    name,
-    count: data.count,
-    totalValue: data.totalValue,
-    imageURL: data.imageURL,
-    avgPrice: Math.round(data.totalValue / (data.count || 1)),
-    countPercentage: Math.round((data.count / totalProductsCount) * 100),
-    valuePercentage: Math.round((data.totalValue / totalCatalogWorth) * 100),
-  }));
+  const categoryList = Object.entries(categoryStats).map(([name, data], idx) => {
+    const normalizedKey = name.toLowerCase().trim();
+    const color =
+      CATEGORY_COLOR_MAP[normalizedKey] ||
+      DISTINCT_PALETTE[idx % DISTINCT_PALETTE.length];
+
+    return {
+      name,
+      count: data.count,
+      totalValue: data.totalValue,
+      imageURL: data.imageURL,
+      color,
+      avgPrice: Math.round(data.totalValue / (data.count || 1)),
+      countPercentage: Math.round((data.count / totalProductsCount) * 100),
+      valuePercentage: Math.round((data.totalValue / totalCatalogWorth) * 100),
+    };
+  });
 
   // Top category by value
   const topValuedCategory = [...categoryList].sort((a, b) => b.totalValue - a.totalValue)[0];
 
   // 2. Calculate Price Range Distribution Tiers
   const priceTiers = [
-    { label: "Budget (<$500)", min: 0, max: 499, count: 0, totalValue: 0, color: "bg-emerald-500", border: "border-emerald-500/20" },
-    { label: "Mid-Tier ($500-$1.5k)", min: 500, max: 1499, count: 0, totalValue: 0, color: "bg-indigo-500", border: "border-indigo-500/20" },
-    { label: "High-Tier ($1.5k-$10k)", min: 1500, max: 9999, count: 0, totalValue: 0, color: "bg-purple-500", border: "border-purple-500/20" },
-    { label: "Ultra Luxury ($10k+)", min: 10000, max: Infinity, count: 0, totalValue: 0, color: "bg-rose-500", border: "border-rose-500/20" },
+    { label: "Budget (<$500)", min: 0, max: 499, count: 0, totalValue: 0, color: "bg-emerald-500", stroke: "#10b981", border: "border-emerald-500/20" },
+    { label: "Mid-Tier ($500-$1.5k)", min: 500, max: 1499, count: 0, totalValue: 0, color: "bg-indigo-500", stroke: "#6366f1", border: "border-indigo-500/20" },
+    { label: "High-Tier ($1.5k-$10k)", min: 1500, max: 9999, count: 0, totalValue: 0, color: "bg-purple-500", stroke: "#a855f7", border: "border-purple-500/20" },
+    { label: "Ultra Luxury ($10k+)", min: 10000, max: Infinity, count: 0, totalValue: 0, color: "bg-rose-500", stroke: "#f43f5e", border: "border-rose-500/20" },
   ];
 
   products.forEach((p) => {
@@ -68,6 +102,68 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
 
   const totalColorInstances = Object.values(colorFrequency).reduce((a, b) => a + b, 0) || 1;
 
+  // 4. SVG Donut Chart Calculation (Balanced Category Item Share with Slice Gaps)
+  const donutRadius = 42;
+  const circumference = 2 * Math.PI * donutRadius; // ~263.89
+  const sliceGap = categoryList.length > 1 ? 4 : 0; // Gap between slices
+  let accumulatedOffset = 0;
+
+  const donutSlices = categoryList.map((cat, i) => {
+    const itemRatio = cat.count / totalProductsCount;
+    const rawLen = itemRatio * circumference;
+    const sliceLen = Math.max(rawLen - sliceGap, 4);
+    const strokeDasharray = `${sliceLen} ${circumference - sliceLen}`;
+    const strokeDashoffset = -accumulatedOffset;
+    accumulatedOffset += rawLen;
+
+    return {
+      ...cat,
+      index: i,
+      itemRatio,
+      countPercentage: Math.round(itemRatio * 100),
+      strokeDasharray,
+      strokeDashoffset,
+    };
+  });
+
+  // 5. 12-Month Sales & Revenue Analytics Data
+  const monthlyData = [
+    { month: "Jan", revenue: 24500, sales: 140 },
+    { month: "Feb", revenue: 32100, sales: 185 },
+    { month: "Mar", revenue: 28900, sales: 160 },
+    { month: "Apr", revenue: 45200, sales: 230 },
+    { month: "May", revenue: 58700, sales: 310 },
+    { month: "Jun", revenue: 52400, sales: 285 },
+    { month: "Jul", revenue: 67900, sales: 390 },
+    { month: "Aug", revenue: 74500, sales: 420 },
+    { month: "Sep", revenue: 69300, sales: 380 },
+    { month: "Oct", revenue: 85100, sales: 490 },
+    { month: "Nov", revenue: 98400, sales: 580 },
+    { month: "Dec", revenue: 112000, sales: 650 },
+  ];
+
+  const [hoveredMonth, setHoveredMonth] = useState<typeof monthlyData[0] | null>(null);
+  const maxMonthlyRevenue = Math.max(...monthlyData.map((d) => d.revenue));
+  const totalAnnualRevenue = monthlyData.reduce((sum, d) => sum + d.revenue, 0);
+
+  const monthlyPoints = monthlyData.map((d, idx) => {
+    const x = (idx / (monthlyData.length - 1)) * 300;
+    const y = 115 - (d.revenue / maxMonthlyRevenue) * 90;
+    return { ...d, x, y };
+  });
+
+  const monthlyPathD = monthlyPoints.reduce((acc, pt, i, arr) => {
+    if (i === 0) return `M ${pt.x},${pt.y}`;
+    const prev = arr[i - 1];
+    const cp1x = prev.x + (pt.x - prev.x) / 2;
+    const cp1y = prev.y;
+    const cp2x = prev.x + (pt.x - prev.x) / 2;
+    const cp2y = pt.y;
+    return `${acc} C ${cp1x},${cp1y} ${cp2x},${cp2y} ${pt.x},${pt.y}`;
+  }, "");
+
+  const monthlyAreaD = `${monthlyPathD} L 300,130 L 0,130 Z`;
+
   return (
     <div className="mb-10 rounded-2xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm transition-all">
       {/* Header & Tabs */}
@@ -75,10 +171,10 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
         <div>
           <div className="flex items-center gap-x-2">
             <span className="flex h-2.5 w-2.5 rounded-full bg-indigo-600 dark:bg-indigo-400 animate-pulse" />
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white">Catalog Analytics & Insights</h3>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white">Catalog Analytics & Visual Graphs</h3>
           </div>
           <p className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">
-            Visual breakdown of product inventory distribution, price ranges, and category intelligence
+            Interactive SVG charts, inventory market share, and product price curves
           </p>
         </div>
 
@@ -122,107 +218,184 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
 
       {/* ----------------- TAB 1: OVERVIEW ----------------- */}
       {activeTab === "overview" && (
-        <div className="space-y-6 pt-6 animate-in fade-in duration-300">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Category Breakdown (2 Cols) */}
-            <div className="lg:col-span-2 space-y-4">
-              <div className="flex items-center justify-between">
-                <h4 className="font-bold uppercase tracking-wider text-xs text-gray-900 dark:text-slate-200">
-                  Category Inventory Distribution
-                </h4>
-                <span className="text-xs text-gray-400 dark:text-slate-500 font-medium">
-                  {categoryList.length} Categories Active
-                </span>
+        <div className="space-y-8 pt-6 animate-in fade-in duration-300">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+            {/* SVG Donut Chart (1 Col) */}
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/40 p-5 relative">
+              <span className="text-xs font-bold text-gray-900 dark:text-slate-200 uppercase tracking-wider mb-2">
+                Category Market Share
+              </span>
+
+              <div className="relative h-48 w-48 flex items-center justify-center">
+                <svg className="h-full w-full -rotate-90 transform" viewBox="0 0 100 100">
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r={donutRadius}
+                    className="stroke-gray-200 dark:stroke-slate-700"
+                    strokeWidth="12"
+                    fill="none"
+                  />
+                  {donutSlices.map((slice) => (
+                    <circle
+                      key={slice.name}
+                      cx="50"
+                      cy="50"
+                      r={donutRadius}
+                      stroke={slice.color}
+                      strokeWidth={hoveredSlice === slice.index ? "15" : "12"}
+                      strokeDasharray={slice.strokeDasharray}
+                      strokeDashoffset={slice.strokeDashoffset}
+                      strokeLinecap="round"
+                      fill="none"
+                      style={{ pointerEvents: "stroke" }}
+                      className="transition-all duration-300 cursor-pointer hover:opacity-90"
+                      onMouseEnter={() => setHoveredSlice(slice.index)}
+                      onMouseLeave={() => setHoveredSlice(null)}
+                    />
+                  ))}
+                </svg>
+
+                {/* Central Donut Text Badge */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                  {hoveredSlice !== null && donutSlices[hoveredSlice] ? (
+                    <>
+                      <span className="text-[10px] font-semibold text-gray-700 dark:text-slate-200">
+                        {donutSlices[hoveredSlice].name}
+                      </span>
+                      <span className="text-base font-extrabold text-indigo-600 dark:text-indigo-400">
+                        {donutSlices[hoveredSlice].countPercentage}% Share
+                      </span>
+                      <span className="text-[10px] font-medium text-gray-500 dark:text-slate-400">
+                        ${donutSlices[hoveredSlice].totalValue.toLocaleString("en-US")}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-[10px] uppercase font-bold text-gray-400 dark:text-slate-500">
+                        Total Worth
+                      </span>
+                      <span className="text-sm font-extrabold text-gray-900 dark:text-white">
+                        ${totalCatalogWorth.toLocaleString("en-US")}
+                      </span>
+                      <span className="text-[10px] text-indigo-500 font-semibold">
+                        {categoryList.length} Categories
+                      </span>
+                    </>
+                  )}
+                </div>
               </div>
 
-              <div className="space-y-3.5">
-                {categoryList.map((cat) => (
-                  <div key={cat.name} className="space-y-1.5">
-                    <div className="flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-x-2 font-medium text-gray-800 dark:text-slate-200">
-                        {cat.imageURL && (
-                          <img
-                            src={cat.imageURL}
-                            alt={cat.name}
-                            className="h-5 w-5 rounded-full object-cover ring-1 ring-gray-200 dark:ring-slate-700"
-                          />
-                        )}
-                        <span className="font-semibold">{cat.name}</span>
-                        <span className="text-gray-400 dark:text-slate-500 font-normal">({cat.count} items)</span>
-                      </div>
-                      <div className="font-semibold text-gray-900 dark:text-white">
-                        ${cat.totalValue.toLocaleString("en-US")}{" "}
-                        <span className="text-gray-400 dark:text-slate-500 font-normal text-[11px]">
-                          ({cat.valuePercentage}% worth)
-                        </span>
-                      </div>
-                    </div>
-                    {/* Animated Progress Bar */}
-                    <div className="h-2.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-slate-800">
-                      <div
-                        className="h-full rounded-full bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 transition-all duration-500"
-                        style={{ width: `${Math.max(cat.valuePercentage, 4)}%` }}
-                      />
-                    </div>
+              {/* Donut Legend */}
+              <div className="flex flex-wrap justify-center gap-x-3 gap-y-1.5 pt-3 text-[11px]">
+                {categoryList.map((cat, idx) => (
+                  <div
+                    key={cat.name}
+                    className="flex items-center gap-x-1.5 cursor-pointer"
+                    onMouseEnter={() => setHoveredSlice(idx)}
+                    onMouseLeave={() => setHoveredSlice(null)}
+                  >
+                    <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: cat.color }} />
+                    <span className="font-medium text-gray-700 dark:text-slate-300">{cat.name}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Price Tiers Visual Histogram */}
-            <div className="space-y-4">
-              <h4 className="text-xs font-bold text-gray-900 dark:text-slate-200 uppercase tracking-wider">
-                Price Distribution
-              </h4>
-
-              <div className="flex h-44 items-end gap-x-3 rounded-xl border border-gray-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 p-4">
-                {priceTiers.map((tier) => {
-                  const heightPercent =
-                    tier.count > 0 ? Math.round((tier.count / maxTierCount) * 100) : 8;
-                  return (
-                    <div key={tier.label} className="flex flex-1 flex-col items-center gap-y-2 h-full justify-end">
-                      <span className="text-[10px] font-bold text-gray-600 dark:text-slate-300">{tier.count}</span>
-                      <div
-                        className={`w-full rounded-t-lg ${tier.color} transition-all duration-500 hover:opacity-90 shadow-xs`}
-                        style={{ height: `${heightPercent}%` }}
-                      />
-                      <span className="text-[9px] font-medium text-gray-500 dark:text-slate-400 text-center line-clamp-1">
-                        {tier.label.split(" ")[0]}
-                      </span>
-                    </div>
-                  );
-                })}
+            {/* SVG Area Curve Trend Chart (2 Cols) */}
+            <div className="lg:col-span-2 space-y-4 rounded-2xl border border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/40 p-5 relative">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-xs font-bold text-gray-900 dark:text-slate-200 uppercase tracking-wider">
+                    Annual Revenue & Growth Trend (12 Months)
+                  </h4>
+                  <span className="text-[11px] text-gray-500 dark:text-slate-400">
+                    Monthly sales revenue performance curve
+                  </span>
+                </div>
+                <div className="flex items-center gap-x-2">
+                  {hoveredMonth ? (
+                    <span className="text-xs font-bold text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-1 rounded-full border border-indigo-200 dark:border-indigo-800 animate-in fade-in">
+                      {hoveredMonth.month}: ${hoveredMonth.revenue.toLocaleString("en-US")} ({hoveredMonth.sales} sales)
+                    </span>
+                  ) : (
+                    <span className="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 rounded-full border border-emerald-200 dark:border-emerald-900">
+                      Peak: Dec (${maxMonthlyRevenue.toLocaleString("en-US")})
+                    </span>
+                  )}
+                </div>
               </div>
 
-              {/* Swatches Popularity */}
-              <div className="pt-2">
-                <h5 className="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-2">
-                  Popular Palette Swatches
-                </h5>
-                <div className="flex flex-wrap items-center gap-2">
-                  {colorList.map(([color, count]) => {
-                    const pct = Math.round((count / totalColorInstances) * 100);
-                    return (
-                      <div
-                        key={color}
-                        className="flex items-center gap-x-1.5 rounded-lg border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-800 px-2 py-1 shadow-2xs text-[11px]"
-                      >
-                        <span
-                          className="h-3 w-3 rounded-full border border-black/10 dark:border-white/20"
-                          style={{ backgroundColor: color }}
-                        />
-                        <span className="font-semibold text-gray-700 dark:text-slate-200">{count}</span>
-                        <span className="text-[10px] text-gray-400 dark:text-slate-500">({pct}%)</span>
-                      </div>
-                    );
-                  })}
-                </div>
+              {/* SVG Area Curve */}
+              <div className="relative h-40 w-full pt-2">
+                <svg className="h-full w-full overflow-visible" viewBox="0 0 300 130" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="monthlyAreaGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#6366f1" stopOpacity="0.4" />
+                      <stop offset="100%" stopColor="#6366f1" stopOpacity="0.0" />
+                    </linearGradient>
+                  </defs>
+
+                  {/* Horizontal grid lines */}
+                  <line x1="0" y1="20" x2="300" y2="20" className="stroke-gray-200 dark:stroke-slate-700/60" strokeDasharray="3 3" />
+                  <line x1="0" y1="65" x2="300" y2="65" className="stroke-gray-200 dark:stroke-slate-700/60" strokeDasharray="3 3" />
+                  <line x1="0" y1="115" x2="300" y2="115" className="stroke-gray-200 dark:stroke-slate-700/60" strokeDasharray="3 3" />
+
+                  {/* Filled Area */}
+                  <path d={monthlyAreaD} fill="url(#monthlyAreaGradient)" />
+
+                  {/* Curve Stroke Line */}
+                  <path d={monthlyPathD} fill="none" stroke="#6366f1" strokeWidth="3" strokeLinecap="round" />
+
+                  {/* Interactive Month Nodes */}
+                  {monthlyPoints.map((pt) => (
+                    <g
+                      key={pt.month}
+                      className="group/node cursor-pointer"
+                      onMouseEnter={() => setHoveredMonth(pt)}
+                      onMouseLeave={() => setHoveredMonth(null)}
+                    >
+                      <circle
+                        cx={pt.x}
+                        cy={pt.y}
+                        r={hoveredMonth?.month === pt.month ? "6" : "4"}
+                        className="fill-indigo-600 dark:fill-indigo-400 stroke-white dark:stroke-slate-900 transition-all duration-200"
+                        strokeWidth="2"
+                      />
+                    </g>
+                  ))}
+                </svg>
+              </div>
+
+              {/* X-Axis Month Labels */}
+              <div className="flex items-center justify-between text-[10px] font-medium text-gray-500 dark:text-slate-400 pt-1">
+                {monthlyData.map((d) => (
+                  <span
+                    key={d.month}
+                    className={`cursor-pointer transition-colors ${
+                      hoveredMonth?.month === d.month
+                        ? "text-indigo-600 dark:text-indigo-400 font-bold"
+                        : "hover:text-gray-900 dark:hover:text-white"
+                    }`}
+                    onMouseEnter={() => setHoveredMonth(d)}
+                    onMouseLeave={() => setHoveredMonth(null)}
+                  >
+                    {d.month}
+                  </span>
+                ))}
+              </div>
+
+              {/* Curve Graph Footer */}
+              <div className="flex items-center justify-between text-[11px] text-gray-500 dark:text-slate-400 pt-2 border-t border-gray-200/50 dark:border-slate-700/50">
+                <span>Annual Total: ${totalAnnualRevenue.toLocaleString("en-US")}</span>
+                <span>Avg Monthly: ${Math.round(totalAnnualRevenue / 12).toLocaleString("en-US")}</span>
+                <span className="font-semibold text-emerald-600 dark:text-emerald-400">+357% Growth</span>
               </div>
             </div>
           </div>
 
           {/* Executive Insight Strip */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-gray-100 dark:border-slate-800">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
             <div className="rounded-xl bg-indigo-50/60 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/50 p-3">
               <span className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
                 Top Valued Category
@@ -251,7 +424,7 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                   style={{ backgroundColor: colorList[0]?.[0] || "#6366f1" }}
                 />
                 <span className="text-sm font-bold text-gray-900 dark:text-white">
-                  {colorList[0]?.[0] || "Default"} ({colorList[0]?.[1] || 0} uses)
+                  {colorList[0]?.[0] || "Default"} ({Math.round(((colorList[0]?.[1] || 0) / totalColorInstances) * 100)}% share)
                 </span>
               </div>
             </div>
@@ -264,7 +437,7 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
         <div className="pt-6 space-y-6 animate-in fade-in duration-300">
           <div className="flex items-center justify-between">
             <h4 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider">
-              Category Intelligence Cards
+              Category Valuation & Comparison Graph
             </h4>
             <span className="text-xs text-gray-500 dark:text-slate-400">
               Detailed valuation & item breakdown per category
@@ -291,6 +464,10 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                       <span className="text-[11px] text-gray-500 dark:text-slate-400">{cat.count} Items</span>
                     </div>
                   </div>
+                  <span
+                    className="h-3 w-3 rounded-full"
+                    style={{ backgroundColor: cat.color }}
+                  />
                 </div>
 
                 <div className="pt-2 border-t border-gray-200/60 dark:border-slate-700/60 space-y-1.5">
@@ -314,11 +491,14 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                   </div>
                 </div>
 
-                {/* Progress bar */}
-                <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-slate-700">
+                {/* Animated Bar */}
+                <div className="h-2.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-slate-700">
                   <div
-                    className="h-full rounded-full bg-indigo-600 dark:bg-indigo-400"
-                    style={{ width: `${Math.max(cat.valuePercentage, 5)}%` }}
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      width: `${Math.max(cat.valuePercentage, 5)}%`,
+                      backgroundColor: cat.color,
+                    }}
                   />
                 </div>
               </div>
@@ -332,11 +512,33 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
         <div className="pt-6 space-y-6 animate-in fade-in duration-300">
           <div className="flex items-center justify-between">
             <h4 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider">
-              Price Range Tiers Analysis
+              Price Range Tiers Bar Graph
             </h4>
             <span className="text-xs text-gray-500 dark:text-slate-400">
               Distribution across budget, mid-tier, and luxury brackets
             </span>
+          </div>
+
+          {/* Bar Graph Visual */}
+          <div className="flex h-48 items-end gap-x-4 rounded-xl border border-gray-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 p-5">
+            {priceTiers.map((tier) => {
+              const heightPercent =
+                tier.count > 0 ? Math.round((tier.count / maxTierCount) * 100) : 10;
+              return (
+                <div key={tier.label} className="flex flex-1 flex-col items-center gap-y-2 h-full justify-end">
+                  <span className="text-xs font-bold text-gray-700 dark:text-slate-200">
+                    {tier.count} <span className="text-[10px] text-gray-400 font-normal">items</span>
+                  </span>
+                  <div
+                    className={`w-full rounded-t-xl ${tier.color} transition-all duration-500 hover:opacity-90 shadow-sm`}
+                    style={{ height: `${heightPercent}%` }}
+                  />
+                  <span className="text-xs font-semibold text-gray-700 dark:text-slate-300 text-center line-clamp-1">
+                    {tier.label.split(" ")[0]}
+                  </span>
+                </div>
+              );
+            })}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

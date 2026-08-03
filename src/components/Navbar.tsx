@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Button from "./ui/Button";
+import NotificationDropdown from "./NotificationDropdown";
 
 interface NavbarProps {
   onAddProduct: () => void;
@@ -74,8 +75,10 @@ const Navbar = ({ onAddProduct, darkMode, toggleDarkMode }: NavbarProps) => {
           </a>
         </nav>
 
-        {/* Actions (Dark Mode Toggle & Add Product) */}
+        {/* Actions (Notifications, Dark Mode Toggle & Add Product) */}
         <div className="hidden sm:flex items-center gap-x-3">
+          <NotificationDropdown />
+
           {/* Night Mode Toggle Button */}
           <button
             type="button"
@@ -116,6 +119,8 @@ const Navbar = ({ onAddProduct, darkMode, toggleDarkMode }: NavbarProps) => {
 
         {/* Mobile Controls */}
         <div className="flex items-center gap-x-2 sm:hidden">
+          <NotificationDropdown />
+
           <button
             type="button"
             onClick={toggleDarkMode}
