@@ -1,6 +1,11 @@
 import type { ChangeEvent, SubmitEvent } from "react";
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
+import AnalyticsCharts from "./components/AnalyticsCharts";
+import Footer from "./components/Footer";
+import Hero from "./components/Hero";
+import KpiStats from "./components/KpiStats";
+import Navbar from "./components/Navbar";
 import ProductCard from "./components/ProductCard";
 import Button from "./components/ui/Button";
 import ColorCircle from "./components/ui/ColorCircle";
@@ -62,7 +67,13 @@ function App() {
     e.preventDefault();
     const { title, description, imageURL, price } = product;
 
-    const errors = productValidation({ title, description, imageURL, price, colors: tempColors });
+    const errors = productValidation({
+      title,
+      description,
+      imageURL,
+      price,
+      colors: tempColors,
+    });
     console.log(errors);
 
     const hasErrors = Object.values(errors).some((error) => error !== "");
@@ -124,11 +135,11 @@ function App() {
     </div>
   ));
 
-  const RenderProductColors = colors.map((color) => (
+  const renderProductColors = colors.map((color) => (
     <ColorCircle
       color={color}
       key={color}
-      className="active:scale-90 active:ring-3"
+      isSelected={tempColors.includes(color)}
       onClick={() =>
         settempColors((prevColors) => {
           if (prevColors.includes(color)) {
@@ -141,18 +152,25 @@ function App() {
   ));
 
   return (
-    <main className="container mx-auto p-5">
-      <Button
-        className="mx-auto mb-3 block bg-indigo-700 hover:bg-indigo-800"
-        width="w-fit"
-        onClick={open}
-      >
-        Add Product
-      </Button>
+    <div className="min-h-screen bg-slate-50/50 flex flex-col font-sans text-slate-900">
+      <Navbar onAddProduct={open} />
 
-      <div className="grid grid-cols-1 gap-2 rounded-md sm:grid-cols-2 md:grid-cols-3 md:gap-4 xl:grid-cols-4">
-        {renderProductList}
-      </div>
+      <main className="container mx-auto flex-1 p-5 pt-8">
+        <Hero onAddProduct={open} />
+
+        <KpiStats products={products} />
+
+        <AnalyticsCharts products={products} />
+
+        <div
+          id="products-grid"
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
+        >
+          {renderProductList}
+        </div>
+      </main>
+
+      <Footer />
       <Modal isOpen={isOpen} closeModal={closeModal} title="Add A New Product">
         <form className="flex flex-col gap-y-3" onSubmit={onSubmitHandler}>
           {renderFormInputs}
@@ -160,39 +178,50 @@ function App() {
             selected={selectedCategory}
             setSelected={setSelectedCategory}
           />
-          <div className="flex flex-wrap justify-center gap-x-1">
-            {RenderProductColors}
+          <div className="flex flex-wrap items-center justify-center gap-2 py-1">
+            {renderProductColors}
           </div>
-          {tempColors.length > 0 && (
-            <div className="flex flex-wrap items-center justify-center gap-2">
-              {tempColors.map((color) => (
-                <span
-                  key={color}
-                  className="cursor-pointer rounded-md px-2 py-1 text-xs text-white font-stretch-50%"
-                  style={{ backgroundColor: color }}
-                  onClick={() => removeColorHandler(color)}
-                >
-                  {color}
-                </span>
-              ))}
+          <div
+            className={`grid transition-all duration-300 ease-in-out ${
+              tempColors.length > 0
+                ? "grid-rows-[1fr] opacity-100 mt-1"
+                : "grid-rows-[0fr] opacity-0 mt-0"
+            }`}
+          >
+            <div className="min-h-0 overflow-hidden">
+              <div className="flex flex-wrap items-center justify-center gap-1.5 py-1.5">
+                {tempColors.map((color) => (
+                  <span
+                    key={color}
+                    className="inline-flex cursor-pointer items-center gap-x-1 rounded-md px-2.5 py-1 text-xs font-medium text-white shadow-xs transition-all duration-200 hover:scale-105 hover:shadow-md active:scale-95"
+                    style={{ backgroundColor: color }}
+                    onClick={() => removeColorHandler(color)}
+                  >
+                    {color}
+                    <span className="ml-0.5 text-[10px] font-bold opacity-75 hover:opacity-100">
+                      ×
+                    </span>
+                  </span>
+                ))}
+              </div>
             </div>
-          )}
+          </div>
           <ErrorMessage msg={errors.colors} />
-          <div className="flex gap-x-3">
+          <div className="flex items-center gap-x-3 pt-2">
             <Button
-              className="bg-gray-400 hover:bg-gray-500"
+              className="bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 border border-gray-200"
               type="button"
               onClick={onCancelHandler}
             >
               Cancel
             </Button>
-            <Button className="bg-indigo-700 hover:bg-indigo-800">
+            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-600/20">
               Submit
             </Button>
           </div>
         </form>
       </Modal>
-    </main>
+    </div>
   );
 }
 
