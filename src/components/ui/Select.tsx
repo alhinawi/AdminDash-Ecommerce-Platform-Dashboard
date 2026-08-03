@@ -19,49 +19,49 @@ interface Props {
 const Select = ({ selected, setSelected }: Props) => {
   return (
     <Listbox value={selected} onChange={setSelected}>
-      <Label className="block text-sm font-medium text-gray-900">
+      <Label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider">
         Category
       </Label>
-      <div className="relative">
-        <ListboxButton className="grid w-full cursor-default grid-cols-1 rounded-md bg-white py-3 pr-2 pl-3 text-left text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-indigo-600 sm:text-sm/6">
+      <div className="relative mt-1">
+        <ListboxButton className="grid w-full cursor-pointer grid-cols-1 rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 pr-2 pl-3.5 text-left text-gray-900 shadow-2xs transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 sm:text-sm">
           <span className="col-start-1 row-start-1 flex items-center gap-3 pr-6">
             <img
-              alt=""
+              alt={selected.name}
               src={selected.imageURL}
-              className="size-5 shrink-0 rounded-full bg-gray-100"
+              className="size-5 shrink-0 rounded-full object-cover ring-1 ring-gray-200"
             />
-            <span className="block truncate">{selected.name}</span>
+            <span className="block truncate font-medium">{selected.name}</span>
           </span>
           <ChevronUpDownIcon
             aria-hidden="true"
-            className="col-start-1 row-start-1 size-5 self-center justify-self-end text-gray-500 sm:size-4"
+            className="col-start-1 row-start-1 size-5 self-center justify-self-end text-gray-400 sm:size-4"
           />
         </ListboxButton>
 
         <ListboxOptions
           anchor="bottom"
           transition
-          className="z-50 mt-1 max-h-56 w-(--button-width) overflow-auto rounded-md bg-white py-1 text-base shadow-lg outline-1 outline-black/5 data-leave:transition data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0 sm:text-sm"
+          className="z-50 mt-1 max-h-56 w-(--button-width) overflow-auto rounded-xl border border-gray-100 bg-white p-1 text-base shadow-xl outline-none data-leave:transition data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0 sm:text-sm"
         >
           {categories.map((category) => (
             <ListboxOption
               key={category.id}
               value={category}
-              className="group relative cursor-default py-2 pr-9 pl-3 text-gray-900 select-none data-focus:bg-indigo-600 data-focus:text-white data-focus:outline-hidden"
+              className="group relative cursor-pointer rounded-lg py-2 pr-9 pl-3 text-gray-900 select-none data-focus:bg-indigo-600 data-focus:text-white"
             >
               <div className="flex items-center">
                 <img
-                  alt=""
+                  alt={category.name}
                   src={category.imageURL}
-                  className="size-5 shrink-0 rounded-full"
+                  className="size-5 shrink-0 rounded-full object-cover"
                 />
-                <span className="ml-3 block truncate font-normal group-data-selected:font-semibold">
+                <span className="ml-3 block truncate font-medium group-data-selected:font-semibold">
                   {category.name}
                 </span>
               </div>
 
-              <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-not-data-selected:hidden group-data-focus:text-white">
-                <CheckIcon aria-hidden="true" className="size-5" />
+              <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-indigo-600 group-not-data-selected:hidden group-data-focus:text-white">
+                <CheckIcon aria-hidden="true" className="size-4" />
               </span>
             </ListboxOption>
           ))}

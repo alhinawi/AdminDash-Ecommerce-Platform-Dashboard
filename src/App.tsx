@@ -120,7 +120,7 @@ function App() {
     <div className="flex flex-col" key={input.id}>
       <label
         htmlFor={input.id}
-        className="mb-0.5 text-sm font-medium text-gray-700"
+        className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-gray-700"
       >
         {input.label}
       </label>
