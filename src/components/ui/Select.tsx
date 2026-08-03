@@ -19,35 +19,35 @@ interface Props {
 const Select = ({ selected, setSelected }: Props) => {
   return (
     <Listbox value={selected} onChange={setSelected}>
-      <Label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider">
+      <Label className="block text-xs font-semibold text-gray-700 dark:text-slate-300 uppercase tracking-wider">
         Category
       </Label>
       <div className="relative mt-1">
-        <ListboxButton className="grid w-full cursor-pointer grid-cols-1 rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 pr-2 pl-3.5 text-left text-gray-900 shadow-2xs transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 sm:text-sm">
+        <ListboxButton className="grid w-full cursor-pointer grid-cols-1 rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50/50 dark:bg-slate-800/50 py-2.5 pr-2 pl-3.5 text-left text-gray-900 dark:text-white shadow-2xs transition-all focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 sm:text-sm">
           <span className="col-start-1 row-start-1 flex items-center gap-3 pr-6">
             <img
               alt={selected.name}
               src={selected.imageURL}
-              className="size-5 shrink-0 rounded-full object-cover ring-1 ring-gray-200"
+              className="size-5 shrink-0 rounded-full object-cover ring-1 ring-gray-200 dark:ring-slate-700"
             />
             <span className="block truncate font-medium">{selected.name}</span>
           </span>
           <ChevronUpDownIcon
             aria-hidden="true"
-            className="col-start-1 row-start-1 size-5 self-center justify-self-end text-gray-400 sm:size-4"
+            className="col-start-1 row-start-1 size-5 self-center justify-self-end text-gray-400 dark:text-slate-500 sm:size-4"
           />
         </ListboxButton>
 
         <ListboxOptions
           anchor="bottom"
           transition
-          className="z-50 mt-1 max-h-56 w-(--button-width) overflow-auto rounded-xl border border-gray-100 bg-white p-1 text-base shadow-xl outline-none data-leave:transition data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0 sm:text-sm"
+          className="z-50 mt-1 max-h-56 w-(--button-width) overflow-auto rounded-xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-1 text-base shadow-xl outline-none data-leave:transition data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0 sm:text-sm text-gray-900 dark:text-white"
         >
           {categories.map((category) => (
             <ListboxOption
               key={category.id}
               value={category}
-              className="group relative cursor-pointer rounded-lg py-2 pr-9 pl-3 text-gray-900 select-none data-focus:bg-indigo-600 data-focus:text-white"
+              className="group relative cursor-pointer rounded-lg py-2 pr-9 pl-3 text-gray-900 dark:text-slate-200 select-none data-focus:bg-indigo-600 data-focus:text-white"
             >
               <div className="flex items-center">
                 <img

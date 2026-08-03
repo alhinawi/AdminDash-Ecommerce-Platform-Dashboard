@@ -1,5 +1,5 @@
 import type { ChangeEvent, SubmitEvent } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import AnalyticsCharts from "./components/AnalyticsCharts";
 import Footer from "./components/Footer";
@@ -31,6 +31,27 @@ function App() {
   };
 
   /* ------- STATE -------  */
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (darkMode) {
+      root.classList.add("dark");
+      document.body.classList.add("dark");
+      root.setAttribute("data-theme", "dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      root.classList.remove("dark");
+      document.body.classList.remove("dark");
+      root.removeAttribute("data-theme");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
+
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+
   const [isOpen, setIsOpen] = useState(false);
   const [products, setProducts] = useState<Product[]>(productList);
   const [product, setProduct] = useState<Product>(defaultProduct);
@@ -152,8 +173,12 @@ function App() {
   ));
 
   return (
-    <div className="min-h-screen bg-slate-50/50 flex flex-col font-sans text-slate-900">
-      <Navbar onAddProduct={open} />
+    <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 flex flex-col font-sans text-slate-900 dark:text-slate-100 transition-colors duration-300">
+      <Navbar
+        onAddProduct={open}
+        darkMode={darkMode}
+        toggleDarkMode={toggleDarkMode}
+      />
 
       <main className="container mx-auto flex-1 p-5 pt-8">
         <Hero onAddProduct={open} />

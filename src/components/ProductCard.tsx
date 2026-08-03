@@ -19,9 +19,9 @@ const ProductCard = ({ product }: Props) => {
   ));
 
   return (
-    <div className="group relative flex w-full max-w-sm flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white p-3.5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gray-200/80 hover:shadow-xl sm:mx-0 mx-auto">
+    <div className="group relative flex w-full max-w-sm flex-col overflow-hidden rounded-2xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-3.5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gray-200/80 dark:hover:border-slate-700 hover:shadow-xl sm:mx-0 mx-auto">
       {/* Product Image Container */}
-      <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl bg-gray-50">
+      <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl bg-gray-50 dark:bg-slate-800">
         <Image
           imageSrc={imageURL}
           altText={title}
@@ -31,10 +31,10 @@ const ProductCard = ({ product }: Props) => {
 
       {/* Product Information */}
       <div className="flex flex-1 flex-col gap-y-2 pt-3">
-        <h3 className="line-clamp-1 text-base font-bold text-gray-900 transition-colors group-hover:text-indigo-600">
+        <h3 className="line-clamp-1 text-base font-bold text-gray-900 dark:text-white transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
           {title}
         </h3>
-        <p className="line-clamp-2 min-h-[32px] text-xs leading-relaxed text-gray-500 wrap-break-word">
+        <p className="line-clamp-2 min-h-[32px] text-xs leading-relaxed text-gray-500 dark:text-slate-400 wrap-break-word">
           {description}
         </p>
 
@@ -43,24 +43,24 @@ const ProductCard = ({ product }: Props) => {
           {colors.length > 0 ? (
             renderProductColors
           ) : (
-            <span className="text-[11px] text-gray-400 italic">No colors available</span>
+            <span className="text-[11px] text-gray-400 dark:text-slate-500 italic">No colors available</span>
           )}
         </div>
 
         {/* Price & Category */}
         <div className="mt-auto flex items-center justify-between gap-x-2 pt-1">
-          <span className="text-xl font-extrabold tracking-tight text-indigo-600">
+          <span className="text-xl font-extrabold tracking-tight text-indigo-600 dark:text-indigo-400">
             ${Number(price).toLocaleString("en-US")}
           </span>
 
-          <div className="flex items-center gap-x-1.5 rounded-full border border-gray-100 bg-gray-50/90 px-2.5 py-1 shadow-2xs">
-            <p className="text-xs font-medium text-gray-700 capitalize">
+          <div className="flex items-center gap-x-1.5 rounded-full border border-gray-100 dark:border-slate-800 bg-gray-50/90 dark:bg-slate-800/90 px-2.5 py-1 shadow-2xs">
+            <p className="text-xs font-medium text-gray-700 dark:text-slate-300 capitalize">
               {category.name}
             </p>
             <Image
               imageSrc={category.imageURL}
               altText={category.name}
-              className="h-6 w-6 rounded-full object-cover ring-1 ring-gray-200/60"
+              className="h-6 w-6 rounded-full object-cover ring-1 ring-gray-200/60 dark:ring-slate-700"
             />
           </div>
         </div>

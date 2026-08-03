@@ -120,7 +120,7 @@ const KpiStats = ({ products }: KpiStatsProps) => {
       {stats.map((stat) => (
         <div
           key={stat.id}
-          className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-gray-200/80 hover:shadow-md"
+          className="group relative overflow-hidden rounded-2xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-gray-200/80 dark:hover:border-slate-700 hover:shadow-md"
         >
           {/* Subtle Top Accent Line */}
           <div
@@ -128,21 +128,21 @@ const KpiStats = ({ products }: KpiStatsProps) => {
           />
 
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+            <span className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400">
               {stat.title}
             </span>
             <div
-              className={`flex h-10 w-10 items-center justify-center rounded-xl border ${stat.badgeColor} transition-transform duration-300 group-hover:scale-110`}
+              className={`flex h-10 w-10 items-center justify-center rounded-xl border ${stat.badgeColor} dark:bg-opacity-20 transition-transform duration-300 group-hover:scale-110`}
             >
               {stat.icon}
             </div>
           </div>
 
           <div className="mt-3">
-            <div className="text-2xl font-black tracking-tight text-gray-900">
+            <div className="text-2xl font-black tracking-tight text-gray-900 dark:text-white">
               {stat.value}
             </div>
-            <p className="mt-1 text-xs text-gray-500 font-medium">
+            <p className="mt-1 text-xs font-medium text-gray-500 dark:text-slate-400">
               {stat.subtitle}
             </p>
           </div>
