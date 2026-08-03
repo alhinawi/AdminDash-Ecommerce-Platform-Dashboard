@@ -42,17 +42,38 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#products-grid" className="hover:text-white transition-colors">
+                <a
+                  href="#products-grid"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById("products-grid")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="hover:text-white transition-colors"
+                >
                   All Products
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a
+                  href="#categories-section"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById("categories-section")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="hover:text-white transition-colors"
+                >
                   Categories
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a
+                  href="#analytics-section"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById("analytics-section")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="hover:text-white transition-colors"
+                >
                   Analytics & Reports
                 </a>
               </li>

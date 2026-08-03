@@ -183,9 +183,13 @@ function App() {
       <main className="container mx-auto flex-1 p-5 pt-8">
         <Hero onAddProduct={open} />
 
-        <KpiStats products={products} />
+        <div id="analytics-section" className="scroll-mt-24">
+          <KpiStats products={products} />
+        </div>
 
-        <AnalyticsCharts products={products} />
+        <div id="categories-section" className="scroll-mt-24">
+          <AnalyticsCharts products={products} />
+        </div>
 
         <div
           id="products-grid"

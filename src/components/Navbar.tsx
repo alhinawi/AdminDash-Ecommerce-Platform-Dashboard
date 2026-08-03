@@ -42,16 +42,34 @@ const Navbar = ({ onAddProduct, darkMode, toggleDarkMode }: NavbarProps) => {
 
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-x-8 text-sm font-medium text-gray-600 dark:text-slate-300">
-          <a href="#" className="text-indigo-600 dark:text-indigo-400 font-semibold transition-colors">
-            Catalog
-          </a>
-          <a href="#products-grid" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+          <a
+            href="#products-grid"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById("products-grid")?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+          >
             Products
           </a>
-          <a href="#" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+          <a
+            href="#categories-section"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById("categories-section")?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+          >
             Categories
           </a>
-          <a href="#" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+          <a
+            href="#analytics-section"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById("analytics-section")?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+          >
             Analytics
           </a>
         </nav>
@@ -126,16 +144,37 @@ const Navbar = ({ onAddProduct, darkMode, toggleDarkMode }: NavbarProps) => {
       {/* Mobile Navigation Dropdown */}
       {isMobileMenuOpen && (
         <div className="md:hidden border-t border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 px-5 py-4 flex flex-col gap-y-3 animate-in fade-in slide-in-from-top-2">
-          <a href="#" className="text-indigo-600 dark:text-indigo-400 font-semibold text-sm">
-            Catalog
-          </a>
-          <a href="#products-grid" className="text-gray-600 dark:text-slate-300 hover:text-indigo-600 text-sm">
+          <a
+            href="#products-grid"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsMobileMenuOpen(false);
+              document.getElementById("products-grid")?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="text-gray-600 dark:text-slate-300 hover:text-indigo-600 text-sm font-medium"
+          >
             Products
           </a>
-          <a href="#" className="text-gray-600 dark:text-slate-300 hover:text-indigo-600 text-sm">
+          <a
+            href="#categories-section"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsMobileMenuOpen(false);
+              document.getElementById("categories-section")?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="text-gray-600 dark:text-slate-300 hover:text-indigo-600 text-sm font-medium"
+          >
             Categories
           </a>
-          <a href="#" className="text-gray-600 dark:text-slate-300 hover:text-indigo-600 text-sm">
+          <a
+            href="#analytics-section"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsMobileMenuOpen(false);
+              document.getElementById("analytics-section")?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="text-gray-600 dark:text-slate-300 hover:text-indigo-600 text-sm font-medium"
+          >
             Analytics
           </a>
           <div className="pt-2">

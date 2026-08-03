@@ -19,9 +19,9 @@ const ProductCard = ({ product }: Props) => {
   ));
 
   return (
-    <div className="group relative flex w-full max-w-sm flex-col overflow-hidden rounded-2xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-3.5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gray-200/80 dark:hover:border-slate-700 hover:shadow-xl sm:mx-0 mx-auto">
+    <div className="group relative flex w-full max-w-sm flex-col overflow-hidden rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-3.5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gray-300 dark:hover:border-slate-700 hover:shadow-xl sm:mx-0 mx-auto">
       {/* Product Image Container */}
-      <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl bg-gray-50 dark:bg-slate-800">
+      <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-slate-800">
         <Image
           imageSrc={imageURL}
           altText={title}
@@ -34,7 +34,7 @@ const ProductCard = ({ product }: Props) => {
         <h3 className="line-clamp-1 text-base font-bold text-gray-900 dark:text-white transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
           {title}
         </h3>
-        <p className="line-clamp-2 min-h-[32px] text-xs leading-relaxed text-gray-500 dark:text-slate-400 wrap-break-word">
+        <p className="line-clamp-2 min-h-[32px] text-xs leading-relaxed text-gray-600 dark:text-slate-300 wrap-break-word">
           {description}
         </p>
 
@@ -43,7 +43,7 @@ const ProductCard = ({ product }: Props) => {
           {colors.length > 0 ? (
             renderProductColors
           ) : (
-            <span className="text-[11px] text-gray-400 dark:text-slate-500 italic">No colors available</span>
+            <span className="text-[11px] text-gray-500 dark:text-slate-400 italic">No colors available</span>
           )}
         </div>
 
@@ -53,14 +53,14 @@ const ProductCard = ({ product }: Props) => {
             ${Number(price).toLocaleString("en-US")}
           </span>
 
-          <div className="flex items-center gap-x-1.5 rounded-full border border-gray-100 dark:border-slate-800 bg-gray-50/90 dark:bg-slate-800/90 px-2.5 py-1 shadow-2xs">
-            <p className="text-xs font-medium text-gray-700 dark:text-slate-300 capitalize">
+          <div className="flex items-center gap-x-1.5 rounded-full border border-gray-200 dark:border-slate-700 bg-gray-100/80 dark:bg-slate-800 px-2.5 py-1 shadow-2xs">
+            <p className="text-xs font-semibold text-gray-800 dark:text-slate-200 capitalize">
               {category.name}
             </p>
             <Image
               imageSrc={category.imageURL}
               altText={category.name}
-              className="h-6 w-6 rounded-full object-cover ring-1 ring-gray-200/60 dark:ring-slate-700"
+              className="h-6 w-6 rounded-full object-cover ring-1 ring-gray-300 dark:ring-slate-600"
             />
           </div>
         </div>
