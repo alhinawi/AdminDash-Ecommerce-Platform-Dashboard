@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Users, Package, BarChart2 } from "lucide-react";
 import Button from "./ui/Button";
 import NotificationDropdown from "./NotificationDropdown";
 
@@ -10,69 +12,57 @@ interface NavbarProps {
 
 const Navbar = ({ onAddProduct, darkMode, toggleDarkMode }: NavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const isUsersPage = location.pathname === "/users";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-100 dark:border-slate-800 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md transition-colors duration-300">
+    <header className="sticky top-0 z-50 border-b border-gray-200/80 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md transition-colors duration-300">
       <div className="container mx-auto flex items-center justify-between px-5 py-3.5">
         {/* Brand Logo & Title */}
         <div className="flex items-center gap-x-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-tr from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-600/20">
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-              />
-            </svg>
-          </div>
-          <div>
-            <span className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
-              Product<span className="text-indigo-600 dark:text-indigo-400">Hub</span>
-            </span>
-            <span className="hidden sm:inline-block ml-2 rounded-full bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900">
-              v2.0
-            </span>
-          </div>
+          <Link to="/" className="flex items-center gap-x-3 group">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-zinc-900 to-zinc-700 dark:from-zinc-100 dark:to-zinc-300 text-white dark:text-zinc-900 shadow-md transition-transform group-hover:scale-105">
+              <Package className="h-5 w-5" />
+            </div>
+            <div>
+              <span className="text-lg font-bold tracking-tight text-zinc-900 dark:text-white">
+                Admin<span className="text-blue-600 dark:text-blue-400">Dash</span>
+              </span>
+              <span className="hidden sm:inline-block ml-2 rounded-full bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 text-[10px] font-semibold text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
+                v2.4
+              </span>
+            </div>
+          </Link>
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-x-8 text-sm font-medium text-gray-600 dark:text-slate-300">
-          <a
-            href="#products-grid"
-            onClick={(e) => {
-              e.preventDefault();
-              document.getElementById("products-grid")?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+        <nav className="hidden md:flex items-center gap-x-1 p-1 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-800 text-xs font-medium">
+          <Link
+            to="/"
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all ${
+              !isUsersPage
+                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs font-semibold"
+                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
+            }`}
           >
-            Products
-          </a>
-          <a
-            href="#categories-section"
-            onClick={(e) => {
-              e.preventDefault();
-              document.getElementById("categories-section")?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+            <BarChart2 className="w-3.5 h-3.5" />
+            Products & Analytics
+          </Link>
+
+          <Link
+            to="/users"
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition-all ${
+              isUsersPage
+                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs font-semibold"
+                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
+            }`}
           >
-            Categories
-          </a>
-          <a
-            href="#analytics-section"
-            onClick={(e) => {
-              e.preventDefault();
-              document.getElementById("analytics-section")?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-          >
-            Analytics
-          </a>
+            <Users className="w-3.5 h-3.5" />
+            Users Management
+            <span className="ml-1 px-1.5 py-0.2 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-bold">
+              100
+            </span>
+          </Link>
         </nav>
 
         {/* Actions (Notifications, Dark Mode Toggle & Add Product) */}
@@ -83,38 +73,22 @@ const Navbar = ({ onAddProduct, darkMode, toggleDarkMode }: NavbarProps) => {
           <button
             type="button"
             onClick={toggleDarkMode}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-amber-400 hover:bg-gray-100 dark:hover:bg-slate-700 transition-all cursor-pointer"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-amber-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-all cursor-pointer"
             aria-label="Toggle Dark Mode"
             title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
           >
-            {darkMode ? (
-              /* Sun Icon */
-              <svg className="h-5 w-5 fill-current text-amber-400" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            ) : (
-              /* Moon Icon */
-              <svg className="h-5 w-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                />
-              </svg>
-            )}
+            {darkMode ? "☀️" : "🌙"}
           </button>
 
-          <Button
-            onClick={onAddProduct}
-            width="w-auto"
-            className="bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-md shadow-indigo-600/20 hover:bg-indigo-700 transition-all"
-          >
-            + Add Product
-          </Button>
+          {!isUsersPage && (
+            <Button
+              onClick={onAddProduct}
+              width="w-auto"
+              className="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-4 py-2 text-xs font-semibold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all shadow-xs"
+            >
+              + Add Product
+            </Button>
+          )}
         </div>
 
         {/* Mobile Controls */}
@@ -124,7 +98,7 @@ const Navbar = ({ onAddProduct, darkMode, toggleDarkMode }: NavbarProps) => {
           <button
             type="button"
             onClick={toggleDarkMode}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-amber-400 cursor-pointer"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-amber-400 cursor-pointer"
             aria-label="Toggle Dark Mode"
           >
             {darkMode ? "☀️" : "🌙"}
@@ -132,7 +106,7 @@ const Navbar = ({ onAddProduct, darkMode, toggleDarkMode }: NavbarProps) => {
 
           <button
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-            className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800 focus:outline-none"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 focus:outline-none"
             aria-label="Toggle Navigation Menu"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,51 +122,25 @@ const Navbar = ({ onAddProduct, darkMode, toggleDarkMode }: NavbarProps) => {
 
       {/* Mobile Navigation Dropdown */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 px-5 py-4 flex flex-col gap-y-3 animate-in fade-in slide-in-from-top-2">
-          <a
-            href="#products-grid"
-            onClick={(e) => {
-              e.preventDefault();
-              setIsMobileMenuOpen(false);
-              document.getElementById("products-grid")?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="text-gray-600 dark:text-slate-300 hover:text-indigo-600 text-sm font-medium"
+        <div className="md:hidden border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-4 flex flex-col gap-y-3 animate-in fade-in slide-in-from-top-2">
+          <Link
+            to="/"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={`text-sm font-medium ${
+              !isUsersPage ? "text-blue-600 font-bold" : "text-zinc-600 dark:text-zinc-300"
+            }`}
           >
-            Products
-          </a>
-          <a
-            href="#categories-section"
-            onClick={(e) => {
-              e.preventDefault();
-              setIsMobileMenuOpen(false);
-              document.getElementById("categories-section")?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="text-gray-600 dark:text-slate-300 hover:text-indigo-600 text-sm font-medium"
+            Products & Analytics
+          </Link>
+          <Link
+            to="/users"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={`text-sm font-medium ${
+              isUsersPage ? "text-blue-600 font-bold" : "text-zinc-600 dark:text-zinc-300"
+            }`}
           >
-            Categories
-          </a>
-          <a
-            href="#analytics-section"
-            onClick={(e) => {
-              e.preventDefault();
-              setIsMobileMenuOpen(false);
-              document.getElementById("analytics-section")?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="text-gray-600 dark:text-slate-300 hover:text-indigo-600 text-sm font-medium"
-          >
-            Analytics
-          </a>
-          <div className="pt-2">
-            <Button
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                onAddProduct();
-              }}
-              className="bg-indigo-600 text-xs font-semibold text-white shadow-md shadow-indigo-600/20 hover:bg-indigo-700"
-            >
-              + Add Product
-            </Button>
-          </div>
+            Users Management (100)
+          </Link>
         </div>
       )}
     </header>

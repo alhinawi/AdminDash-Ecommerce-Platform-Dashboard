@@ -397,20 +397,24 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
           </div>
 
           {/* Bar Graph Visual */}
-          <div className="flex h-48 items-end gap-x-4 rounded-xl border border-gray-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 p-5">
+          <div className="flex h-56 items-end gap-x-4 rounded-xl border border-gray-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 p-5 pb-6">
             {priceTiers.map((tier) => {
               const heightPercent =
                 tier.count > 0 ? Math.round((tier.count / maxTierCount) * 100) : 10;
               return (
-                <div key={tier.label} className="flex flex-1 flex-col items-center gap-y-2 h-full justify-end">
+                <div key={tier.label} className="flex flex-1 flex-col items-center gap-y-2 h-full justify-between">
                   <span className="text-xs font-bold text-gray-700 dark:text-slate-200">
                     {tier.count} <span className="text-[10px] text-gray-400 font-normal">items</span>
                   </span>
-                  <div
-                    className={`w-full rounded-t-xl ${tier.color} transition-all duration-500 hover:opacity-90 shadow-sm`}
-                    style={{ height: `${heightPercent}%` }}
-                  />
-                  <span className="text-xs font-semibold text-gray-700 dark:text-slate-300 text-center line-clamp-1">
+                  
+                  <div className="w-full flex-1 flex items-end">
+                    <div
+                      className={`w-full rounded-t-xl ${tier.color} transition-all duration-500 hover:opacity-90 shadow-xs`}
+                      style={{ height: `${heightPercent}%` }}
+                    />
+                  </div>
+
+                  <span className="text-xs font-semibold text-gray-700 dark:text-slate-300 text-center leading-normal py-0.5">
                     {tier.label.split(" ")[0]}
                   </span>
                 </div>

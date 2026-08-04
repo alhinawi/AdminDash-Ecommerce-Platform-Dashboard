@@ -1,5 +1,6 @@
 import type { ChangeEvent, SubmitEvent } from "react";
 import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import AnalyticsCharts from "./components/AnalyticsCharts";
 import FilterBar from "./components/FilterBar";
@@ -15,11 +16,112 @@ import Input from "./components/ui/Input";
 import Modal from "./components/ui/Modal";
 import Select from "./components/ui/Select";
 import Toast, { type ToastMessage } from "./components/ui/Toast";
+import UsersPage from "./components/users/UsersPage";
 import { categories, colors, formInputsList, productList } from "./data";
 import type { Product } from "./interfaces";
 import { productValidation } from "./schema";
 
-function App() {
+function ProductsView({
+  open,
+  products,
+  searchQuery,
+  setSearchQuery,
+  filterCategory,
+  setFilterCategory,
+  sortBy,
+  setSortBy,
+}: {
+  open: () => void;
+  products: Product[];
+  searchQuery: string;
+  setSearchQuery: (val: string) => void;
+  filterCategory: string;
+  setFilterCategory: (val: string) => void;
+  sortBy: string;
+  setSortBy: (val: string) => void;
+}) {
+  const filteredProducts = products
+    .filter((p) => {
+      const matchesSearch =
+        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.description.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory =
+        filterCategory === "all" ||
+        p.category.name.toLowerCase() === filterCategory.toLowerCase();
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => {
+      if (sortBy === "price-asc") return Number(a.price) - Number(b.price);
+      if (sortBy === "price-desc") return Number(b.price) - Number(a.price);
+      if (sortBy === "title-asc") return a.title.localeCompare(b.title);
+      if (sortBy === "title-desc") return a.title.localeCompare(b.title);
+      return 0;
+    });
+
+  const renderProductList = filteredProducts.map((product) => (
+    <ProductCard key={product.id} product={product} />
+  ));
+
+  return (
+    <main className="container mx-auto flex-1 p-5 pt-8">
+      <Hero onAddProduct={open} />
+
+      <div id="analytics-section" className="scroll-mt-24">
+        <KpiStats products={products} />
+      </div>
+
+      <div id="categories-section" className="scroll-mt-24">
+        <AnalyticsCharts products={products} />
+      </div>
+
+      {/* Filter, Search & Sort Control Bar */}
+      <FilterBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        selectedCategory={filterCategory}
+        setSelectedCategory={setFilterCategory}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        categories={categories}
+        totalResults={filteredProducts.length}
+        totalProducts={products.length}
+      />
+
+      {/* Products Grid */}
+      {filteredProducts.length > 0 ? (
+        <div
+          id="products-grid"
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
+        >
+          {renderProductList}
+        </div>
+      ) : (
+        <div className="rounded-2xl border border-dashed border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-12 text-center my-6">
+          <span className="text-3xl">🔍</span>
+          <h4 className="mt-3 text-base font-bold text-gray-900 dark:text-white">
+            No products found
+          </h4>
+          <p className="mt-1 text-xs text-gray-500 dark:text-zinc-400">
+            No items match your search query or filter criteria. Try resetting filters.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setSearchQuery("");
+              setFilterCategory("all");
+              setSortBy("default");
+            }}
+            className="mt-4 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-4 py-2 text-xs font-semibold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all cursor-pointer"
+          >
+            Reset Filters
+          </button>
+        </div>
+      )}
+    </main>
+  );
+}
+
+function AppContent() {
   const defaultProduct: Product = {
     title: "",
     description: "",
@@ -88,19 +190,16 @@ function App() {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
-  /* ------- HANDLER -------  */
-
+  /* ------- HANDLERS -------  */
   const open = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
     setProduct((prevProduct) => ({
       ...prevProduct,
       [name]: value,
     }));
-
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: "",
@@ -157,40 +256,15 @@ function App() {
 
   const removeColorHandler = (color: string) => {
     settempColors((prevColors) =>
-      prevColors.filter((prevColor) => prevColor !== color),
+      prevColors.filter((prevColor) => prevColor !== color)
     );
   };
-
-  /* ------- FILTER & SORT COMPUTATION ------- */
-  const filteredProducts = products
-    .filter((p) => {
-      const matchesSearch =
-        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory =
-        filterCategory === "all" ||
-        p.category.name.toLowerCase() === filterCategory.toLowerCase();
-      return matchesSearch && matchesCategory;
-    })
-    .sort((a, b) => {
-      if (sortBy === "price-asc") return Number(a.price) - Number(b.price);
-      if (sortBy === "price-desc") return Number(b.price) - Number(a.price);
-      if (sortBy === "title-asc") return a.title.localeCompare(b.title);
-      if (sortBy === "title-desc") return b.title.localeCompare(a.title);
-      return 0;
-    });
-
-  /* ------- RENDER -------  */
-
-  const renderProductList = filteredProducts.map((product) => (
-    <ProductCard key={product.id} product={product} />
-  ));
 
   const renderFormInputs = formInputsList.map((input) => (
     <div className="flex flex-col" key={input.id}>
       <label
         htmlFor={input.id}
-        className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-gray-700 dark:text-slate-300"
+        className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-gray-700 dark:text-zinc-300"
       >
         {input.label}
       </label>
@@ -222,75 +296,38 @@ function App() {
   ));
 
   return (
-    <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 flex flex-col font-sans text-slate-900 dark:text-slate-100 transition-colors duration-300 relative">
+    <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950 flex flex-col font-sans text-zinc-900 dark:text-zinc-100 transition-colors duration-300 relative">
       <Navbar
         onAddProduct={open}
         darkMode={darkMode}
         toggleDarkMode={toggleDarkMode}
       />
 
-      <main className="container mx-auto flex-1 p-5 pt-8">
-        <Hero onAddProduct={open} />
-
-        <div id="analytics-section" className="scroll-mt-24">
-          <KpiStats products={products} />
-        </div>
-
-        <div id="categories-section" className="scroll-mt-24">
-          <AnalyticsCharts products={products} />
-        </div>
-
-        {/* Filter, Search & Sort Control Bar */}
-        <FilterBar
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          selectedCategory={filterCategory}
-          setSelectedCategory={setFilterCategory}
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          categories={categories}
-          totalResults={filteredProducts.length}
-          totalProducts={products.length}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <ProductsView
+              open={open}
+              products={products}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              filterCategory={filterCategory}
+              setFilterCategory={setFilterCategory}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+            />
+          }
         />
-
-        {/* Products Grid */}
-        {filteredProducts.length > 0 ? (
-          <div
-            id="products-grid"
-            className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
-          >
-            {renderProductList}
-          </div>
-        ) : (
-          <div className="rounded-2xl border border-dashed border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-12 text-center my-6">
-            <span className="text-3xl">🔍</span>
-            <h4 className="mt-3 text-base font-bold text-gray-900 dark:text-white">
-              No products found
-            </h4>
-            <p className="mt-1 text-xs text-gray-500 dark:text-slate-400">
-              No items match your search query or filter criteria. Try resetting filters.
-            </p>
-            <button
-              type="button"
-              onClick={() => {
-                setSearchQuery("");
-                setFilterCategory("all");
-                setSortBy("default");
-              }}
-              className="mt-4 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-md shadow-indigo-600/20 hover:bg-indigo-700 transition-all cursor-pointer"
-            >
-              Reset Filters
-            </button>
-          </div>
-        )}
-      </main>
+        <Route path="/users" element={<UsersPage />} />
+      </Routes>
 
       <Footer />
 
       {/* Floating Toast Notifications */}
       <Toast toasts={toasts} onDismiss={dismissToast} />
 
-      {/* Modal */}
+      {/* Add Product Modal */}
       <Modal isOpen={isOpen} closeModal={closeModal} title="Add A New Product">
         <form className="flex flex-col gap-y-3" onSubmit={onSubmitHandler}>
           {renderFormInputs}
@@ -329,13 +366,13 @@ function App() {
           <ErrorMessage msg={errors.colors} />
           <div className="flex items-center gap-x-3 pt-2">
             <Button
-              className="bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700"
+              className="bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-700"
               type="button"
               onClick={onCancelHandler}
             >
               Cancel
             </Button>
-            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-600/20">
+            <Button className="bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xs font-semibold">
               Submit
             </Button>
           </div>
@@ -345,4 +382,10 @@ function App() {
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
+  );
+}
