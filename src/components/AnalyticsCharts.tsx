@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Product } from "../interfaces";
+import GoogleFinanceChart from "./GoogleFinanceChart";
 
 interface AnalyticsChartsProps {
   products: Product[];
@@ -125,44 +126,6 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
       strokeDashoffset,
     };
   });
-
-  // 5. 12-Month Sales & Revenue Analytics Data
-  const monthlyData = [
-    { month: "Jan", revenue: 24500, sales: 140 },
-    { month: "Feb", revenue: 32100, sales: 185 },
-    { month: "Mar", revenue: 28900, sales: 160 },
-    { month: "Apr", revenue: 45200, sales: 230 },
-    { month: "May", revenue: 58700, sales: 310 },
-    { month: "Jun", revenue: 52400, sales: 285 },
-    { month: "Jul", revenue: 67900, sales: 390 },
-    { month: "Aug", revenue: 74500, sales: 420 },
-    { month: "Sep", revenue: 69300, sales: 380 },
-    { month: "Oct", revenue: 85100, sales: 490 },
-    { month: "Nov", revenue: 98400, sales: 580 },
-    { month: "Dec", revenue: 112000, sales: 650 },
-  ];
-
-  const [hoveredMonth, setHoveredMonth] = useState<typeof monthlyData[0] | null>(null);
-  const maxMonthlyRevenue = Math.max(...monthlyData.map((d) => d.revenue));
-  const totalAnnualRevenue = monthlyData.reduce((sum, d) => sum + d.revenue, 0);
-
-  const monthlyPoints = monthlyData.map((d, idx) => {
-    const x = (idx / (monthlyData.length - 1)) * 300;
-    const y = 115 - (d.revenue / maxMonthlyRevenue) * 90;
-    return { ...d, x, y };
-  });
-
-  const monthlyPathD = monthlyPoints.reduce((acc, pt, i, arr) => {
-    if (i === 0) return `M ${pt.x},${pt.y}`;
-    const prev = arr[i - 1];
-    const cp1x = prev.x + (pt.x - prev.x) / 2;
-    const cp1y = prev.y;
-    const cp2x = prev.x + (pt.x - prev.x) / 2;
-    const cp2y = pt.y;
-    return `${acc} C ${cp1x},${cp1y} ${cp2x},${cp2y} ${pt.x},${pt.y}`;
-  }, "");
-
-  const monthlyAreaD = `${monthlyPathD} L 300,130 L 0,130 Z`;
 
   return (
     <div className="mb-10 rounded-2xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm transition-all">
@@ -302,95 +265,9 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
               </div>
             </div>
 
-            {/* SVG Area Curve Trend Chart (2 Cols) */}
-            <div className="lg:col-span-2 space-y-4 rounded-2xl border border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/40 p-5 relative">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="text-xs font-bold text-gray-900 dark:text-slate-200 uppercase tracking-wider">
-                    Annual Revenue & Growth Trend (12 Months)
-                  </h4>
-                  <span className="text-[11px] text-gray-500 dark:text-slate-400">
-                    Monthly sales revenue performance curve
-                  </span>
-                </div>
-                <div className="flex items-center gap-x-2">
-                  {hoveredMonth ? (
-                    <span className="text-xs font-bold text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-1 rounded-full border border-indigo-200 dark:border-indigo-800 animate-in fade-in">
-                      {hoveredMonth.month}: ${hoveredMonth.revenue.toLocaleString("en-US")} ({hoveredMonth.sales} sales)
-                    </span>
-                  ) : (
-                    <span className="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 rounded-full border border-emerald-200 dark:border-emerald-900">
-                      Peak: Dec (${maxMonthlyRevenue.toLocaleString("en-US")})
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* SVG Area Curve */}
-              <div className="relative h-40 w-full pt-2">
-                <svg className="h-full w-full overflow-visible" viewBox="0 0 300 130" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="monthlyAreaGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#6366f1" stopOpacity="0.4" />
-                      <stop offset="100%" stopColor="#6366f1" stopOpacity="0.0" />
-                    </linearGradient>
-                  </defs>
-
-                  {/* Horizontal grid lines */}
-                  <line x1="0" y1="20" x2="300" y2="20" className="stroke-gray-200 dark:stroke-slate-700/60" strokeDasharray="3 3" />
-                  <line x1="0" y1="65" x2="300" y2="65" className="stroke-gray-200 dark:stroke-slate-700/60" strokeDasharray="3 3" />
-                  <line x1="0" y1="115" x2="300" y2="115" className="stroke-gray-200 dark:stroke-slate-700/60" strokeDasharray="3 3" />
-
-                  {/* Filled Area */}
-                  <path d={monthlyAreaD} fill="url(#monthlyAreaGradient)" />
-
-                  {/* Curve Stroke Line */}
-                  <path d={monthlyPathD} fill="none" stroke="#6366f1" strokeWidth="3" strokeLinecap="round" />
-
-                  {/* Interactive Month Nodes */}
-                  {monthlyPoints.map((pt) => (
-                    <g
-                      key={pt.month}
-                      className="group/node cursor-pointer"
-                      onMouseEnter={() => setHoveredMonth(pt)}
-                      onMouseLeave={() => setHoveredMonth(null)}
-                    >
-                      <circle
-                        cx={pt.x}
-                        cy={pt.y}
-                        r={hoveredMonth?.month === pt.month ? "6" : "4"}
-                        className="fill-indigo-600 dark:fill-indigo-400 stroke-white dark:stroke-slate-900 transition-all duration-200"
-                        strokeWidth="2"
-                      />
-                    </g>
-                  ))}
-                </svg>
-              </div>
-
-              {/* X-Axis Month Labels */}
-              <div className="flex items-center justify-between text-[10px] font-medium text-gray-500 dark:text-slate-400 pt-1">
-                {monthlyData.map((d) => (
-                  <span
-                    key={d.month}
-                    className={`cursor-pointer transition-colors ${
-                      hoveredMonth?.month === d.month
-                        ? "text-indigo-600 dark:text-indigo-400 font-bold"
-                        : "hover:text-gray-900 dark:hover:text-white"
-                    }`}
-                    onMouseEnter={() => setHoveredMonth(d)}
-                    onMouseLeave={() => setHoveredMonth(null)}
-                  >
-                    {d.month}
-                  </span>
-                ))}
-              </div>
-
-              {/* Curve Graph Footer */}
-              <div className="flex items-center justify-between text-[11px] text-gray-500 dark:text-slate-400 pt-2 border-t border-gray-200/50 dark:border-slate-700/50">
-                <span>Annual Total: ${totalAnnualRevenue.toLocaleString("en-US")}</span>
-                <span>Avg Monthly: ${Math.round(totalAnnualRevenue / 12).toLocaleString("en-US")}</span>
-                <span className="font-semibold text-emerald-600 dark:text-emerald-400">+357% Growth</span>
-              </div>
+            {/* Google Finance / Apple Style Minimalist Area Chart (2 Cols) */}
+            <div className="lg:col-span-2">
+              <GoogleFinanceChart />
             </div>
           </div>
 

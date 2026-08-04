@@ -147,7 +147,7 @@ export const productList: Product[] = [
   },
   {
     id: uuid(),
-    title: "Coco Noir Eau de Parfum 100m",
+    title: "Chanel Coco Noir Eau de Parfum 100m",
     description:
       "Discover the elegance of Chanel Coco Noir, a sophisticated fragrance that blends sensual floral notes with warm woody accords, creating a timeless and luxurious scent.",
     imageURL:

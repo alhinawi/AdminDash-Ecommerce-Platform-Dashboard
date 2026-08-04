@@ -12,6 +12,8 @@
   "dependencies": {
     "@headlessui/react": "^2.2.10",
     "@heroicons/react": "^2.2.0",
+    "embla-carousel-autoplay": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "uuid": "^14.0.1"
