@@ -1,4 +1,4 @@
-import { X, Mail, Globe, Calendar, Clock, Shield, Sparkles, CheckCircle2, AlertTriangle, UserX, Trash2 } from "lucide-react";
+import { X, Mail, Globe, Calendar, Clock, Shield, Sparkles, CheckCircle2, AlertTriangle, Trash2 } from "lucide-react";
 import type { User } from "../../types/user";
 
 interface UserDetailDrawerProps {

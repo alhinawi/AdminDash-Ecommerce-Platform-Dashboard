@@ -96,13 +96,14 @@ function ProductsView({
           {renderProductList}
         </div>
       ) : (
-        <div className="rounded-2xl border border-dashed border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-12 text-center my-6">
+        <div className="my-6 rounded-2xl border border-dashed border-gray-200 bg-white p-12 text-center dark:border-zinc-800 dark:bg-zinc-900">
           <span className="text-3xl">🔍</span>
           <h4 className="mt-3 text-base font-bold text-gray-900 dark:text-white">
             No products found
           </h4>
           <p className="mt-1 text-xs text-gray-500 dark:text-zinc-400">
-            No items match your search query or filter criteria. Try resetting filters.
+            No items match your search query or filter criteria. Try resetting
+            filters.
           </p>
           <button
             type="button"
@@ -111,7 +112,7 @@ function ProductsView({
               setFilterCategory("all");
               setSortBy("default");
             }}
-            className="mt-4 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-4 py-2 text-xs font-semibold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all cursor-pointer"
+            className="mt-4 cursor-pointer rounded-xl bg-zinc-900 px-4 py-2 text-xs font-semibold text-white transition-all hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             Reset Filters
           </button>
@@ -180,7 +181,7 @@ function AppContent() {
   const addToast = (
     type: "success" | "error" | "info",
     title: string,
-    message: string
+    message: string,
   ) => {
     const id = uuid();
     setToasts((prev) => [...prev, { id, type, title, message }]);
@@ -236,14 +237,14 @@ function AppContent() {
       addToast(
         "success",
         "Product Created! 🎉",
-        `"${title}" has been added to the catalog.`
+        `"${title}" has been added to the catalog.`,
       );
     } else {
       setErrors(errors);
       addToast(
         "error",
         "Validation Failed ⚠️",
-        "Please check the form inputs before submitting."
+        "Please check the form inputs before submitting.",
       );
     }
   };
@@ -256,7 +257,7 @@ function AppContent() {
 
   const removeColorHandler = (color: string) => {
     settempColors((prevColors) =>
-      prevColors.filter((prevColor) => prevColor !== color)
+      prevColors.filter((prevColor) => prevColor !== color),
     );
   };
 
@@ -264,7 +265,7 @@ function AppContent() {
     <div className="flex flex-col" key={input.id}>
       <label
         htmlFor={input.id}
-        className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-gray-700 dark:text-zinc-300"
+        className="mb-1.5 text-xs font-semibold tracking-wider text-gray-700 uppercase dark:text-zinc-300"
       >
         {input.label}
       </label>
@@ -296,7 +297,7 @@ function AppContent() {
   ));
 
   return (
-    <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950 flex flex-col font-sans text-zinc-900 dark:text-zinc-100 transition-colors duration-300 relative">
+    <div className="relative flex min-h-screen flex-col bg-zinc-50/50 font-sans text-zinc-900 transition-colors duration-300 dark:bg-zinc-950 dark:text-zinc-100">
       <Navbar
         onAddProduct={open}
         darkMode={darkMode}
@@ -341,8 +342,8 @@ function AppContent() {
           <div
             className={`grid transition-all duration-300 ease-in-out ${
               tempColors.length > 0
-                ? "grid-rows-[1fr] opacity-100 mt-1"
-                : "grid-rows-[0fr] opacity-0 mt-0"
+                ? "mt-1 grid-rows-[1fr] opacity-100"
+                : "mt-0 grid-rows-[0fr] opacity-0"
             }`}
           >
             <div className="min-h-0 overflow-hidden">
@@ -366,13 +367,13 @@ function AppContent() {
           <ErrorMessage msg={errors.colors} />
           <div className="flex items-center gap-x-3 pt-2">
             <Button
-              className="bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-700"
+              className="border border-gray-200 bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
               type="button"
               onClick={onCancelHandler}
             >
               Cancel
             </Button>
-            <Button className="bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xs font-semibold">
+            <Button className="bg-zinc-900 font-semibold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900">
               Submit
             </Button>
           </div>

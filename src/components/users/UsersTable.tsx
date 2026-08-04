@@ -48,6 +48,7 @@ export default function UsersTable({
   onBulkDelete,
   onStatusChange,
 }: UsersTableProps) {
+  "use no memo";
   /* ------- TABLE STATES ------- */
   const [sorting, setSorting] = useState<SortingState>([
     { id: "joinedAt", desc: true },
@@ -496,7 +497,7 @@ export default function UsersTable({
       {/* Search Bar & Filters Toolbar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs">
         {/* Search Input */}
-        <div className="relative flex-1 min-w-[240px]">
+        <div className="relative flex-1 min-w-60">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
           <input
             type="text"

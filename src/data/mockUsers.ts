@@ -241,7 +241,6 @@ export const mockUsers: User[] = [
     joinedAt: "2024-08-01T05:50:00Z",
     lastLogin: "2026-08-04T02:40:00Z",
   },
-  // Additional users 21 to 100 generated cleanly below:
   ...Array.from({ length: 80 }, (_, i) => {
     const idx = i + 21;
     const padId = `usr_${idx < 100 ? `0${idx}` : idx}`;

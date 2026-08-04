@@ -69,10 +69,11 @@ const Hero = ({ onAddProduct }: Props) => {
 
   useEffect(() => {
     if (!emblaApi) return;
-    onSelect();
+    const animId = requestAnimationFrame(onSelect);
     emblaApi.on("select", onSelect);
     emblaApi.on("reInit", onSelect);
     return () => {
+      cancelAnimationFrame(animId);
       emblaApi.off("select", onSelect);
       emblaApi.off("reInit", onSelect);
     };
@@ -90,7 +91,7 @@ const Hero = ({ onAddProduct }: Props) => {
     (index: number) => {
       if (emblaApi) emblaApi.scrollTo(index);
     },
-    [emblaApi]
+    [emblaApi],
   );
 
   const activeSlide = HERO_SLIDES[selectedIndex] || HERO_SLIDES[0];
@@ -108,22 +109,25 @@ const Hero = ({ onAddProduct }: Props) => {
       />
 
       {/* Embla Viewport */}
-      <div className="overflow-hidden w-full cursor-grab active:cursor-grabbing" ref={emblaRef}>
+      <div
+        className="w-full cursor-grab overflow-hidden active:cursor-grabbing"
+        ref={emblaRef}
+      >
         <div className="flex w-full">
           {HERO_SLIDES.map((s) => (
             <div
               key={s.id}
-              className="w-full min-w-full shrink-0 relative z-10 p-8 md:p-12 pb-16 md:pb-20 min-h-[280px] flex flex-col justify-center"
+              className="relative z-10 flex min-h-70 w-full min-w-full shrink-0 flex-col justify-center p-8 pb-16 md:p-12 md:pb-20"
             >
               <div className="max-w-2xl sm:pl-2">
                 {/* Badge */}
                 <div className="mb-4 inline-flex w-fit items-center gap-x-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold text-indigo-200 backdrop-blur-md">
-                  <span className="h-2 w-2 rounded-full bg-indigo-400 animate-pulse" />
+                  <span className="h-2 w-2 animate-pulse rounded-full bg-indigo-400" />
                   {s.badge}
                 </div>
 
                 {/* Heading */}
-                <h1 className="mb-4 text-3xl font-extrabold tracking-tight md:text-5xl leading-tight">
+                <h1 className="mb-4 text-3xl leading-tight font-extrabold tracking-tight md:text-5xl">
                   {s.headingTitle} <br />
                   <span className="bg-linear-to-r from-indigo-200 via-purple-200 to-pink-200 bg-clip-text text-transparent">
                     {s.headingHighlight}
@@ -131,7 +135,7 @@ const Hero = ({ onAddProduct }: Props) => {
                 </h1>
 
                 {/* Subtitle */}
-                <p className="mb-6 text-sm text-indigo-100/80 leading-relaxed md:text-base">
+                <p className="mb-6 text-sm leading-relaxed text-indigo-100/80 md:text-base">
                   {s.subtitle}
                 </p>
 
@@ -139,7 +143,7 @@ const Hero = ({ onAddProduct }: Props) => {
                 <div className="flex flex-wrap items-center gap-4">
                   <Button
                     onClick={onAddProduct}
-                    className="w-fit bg-indigo-600 px-6 py-3 font-medium text-white shadow-lg shadow-indigo-600/30 hover:bg-indigo-500 transition-all cursor-pointer"
+                    className="w-fit cursor-pointer bg-indigo-600 px-6 py-3 font-medium text-white shadow-lg shadow-indigo-600/30 transition-all hover:bg-indigo-500"
                   >
                     {s.ctaPrimaryText}
                   </Button>
@@ -149,7 +153,9 @@ const Hero = ({ onAddProduct }: Props) => {
                     onClick={(e) => {
                       e.preventDefault();
                       const targetId = s.ctaSecondaryHref.replace("#", "");
-                      document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" });
+                      document
+                        .getElementById(targetId)
+                        ?.scrollIntoView({ behavior: "smooth" });
                     }}
                     className="inline-flex cursor-pointer items-center gap-x-2 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-medium text-white backdrop-blur-md transition-all hover:bg-white/20"
                   >
@@ -168,23 +174,32 @@ const Hero = ({ onAddProduct }: Props) => {
         <button
           type="button"
           onClick={scrollPrev}
-          className="pointer-events-auto absolute left-5 md:left-10 bottom-5 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-white/60 hover:bg-white/15 hover:text-white hover:scale-105 active:scale-95 border border-white/10 backdrop-blur-md transition-all duration-200 cursor-pointer"
+          className="pointer-events-auto absolute bottom-5 left-5 z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/60 backdrop-blur-md transition-all duration-200 hover:scale-105 hover:bg-white/15 hover:text-white active:scale-95 md:left-10"
           aria-label="Previous Slide"
           title="Previous Slide"
         >
-          <svg className="h-4 w-4 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          <svg
+            className="h-4 w-4 stroke-current"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
         </button>
 
         {/* Minimal Centered Pagination Dots */}
-        <div className="pointer-events-auto absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-x-2">
+        <div className="pointer-events-auto absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 items-center gap-x-2">
           {HERO_SLIDES.map((s, idx) => (
             <button
               key={s.id}
               type="button"
               onClick={() => scrollTo(idx)}
-              className={`rounded-full transition-all duration-300 cursor-pointer ${
+              className={`cursor-pointer rounded-full transition-all duration-300 ${
                 selectedIndex === idx
                   ? "h-1.5 w-5 bg-white/90 shadow-xs shadow-white/30"
                   : "h-1.5 w-1.5 bg-white/30 hover:bg-white/60"
@@ -199,12 +214,21 @@ const Hero = ({ onAddProduct }: Props) => {
         <button
           type="button"
           onClick={scrollNext}
-          className="pointer-events-auto absolute right-5 md:right-10 bottom-5 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-white/60 hover:bg-white/15 hover:text-white hover:scale-105 active:scale-95 border border-white/10 backdrop-blur-md transition-all duration-200 cursor-pointer"
+          className="pointer-events-auto absolute right-5 bottom-5 z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/60 backdrop-blur-md transition-all duration-200 hover:scale-105 hover:bg-white/15 hover:text-white active:scale-95 md:right-10"
           aria-label="Next Slide"
           title="Next Slide"
         >
-          <svg className="h-4 w-4 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          <svg
+            className="h-4 w-4 stroke-current"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         </button>
       </div>
