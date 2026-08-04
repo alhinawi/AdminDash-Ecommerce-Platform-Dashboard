@@ -16,7 +16,7 @@ import Input from "./components/ui/Input";
 import Modal from "./components/ui/Modal";
 import Select from "./components/ui/Select";
 import Toast, { type ToastMessage } from "./components/ui/Toast";
-import UsersPage from "./components/users/UsersPage";
+import UsersPage from "./pages/users/UsersPage";
 import { categories, colors, formInputsList, productList } from "./data";
 import type { Product } from "./interfaces";
 import { productValidation } from "./schema";

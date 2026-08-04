@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { UserPlus, RefreshCw, CheckCircle2 } from "lucide-react";
-import type { User, Status } from "../../types/user";
-import { mockUsers } from "../../data/mockUsers";
-import UsersMetrics from "./UsersMetrics";
-import UsersTable from "./UsersTable";
-import UserDetailDrawer from "./UserDetailDrawer";
-import UserFormModal from "./UserFormModal";
+import type { User, Status } from "@/types/user";
+import { mockUsers } from "@/data/mockUsers";
+import UsersMetrics from "@/components/users/UsersMetrics";
+import UsersTable from "@/components/users/UsersTable";
+import UserDetailDrawer from "@/components/users/UserDetailDrawer";
+import UserFormModal from "@/components/users/UserFormModal";
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>(mockUsers);
