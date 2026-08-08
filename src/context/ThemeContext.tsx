@@ -8,7 +8,7 @@ export interface UserProfile {
   avatarUrl: string;
 }
 
-export type AccentColor =
+export type   AccentColor =
   | "#4f46e5" // Indigo
   | "#06b6d4" // Cyan
   | "#10b981" // Emerald
