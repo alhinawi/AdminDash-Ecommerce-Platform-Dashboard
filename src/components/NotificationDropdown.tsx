@@ -1,10 +1,14 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface NotificationItem {
   id: string;
-  title: string;
-  message: string;
-  time: string;
+  titleKey: string;
+  defaultTitle: string;
+  msgKey: string;
+  defaultMsg: string;
+  timeKey: string;
+  defaultTime: string;
   read: boolean;
   type: "order" | "stock" | "sale" | "system";
 }
@@ -12,41 +16,56 @@ interface NotificationItem {
 const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   {
     id: "1",
-    title: "New Order Received",
-    message: "Customer ordered Sony WH-1000XM5 Headphones ($399)",
-    time: "2m ago",
+    titleKey: "notificationsPop.item1Title",
+    defaultTitle: "New Order Received",
+    msgKey: "notificationsPop.item1Msg",
+    defaultMsg: "Customer ordered Sony WH-1000XM5 Headphones ($399)",
+    timeKey: "notificationsPop.item1Time",
+    defaultTime: "2m ago",
     read: false,
     type: "order",
   },
   {
     id: "2",
-    title: "Low Stock Alert",
-    message: "Stock running low for Premium Leather Bomber Jacket (2 left)",
-    time: "15m ago",
+    titleKey: "notificationsPop.item2Title",
+    defaultTitle: "Low Stock Alert",
+    msgKey: "notificationsPop.item2Msg",
+    defaultMsg: "Stock running low for Premium Leather Bomber Jacket (2 left)",
+    timeKey: "notificationsPop.item2Time",
+    defaultTime: "15m ago",
     read: false,
     type: "stock",
   },
   {
     id: "3",
-    title: "High Valuation Sale",
-    message: "High-tier item sold: Canon EOS R6 Mark II ($2,499)",
-    time: "1h ago",
+    titleKey: "notificationsPop.item3Title",
+    defaultTitle: "High Valuation Sale",
+    msgKey: "notificationsPop.item3Msg",
+    defaultMsg: "High-tier item sold: Canon EOS R6 Mark II ($2,499)",
+    timeKey: "notificationsPop.item3Time",
+    defaultTime: "1h ago",
     read: false,
     type: "sale",
   },
   {
     id: "4",
-    title: "Analytics Sync Complete",
-    message: "Catalog performance metrics updated for 12 months dataset",
-    time: "3h ago",
+    titleKey: "notificationsPop.item4Title",
+    defaultTitle: "Analytics Sync Complete",
+    msgKey: "notificationsPop.item4Msg",
+    defaultMsg: "Catalog performance metrics updated for 12 months dataset",
+    timeKey: "notificationsPop.item4Time",
+    defaultTime: "3h ago",
     read: true,
     type: "system",
   },
 ];
 
 const NotificationDropdown = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [notifications, setNotifications] = useState<NotificationItem[]>(INITIAL_NOTIFICATIONS);
+  const [notifications, setNotifications] = useState<NotificationItem[]>(
+    INITIAL_NOTIFICATIONS,
+  );
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
@@ -56,7 +75,7 @@ const NotificationDropdown = () => {
 
   const toggleRead = (id: string) => {
     setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: !n.read } : n))
+      prev.map((n) => (n.id === id ? { ...n, read: !n.read } : n)),
     );
   };
 
@@ -66,11 +85,16 @@ const NotificationDropdown = () => {
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-all cursor-pointer"
-        aria-label="Notifications"
-        title="View Notifications"
+        className="relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl border border-gray-200 bg-gray-50 text-gray-700 transition-all hover:bg-gray-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+        aria-label={t("nav.notifications", "Notifications")}
+        title={t("nav.viewNotifications", "View Notifications")}
       >
-        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          className="h-5 w-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -80,7 +104,7 @@ const NotificationDropdown = () => {
         </svg>
 
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-600 text-[10px] font-extrabold text-white ring-2 ring-white dark:ring-slate-900 animate-pulse">
+          <span className="absolute -inset-e-1 -top-1 flex h-4 w-4 animate-pulse items-center justify-center rounded-full bg-rose-600 text-[10px] font-extrabold text-white ring-2 ring-white dark:ring-slate-900">
             {unreadCount}
           </span>
         )}
@@ -90,16 +114,24 @@ const NotificationDropdown = () => {
       {isOpen && (
         <>
           {/* Backdrop dismiss */}
-          <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setIsOpen(false)}
+          />
 
-          <div className="absolute right-0 mt-2 z-50 w-80 sm:w-96 rounded-2xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-xl animate-in fade-in slide-in-from-top-2">
+          <div className="animate-in fade-in slide-in-from-top-2 absolute inset-e-0 z-50 mt-2 w-80 rounded-2xl border border-gray-100 bg-white p-4 shadow-xl sm:w-96 dark:border-slate-800 dark:bg-slate-900">
             {/* Popover Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-slate-800">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-3 dark:border-slate-800">
               <div className="flex items-center gap-x-2">
-                <h4 className="text-sm font-bold text-gray-900 dark:text-white">Notifications</h4>
+                <h4 className="text-sm font-bold text-gray-900 dark:text-white">
+                  {t("notificationsPop.title", "Notifications")}
+                </h4>
                 {unreadCount > 0 && (
-                  <span className="rounded-full bg-indigo-50 dark:bg-indigo-950 px-2 py-0.5 text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900">
-                    {unreadCount} new
+                  <span className="rounded-full border border-indigo-100 bg-indigo-50 px-2 py-0.5 text-[10px] font-semibold text-indigo-600 dark:border-indigo-900 dark:bg-indigo-950 dark:text-indigo-400">
+                    {t("notificationsPop.unreadCount", {
+                      count: unreadCount,
+                      defaultValue: `${unreadCount} unread`,
+                    })}
                   </span>
                 )}
               </div>
@@ -107,50 +139,61 @@ const NotificationDropdown = () => {
                 <button
                   type="button"
                   onClick={markAllAsRead}
-                  className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-medium cursor-pointer"
+                  className="cursor-pointer text-xs font-medium text-indigo-600 hover:underline dark:text-indigo-400"
                 >
-                  Mark all read
+                  {t("notificationsPop.markAllRead", "Mark all as read")}
                 </button>
               )}
             </div>
 
             {/* Notification Items List */}
-            <div className="mt-3 space-y-2 max-h-80 overflow-y-auto pr-1">
+            <div className="mt-3 max-h-80 space-y-2 overflow-y-auto pe-1">
               {notifications.map((item) => (
                 <div
                   key={item.id}
                   onClick={() => toggleRead(item.id)}
-                  className={`flex items-start gap-x-3 rounded-xl p-2.5 transition-colors cursor-pointer ${
+                  className={`flex cursor-pointer items-start gap-x-3 rounded-xl p-2.5 transition-colors ${
                     !item.read
-                      ? "bg-indigo-50/60 dark:bg-slate-800/80 border border-indigo-100/80 dark:border-slate-700/80"
-                      : "bg-gray-50/50 dark:bg-slate-800/30 hover:bg-gray-100/60 dark:hover:bg-slate-800/50"
+                      ? "border border-indigo-100/80 bg-indigo-50/60 dark:border-slate-700/80 dark:bg-slate-800/80"
+                      : "bg-gray-50/50 hover:bg-gray-100/60 dark:bg-slate-800/30 dark:hover:bg-slate-800/50"
                   }`}
                 >
                   {/* Icon per type */}
-                  <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-300">
+                  <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600 dark:bg-slate-700 dark:text-indigo-300">
                     {item.type === "order" && "🛒"}
                     {item.type === "stock" && "⚠️"}
                     {item.type === "sale" && "💰"}
                     {item.type === "system" && "⚡"}
                   </div>
 
-                  <div className="flex-1 min-w-0">
+                  <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-bold text-gray-900 dark:text-white truncate">{item.title}</p>
-                      <span className="text-[10px] text-gray-400 dark:text-slate-500 whitespace-nowrap">{item.time}</span>
+                      <p className="truncate text-xs font-bold text-gray-900 dark:text-white">
+                        {t(item.titleKey, item.defaultTitle)}
+                      </p>
+                      <span className="text-[10px] whitespace-nowrap text-gray-400 dark:text-slate-500">
+                        {t(item.timeKey, item.defaultTime)}
+                      </span>
                     </div>
-                    <p className="text-[11px] text-gray-600 dark:text-slate-300 mt-0.5 line-clamp-2">{item.message}</p>
+                    <p className="mt-0.5 line-clamp-2 text-[11px] text-gray-600 dark:text-slate-300">
+                      {t(item.msgKey, item.defaultMsg)}
+                    </p>
                   </div>
 
-                  {!item.read && <span className="h-2 w-2 shrink-0 rounded-full bg-indigo-600 dark:bg-indigo-400 mt-1.5" />}
+                  {!item.read && (
+                    <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-indigo-600 dark:bg-indigo-400" />
+                  )}
                 </div>
               ))}
             </div>
 
             {/* Footer */}
-            <div className="mt-3 pt-2 text-center border-t border-gray-100 dark:border-slate-800">
-              <span className="text-[11px] text-gray-400 dark:text-slate-500 font-medium">
-                Live product catalog alerts synchronized
+            <div className="mt-3 border-t border-gray-100 pt-2 text-center dark:border-slate-800">
+              <span className="text-[11px] font-medium text-gray-400 dark:text-slate-500">
+                {t(
+                  "notificationsPop.liveSyncFooter",
+                  "Live Event Alerts Synchronized with Central Server",
+                )}
               </span>
             </div>
           </div>

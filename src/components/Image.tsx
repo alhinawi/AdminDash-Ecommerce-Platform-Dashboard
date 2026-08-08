@@ -47,7 +47,7 @@ const Image = ({ imageSrc, altText, className, categoryName }: Props) => {
     return (
       <div
         className={cn(
-          "flex flex-col items-center justify-center border border-gray-200/50 bg-linear-to-br from-slate-100 to-gray-200 p-4 text-gray-400 dark:border-slate-700/50 dark:from-slate-800 dark:to-zinc-900 dark:text-slate-500 h-full w-full",
+          "flex h-full w-full flex-col items-center justify-center border border-gray-200/50 bg-linear-to-br from-slate-100 to-gray-200 p-4 text-gray-400 dark:border-slate-700/50 dark:from-slate-800 dark:to-zinc-900 dark:text-slate-500",
           className,
         )}
       >

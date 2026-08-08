@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   ChevronDown,
   Settings,
   LogOut,
   ShieldCheck,
   BarChart2,
-  Users,  
+  Users,
 } from "lucide-react";
 
 import { useThemeContext } from "../context/ThemeContext";
@@ -28,6 +29,7 @@ export default function ProfileMenu({
   user: userProp,
   onItemClick,
 }: ProfileMenuProps) {
+  const { t } = useTranslation();
   const { userProfile, themePreset } = useThemeContext();
   const user = userProp || { ...userProfile, status: "online" as const };
   const [isOpen, setIsOpen] = useState(false);
@@ -72,7 +74,8 @@ export default function ProfileMenu({
   const navigate = useNavigate();
   const isUsersPage = location.pathname === "/users";
   const isSettingsPage = location.pathname === "/settings";
-  const isAnalyticsPage = location.pathname === "/" || (!isUsersPage && !isSettingsPage);
+  const isAnalyticsPage =
+    location.pathname === "/" || (!isUsersPage && !isSettingsPage);
 
   const handleActionClick = (key: string) => {
     if (key === "logout") {
@@ -113,8 +116,8 @@ export default function ProfileMenu({
           />
           {/* Online Status Dot */}
           <span
-            className="absolute right-0 bottom-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-zinc-900"
-            title="Status: Online"
+            className="absolute inset-e-0 bottom-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-zinc-900"
+            title={t("common.online", "Online")}
           />
         </div>
 
@@ -142,14 +145,14 @@ export default function ProfileMenu({
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="user-menu-button"
-          className="absolute right-0 z-50 mt-2 w-72 origin-top-right rounded-2xl border border-zinc-200 bg-white/95 p-1.5 shadow-2xl backdrop-blur-md outline-hidden dark:border-zinc-800 dark:bg-zinc-900/95"
+          className="absolute inset-e-0 z-50 mt-2 w-72 origin-top-right rounded-2xl border border-zinc-200 bg-white/95 p-1.5 shadow-2xl outline-hidden backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/95"
         >
           {/* Header Section */}
           <div className="flex items-center gap-3 rounded-xl bg-zinc-50 p-3 dark:bg-zinc-800/60">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-zinc-900 text-sm font-bold text-white shadow-inner dark:bg-zinc-100 dark:text-zinc-900">
               {user.name.charAt(0)}
             </div>
-            <div className="flex flex-col min-w-0 flex-1">
+            <div className="flex min-w-0 flex-1 flex-col">
               <span className="truncate text-xs font-bold text-zinc-900 dark:text-zinc-100">
                 {user.name}
               </span>
@@ -184,7 +187,9 @@ export default function ProfileMenu({
                     isAnalyticsPage ? themePreset.text : "text-zinc-400"
                   }`}
                 />
-                <span>Products & Analytics</span>
+                <span>
+                  {t("nav.productsAnalytics", "Products & Analytics")}
+                </span>
               </div>
             </Link>
 
@@ -205,16 +210,17 @@ export default function ProfileMenu({
                     isUsersPage ? themePreset.text : "text-zinc-400"
                   }`}
                 />
-                <span>Users Management</span>
+                <span>{t("nav.usersManagement", "Users Management")}</span>
               </div>
 
-              <span className={`rounded-full ${themePreset.badgeBg} px-2 py-0.5 text-[10px] font-bold ${themePreset.badgeText}`}>
+              <span
+                className={`rounded-full ${themePreset.badgeBg} px-2 py-0.5 text-[10px] font-bold ${themePreset.badgeText}`}
+              >
                 100
               </span>
             </Link>
           </div>
 
-          {/* Divider */}
           <div className="my-1 border-t border-zinc-100 dark:border-zinc-800/80" />
 
           {/* Additional Options */}
@@ -236,7 +242,7 @@ export default function ProfileMenu({
                     isSettingsPage ? themePreset.text : "text-zinc-400"
                   }`}
                 />
-                <span>Settings</span>
+                <span>{t("nav.settings", "Settings")}</span>
               </div>
             </Link>
 
@@ -248,7 +254,7 @@ export default function ProfileMenu({
               className="flex min-h-11 w-full cursor-pointer items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-medium text-rose-600 transition-colors hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/40"
             >
               <LogOut className="h-4 w-4 text-rose-500" />
-              <span>Logout</span>
+              <span>{t("nav.signOut", "Sign Out")}</span>
             </button>
           </div>
         </div>

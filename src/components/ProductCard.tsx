@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import Button from "./ui/Button";
 import Image from "./Image";
 import ColorCircle from "./ui/ColorCircle";
@@ -7,9 +8,11 @@ import { Star } from "lucide-react";
 
 interface Props {
   product?: Product;
+  setProductToEdit: (product: Product) => void;
 }
 
-const ProductCard = ({ product }: Props) => {
+const ProductCard = ({ product, setProductToEdit }: Props) => {
+  const { t } = useTranslation();
   if (!product) return null;
 
   const {
@@ -41,17 +44,30 @@ const ProductCard = ({ product }: Props) => {
 
   const stockBadge = isOutOfStock ? (
     <span className="animate-pulse rounded-md border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 text-[10px] font-bold text-rose-500 shadow-2xs backdrop-blur-md dark:text-rose-400">
-      Out of Stock (0)
+      {t("products.outOfStock", "Out of Stock (0)")}
     </span>
   ) : stock <= 10 ? (
     <span className="rounded-md border border-amber-500/30 bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-500 shadow-2xs backdrop-blur-md dark:text-amber-400">
-      Low Stock ({stock})
+      {t("products.lowStock", {
+        count: stock,
+        defaultValue: `Low Stock (${stock})`,
+      })}
     </span>
   ) : (
     <span className="rounded-md border border-emerald-500/30 bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-500 shadow-2xs backdrop-blur-md dark:text-emerald-400">
-      In Stock ({stock})
+      {t("products.inStock", {
+        count: stock,
+        defaultValue: `In Stock (${stock})`,
+      })}
     </span>
   );
+  {
+    /* ------- HANDLER -------  */
+  }
+
+  const handleProductEdit = () => {
+    setProductToEdit(product);
+  };
 
   return (
     <div className="group relative mx-auto flex w-full max-w-sm flex-col overflow-hidden rounded-2xl border border-gray-200/90 bg-white p-3.5 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl sm:mx-0 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 dark:hover:shadow-2xl dark:hover:shadow-black/60">
@@ -89,7 +105,7 @@ const ProductCard = ({ product }: Props) => {
             </span>
           </div>
           <span className="text-[11px] font-medium text-gray-400 capitalize dark:text-slate-500">
-            {category.name}
+            {t("categories." + category.name.toLowerCase(), category.name)}
           </span>
         </div>
 
@@ -106,7 +122,7 @@ const ProductCard = ({ product }: Props) => {
             renderProductColors
           ) : (
             <span className="text-[11px] text-gray-500 italic dark:text-slate-400">
-              No colors available
+              {t("products.noColors", "No colors available")}
             </span>
           )}
         </div>
@@ -119,7 +135,7 @@ const ProductCard = ({ product }: Props) => {
 
           <div className="flex items-center gap-x-1.5 rounded-full border border-gray-200 bg-gray-100/80 px-2.5 py-1 shadow-2xs dark:border-slate-700 dark:bg-slate-800">
             <p className="text-xs font-semibold text-gray-800 capitalize dark:text-slate-200">
-              {category.name}
+              {t("categories." + category.name.toLowerCase(), category.name)}
             </p>
             <Image
               imageSrc={categoryImageURL}
@@ -134,11 +150,9 @@ const ProductCard = ({ product }: Props) => {
           <Button
             type="button"
             className="bg-accent shadow-accent-glow hover:bg-accent-hover text-xs font-semibold tracking-wider text-white shadow-xs transition-all duration-200 hover:shadow-md"
-            onClick={() => {
-              /* Edit handler placeholder */
-            }}
+            onClick={handleProductEdit}
           >
-            EDIT
+            {t("products.edit", "EDIT")}
           </Button>
           <Button
             type="button"
@@ -147,7 +161,7 @@ const ProductCard = ({ product }: Props) => {
               /* Delete handler placeholder */
             }}
           >
-            DELETE
+            {t("products.delete", "DELETE")}
           </Button>
         </div>
       </div>

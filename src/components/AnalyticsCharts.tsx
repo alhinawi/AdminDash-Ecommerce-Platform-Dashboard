@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { Product } from "../interfaces";
 import GoogleFinanceChart from "./GoogleFinanceChart";
 import Toggle from "./ui/Toggle";
@@ -32,7 +33,8 @@ const CATEGORY_CONFIG: Record<string, CategoryMeta> = {
     borderClass: "border-blue-500/30 dark:border-blue-500/20",
     badgeClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
     gradient: "from-blue-500 to-indigo-600",
-    imageURL: "https://i.pinimg.com/1200x/52/8f/cf/528fcf888642c11bd4b71e50b06b1446.jpg",
+    imageURL:
+      "https://i.pinimg.com/1200x/52/8f/cf/528fcf888642c11bd4b71e50b06b1446.jpg",
     demoCount: 55,
     demoBasePrice: 850,
   },
@@ -45,7 +47,8 @@ const CATEGORY_CONFIG: Record<string, CategoryMeta> = {
     borderClass: "border-emerald-500/30 dark:border-emerald-500/20",
     badgeClass: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
     gradient: "from-emerald-500 to-teal-600",
-    imageURL: "https://i.pinimg.com/736x/43/f9/3a/43f93a9825a88d5ce0e36e8c46d0f4cd.jpg",
+    imageURL:
+      "https://i.pinimg.com/736x/43/f9/3a/43f93a9825a88d5ce0e36e8c46d0f4cd.jpg",
     demoCount: 45,
     demoBasePrice: 160,
   },
@@ -58,7 +61,8 @@ const CATEGORY_CONFIG: Record<string, CategoryMeta> = {
     borderClass: "border-amber-500/30 dark:border-amber-500/20",
     badgeClass: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
     gradient: "from-amber-500 to-orange-500",
-    imageURL: "https://images.unsplash.com/photo-1544743744-48719693e9d9?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
+    imageURL:
+      "https://images.unsplash.com/photo-1544743744-48719693e9d9?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
     demoCount: 35,
     demoBasePrice: 1400,
   },
@@ -71,7 +75,8 @@ const CATEGORY_CONFIG: Record<string, CategoryMeta> = {
     borderClass: "border-rose-500/30 dark:border-rose-500/20",
     badgeClass: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
     gradient: "from-rose-500 to-pink-600",
-    imageURL: "https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=200&q=80",
+    imageURL:
+      "https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=200&q=80",
     demoCount: 30,
     demoBasePrice: 750,
   },
@@ -84,7 +89,8 @@ const CATEGORY_CONFIG: Record<string, CategoryMeta> = {
     borderClass: "border-cyan-500/30 dark:border-cyan-500/20",
     badgeClass: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400",
     gradient: "from-cyan-500 to-blue-500",
-    imageURL: "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?auto=format&fit=crop&w=200&q=80",
+    imageURL:
+      "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?auto=format&fit=crop&w=200&q=80",
     demoCount: 25,
     demoBasePrice: 220,
   },
@@ -97,7 +103,8 @@ const CATEGORY_CONFIG: Record<string, CategoryMeta> = {
     borderClass: "border-purple-500/30 dark:border-purple-500/20",
     badgeClass: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
     gradient: "from-purple-500 to-violet-600",
-    imageURL: "https://images.unsplash.com/photo-1542362567-b07e54358753?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
+    imageURL:
+      "https://images.unsplash.com/photo-1542362567-b07e54358753?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
     demoCount: 35,
     demoBasePrice: 2400,
   },
@@ -110,7 +117,8 @@ const CATEGORY_CONFIG: Record<string, CategoryMeta> = {
     borderClass: "border-orange-500/30 dark:border-orange-500/20",
     badgeClass: "bg-orange-500/10 text-orange-600 dark:text-orange-400",
     gradient: "from-orange-500 to-amber-600",
-    imageURL: "https://i.pinimg.com/736x/59/39/e8/5939e895dc24015b03f3c1ba3c104f37.jpg",
+    imageURL:
+      "https://i.pinimg.com/736x/59/39/e8/5939e895dc24015b03f3c1ba3c104f37.jpg",
     demoCount: 25,
     demoBasePrice: 120,
   },
@@ -349,6 +357,8 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
     };
   });
 
+  const { t } = useTranslation();
+
   return (
     <div className="mb-10 rounded-2xl border border-gray-100 bg-white p-6 shadow-xs transition-all dark:border-slate-800 dark:bg-slate-900">
       {/* Header & Controls */}
@@ -357,16 +367,22 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
           <div className="flex items-center gap-x-2">
             <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-indigo-600 dark:bg-indigo-400" />
             <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-              Catalog Analytics & Visual Graphs
+              {t(
+                "analytics.realTimeCatalog",
+                "Catalog Analytics & Visual Graphs",
+              )}
             </h3>
             {demoMode && (
               <span className="animate-pulse rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-amber-600 dark:text-amber-400">
-                ⚡ Demo Mode (250 Items)
+                ⚡ {t("analytics.demoMode", "Demo Mode")}
               </span>
             )}
           </div>
           <p className="mt-0.5 text-xs text-gray-500 dark:text-slate-400">
-            Interactive SVG charts, inventory market share, and price curves
+            {t(
+              "analytics.analyticsDescription",
+              "Interactive SVG charts, inventory market share, and price curves",
+            )}
           </p>
         </div>
 
@@ -382,7 +398,7 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                     : "bg-gray-400 dark:bg-slate-500"
                 }`}
               />
-              Demo Mode
+              {t("analytics.demoMode", "Demo Mode")}
             </span>
             <Toggle
               checked={demoMode}
@@ -399,33 +415,34 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
               onClick={() => setActiveTab("overview")}
               className={`cursor-pointer rounded-lg px-3 py-1.5 transition-all ${
                 activeTab === "overview"
-                  ? "bg-white font-semibold text-accent shadow-xs dark:bg-slate-700"
+                  ? "text-accent bg-white font-semibold shadow-xs dark:bg-slate-700"
                   : "text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white"
               }`}
             >
-              Overview
+              {t("nav.analyticsOverview", "Overview")}
             </button>
             <button
               type="button"
               onClick={() => setActiveTab("categories")}
               className={`cursor-pointer rounded-lg px-3 py-1.5 transition-all ${
                 activeTab === "categories"
-                  ? "bg-white font-semibold text-accent shadow-xs dark:bg-slate-700"
+                  ? "text-accent bg-white font-semibold shadow-xs dark:bg-slate-700"
                   : "text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white"
               }`}
             >
-              Categories ({categoryList.length})
+              {t("analytics.activeCategories", "Categories")} (
+              {categoryList.length})
             </button>
             <button
               type="button"
               onClick={() => setActiveTab("pricing")}
               className={`cursor-pointer rounded-lg px-3 py-1.5 transition-all ${
                 activeTab === "pricing"
-                  ? "bg-white font-semibold text-accent shadow-xs dark:bg-slate-700"
+                  ? "text-accent bg-white font-semibold shadow-xs dark:bg-slate-700"
                   : "text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white"
               }`}
             >
-              Pricing Tiers
+              {t("analytics.valuationTrend", "Pricing Tiers")}
             </button>
           </div>
         </div>
@@ -438,7 +455,7 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
             {/* SVG Donut Chart */}
             <div className="relative flex flex-col items-center justify-center rounded-2xl border border-gray-100 bg-gray-50/50 p-5 dark:border-slate-800 dark:bg-slate-800/40">
               <span className="mb-2 text-xs font-bold tracking-wider text-gray-900 uppercase dark:text-slate-200">
-                Category Market Share
+                {t("analytics.marketShare", "Category Market Share")}
               </span>
 
               <div className="relative flex h-48 w-48 items-center justify-center">
@@ -479,10 +496,16 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                   {hoveredSlice !== null && donutSlices[hoveredSlice] ? (
                     <>
                       <span className="text-[10px] font-semibold text-gray-700 dark:text-slate-200">
-                        {donutSlices[hoveredSlice].name}
+                        {t(
+                          "categories." + donutSlices[hoveredSlice].key,
+                          donutSlices[hoveredSlice].name,
+                        )}
                       </span>
                       <span className="text-base font-extrabold text-indigo-600 dark:text-indigo-400">
-                        {donutSlices[hoveredSlice].countPercentage}% Share
+                        {t("analytics.share", {
+                          percent: donutSlices[hoveredSlice].countPercentage,
+                          defaultValue: `${donutSlices[hoveredSlice].countPercentage}% Share`,
+                        })}
                       </span>
                       <span className="text-[10px] font-medium text-gray-500 dark:text-slate-400">
                         $
@@ -494,13 +517,16 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                   ) : (
                     <>
                       <span className="text-[10px] font-bold text-gray-400 uppercase dark:text-slate-500">
-                        Total Worth
+                        {t("analytics.totalCatalogWorth", "Total Worth")}
                       </span>
                       <span className="text-sm font-extrabold text-gray-900 dark:text-white">
                         ${totalCatalogWorth.toLocaleString("en-US")}
                       </span>
                       <span className="text-[10px] font-semibold text-indigo-500">
-                        {categoryList.length} Categories
+                        {t("analytics.categoriesCount", {
+                          count: categoryList.length,
+                          defaultValue: `${categoryList.length} Categories`,
+                        })}
                       </span>
                     </>
                   )}
@@ -521,7 +547,7 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                       style={{ backgroundColor: cat.color }}
                     />
                     <span className="font-medium text-gray-700 dark:text-slate-300">
-                      {cat.name}
+                      {t("categories." + cat.key, cat.name)}
                     </span>
                   </div>
                 ))}
@@ -538,27 +564,35 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
           <div className="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-3">
             <div className="rounded-xl border border-indigo-100 bg-indigo-50/60 p-3 dark:border-indigo-900/50 dark:bg-indigo-950/40">
               <span className="text-[11px] font-semibold tracking-wider text-indigo-600 uppercase dark:text-indigo-400">
-                Top Valued Category
+                {t("analytics.topValuedCategory", "Top Valued Category")}
               </span>
               <p className="mt-0.5 text-sm font-bold text-gray-900 dark:text-white">
-                {topValuedCategory?.name || "N/A"} ($
-                {topValuedCategory?.totalValue.toLocaleString("en-US")})
+                {topValuedCategory
+                  ? t(
+                      "categories." + topValuedCategory.key,
+                      topValuedCategory.name,
+                    )
+                  : "N/A"}{" "}
+                (${topValuedCategory?.totalValue.toLocaleString("en-US")})
               </p>
             </div>
 
             <div className="rounded-xl border border-purple-100 bg-purple-50/60 p-3 dark:border-purple-900/50 dark:bg-purple-950/40">
               <span className="text-[11px] font-semibold tracking-wider text-purple-600 uppercase dark:text-purple-400">
-                Catalog Diversity
+                {t("analytics.catalogDiversity", "Catalog Diversity")}
               </span>
               <p className="mt-0.5 text-sm font-bold text-gray-900 dark:text-white">
-                {categoryList.length} Categories Across {activeProducts.length}{" "}
-                Products
+                {t("analytics.categoriesAcrossProducts", {
+                  categoryCount: categoryList.length,
+                  productCount: activeProducts.length,
+                  defaultValue: `${categoryList.length} Categories Across ${activeProducts.length} Products`,
+                })}
               </p>
             </div>
 
             <div className="rounded-xl border border-emerald-100 bg-emerald-50/60 p-3 dark:border-emerald-900/50 dark:bg-emerald-950/40">
               <span className="text-[11px] font-semibold tracking-wider text-emerald-600 uppercase dark:text-emerald-400">
-                Primary Color Accent
+                {t("analytics.primaryColorAccent", "Primary Color Accent")}
               </span>
               <div className="mt-1 flex items-center gap-x-2">
                 <span
@@ -566,11 +600,13 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                   style={{ backgroundColor: colorList[0]?.[0] || "#6366f1" }}
                 />
                 <span className="text-sm font-bold text-gray-900 dark:text-white">
-                  {colorList[0]?.[0] || "Default"} (
-                  {Math.round(
-                    ((colorList[0]?.[1] || 0) / totalColorInstances) * 100,
-                  )}
-                  % share)
+                  {t("analytics.colorShare", {
+                    name: colorList[0]?.[0] || "Default",
+                    share: Math.round(
+                      ((colorList[0]?.[1] || 0) / totalColorInstances) * 100,
+                    ),
+                    defaultValue: `${colorList[0]?.[0] || "Default"} (${Math.round(((colorList[0]?.[1] || 0) / totalColorInstances) * 100)}% share)`,
+                  })}
                 </span>
               </div>
             </div>
@@ -583,18 +619,29 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
         <div className="animate-in fade-in space-y-6 pt-6 duration-300">
           <div className="flex items-center justify-between">
             <h4 className="text-sm font-bold tracking-wider text-gray-900 uppercase dark:text-white">
-              Category Valuation & Comparison Graph
+              {t(
+                "analytics.categoryValuationGraph",
+                "Category Valuation & Comparison Graph",
+              )}
             </h4>
             <span className="text-xs text-gray-500 dark:text-slate-400">
-              Detailed valuation & item breakdown across 7 categories
+              {t(
+                "analytics.categoryValuationSub",
+                "Detailed valuation & item breakdown across 7 categories",
+              )}
             </span>
           </div>
 
           {/* Visual Comparison Graph */}
           <div className="space-y-4 rounded-xl border border-gray-100 bg-slate-50/50 p-5 dark:border-slate-800 dark:bg-slate-800/50">
             <div className="flex items-center justify-between text-xs font-semibold text-gray-700 dark:text-slate-300">
-              <span>Category Relative Valuation Comparison Bar</span>
-              <span>Share of Catalog</span>
+              <span>
+                {t(
+                  "analytics.categoryRelativeBar",
+                  "Category Relative Valuation Comparison Bar",
+                )}
+              </span>
+              <span>{t("analytics.shareOfCatalog", "Share of Catalog")}</span>
             </div>
 
             <div className="space-y-3">
@@ -607,10 +654,13 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                         style={{ backgroundColor: cat.color }}
                       />
                       <span className="font-bold text-gray-900 dark:text-white">
-                        {cat.name}
+                        {t("categories." + cat.key, cat.name)}
                       </span>
                       <span className="text-[11px] text-gray-500 dark:text-slate-400">
-                        ({cat.count} items)
+                        {t("analytics.itemsCount", {
+                          count: cat.count,
+                          defaultValue: `(${cat.count} items)`,
+                        })}
                       </span>
                     </div>
                     <div className="flex items-center gap-x-3 font-semibold">
@@ -647,16 +697,16 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                     {cat.imageURL && (
                       <img
                         src={cat.imageURL}
-                        alt={cat.name}
+                        alt={t("categories." + cat.key, cat.name)}
                         className="h-8 w-8 rounded-full object-cover ring-2 ring-indigo-500/20"
                       />
                     )}
                     <div>
                       <h5 className="text-sm font-bold text-gray-900 dark:text-white">
-                        {cat.name}
+                        {t("categories." + cat.key, cat.name)}
                       </h5>
                       <span className="text-[11px] text-gray-500 dark:text-slate-400">
-                        {cat.count} Items
+                        {cat.count} {t("analytics.items", "Items")}
                       </span>
                     </div>
                   </div>
@@ -669,7 +719,7 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                 <div className="space-y-1.5 border-t border-gray-200/60 pt-2 text-xs dark:border-slate-700/60">
                   <div className="flex justify-between">
                     <span className="text-gray-500 dark:text-slate-400">
-                      Total Worth:
+                      {t("analytics.totalWorthLabel", "Total Worth:")}
                     </span>
                     <span className="font-bold text-indigo-600 dark:text-indigo-400">
                       ${cat.totalValue.toLocaleString("en-US")}
@@ -677,7 +727,7 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-500 dark:text-slate-400">
-                      Avg. Unit Price:
+                      {t("analytics.avgUnitPrice", "Avg. Unit Price:")}
                     </span>
                     <span className="font-semibold text-gray-800 dark:text-slate-200">
                       ${cat.avgPrice.toLocaleString("en-US")}
@@ -685,7 +735,7 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-500 dark:text-slate-400">
-                      Share of Inventory:
+                      {t("analytics.shareOfInventory", "Share of Inventory:")}
                     </span>
                     <span className="font-semibold text-purple-600 dark:text-purple-400">
                       {cat.valuePercentage}%
@@ -715,18 +765,24 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-x-2">
               <h4 className="text-sm font-bold tracking-wider text-gray-900 uppercase dark:text-white">
-                Price Range Tiers Bar Graph
+                {t("analytics.priceRangeGraph", "Price Range Tiers Bar Graph")}
               </h4>
               {demoMode && (
                 <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:text-amber-400">
-                  Demo Mode (250 Items)
+                  {t("analytics.demoModeItems", "Demo Mode (250 Items)")}
                 </span>
               )}
             </div>
             <span className="text-xs text-gray-500 dark:text-slate-400">
               {demoMode
-                ? "Simulated distribution across budget, mid-tier, high-tier & ultra brackets"
-                : "Distribution across budget, mid-tier, high-tier & ultra brackets"}
+                ? t(
+                    "analytics.demoDistribution",
+                    "Simulated distribution across budget, mid-tier, high-tier & ultra brackets",
+                  )
+                : t(
+                    "analytics.normalDistribution",
+                    "Distribution across budget, mid-tier, high-tier & ultra brackets",
+                  )}
             </span>
           </div>
 
@@ -745,7 +801,7 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                   <span className="text-xs font-bold text-gray-700 dark:text-slate-200">
                     {tier.count}{" "}
                     <span className="text-[10px] font-normal text-gray-400">
-                      items
+                      {t("common.items", "items")}
                     </span>
                   </span>
 
@@ -785,14 +841,14 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                   <div className="text-xl font-extrabold text-gray-900 dark:text-white">
                     {tier.count}{" "}
                     <span className="text-xs font-normal text-gray-500 dark:text-slate-400">
-                      Items
+                      {t("analytics.items", "Items")}
                     </span>
                   </div>
 
                   <div className="space-y-1.5 border-t border-gray-200/60 pt-2 text-xs dark:border-slate-700/60">
                     <div className="flex justify-between">
                       <span className="text-gray-500 dark:text-slate-400">
-                        Range:
+                        {t("analytics.range", "Range:")}
                       </span>
                       <span className="font-medium text-gray-800 dark:text-slate-200">
                         {tier.label.split(" ")[1]}
@@ -800,7 +856,7 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500 dark:text-slate-400">
-                        Combined Value:
+                        {t("analytics.combinedValue", "Combined Value:")}
                       </span>
                       <span className="font-bold text-emerald-600 dark:text-emerald-400">
                         ${tier.totalValue.toLocaleString("en-US")}
@@ -808,7 +864,7 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500 dark:text-slate-400">
-                        Avg. Price:
+                        {t("analytics.avgPrice", "Avg. Price:")}
                       </span>
                       <span className="font-semibold text-gray-800 dark:text-slate-200">
                         ${avgPrice.toLocaleString("en-US")}
@@ -816,7 +872,7 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500 dark:text-slate-400">
-                        Inventory Share:
+                        {t("analytics.inventoryShare", "Inventory Share:")}
                       </span>
                       <span className="font-semibold text-indigo-600 dark:text-indigo-400">
                         {tierWorthPct}%

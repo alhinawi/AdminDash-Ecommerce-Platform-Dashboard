@@ -1,7 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Users, Package, BarChart2, Sun, Moon, Settings } from "lucide-react";
 import NotificationDropdown from "./NotificationDropdown";
 import ProfileMenu from "./ProfileMenu";
+import LanguageSwitcher from "./LanguageSwitcher";
 import { useThemeContext } from "../context/ThemeContext";
 
 interface NavbarProps {
@@ -11,6 +13,7 @@ interface NavbarProps {
 }
 
 const Navbar = ({ darkMode, toggleDarkMode }: NavbarProps) => {
+  const { t } = useTranslation();
   const { themePreset } = useThemeContext();
   const location = useLocation();
   const isUsersPage = location.pathname === "/users";
@@ -28,11 +31,13 @@ const Navbar = ({ darkMode, toggleDarkMode }: NavbarProps) => {
             </div>
             <div>
               <span className="text-lg font-bold tracking-tight text-zinc-900 dark:text-white">
-                Admin
-                <span className={`ml-0.5 ${themePreset.text}`}>Dash</span>
+                {t("nav.brandName", "Admin")}
+                <span className={`ms-0.5 ${themePreset.text}`}>
+                  {t("nav.brandHighlight", "Dash")}
+                </span>
               </span>
-              <span className="ml-2 hidden rounded-full border border-zinc-200 bg-zinc-100 px-2 py-0.5 text-[10px] font-semibold text-zinc-600 sm:inline-block dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400">
-                v2.4
+              <span className="ms-2 hidden rounded-full border border-zinc-200 bg-zinc-100 px-2 py-0.5 text-[10px] font-semibold text-zinc-600 sm:inline-block dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400">
+                {t("common.version", "v2.4")}
               </span>
             </div>
           </Link>
@@ -49,7 +54,7 @@ const Navbar = ({ darkMode, toggleDarkMode }: NavbarProps) => {
             }`}
           >
             <BarChart2 className="h-3.5 w-3.5" />
-            Products & Analytics
+            {t("nav.productsAnalytics", "Products & Analytics")}
           </Link>
 
           <Link
@@ -61,9 +66,9 @@ const Navbar = ({ darkMode, toggleDarkMode }: NavbarProps) => {
             }`}
           >
             <Users className="h-3.5 w-3.5" />
-            Users Management
+            {t("nav.usersManagement", "Users Management")}
             <span
-              className={`py-0.2 ml-1 rounded-full ${themePreset.badgeBg} ${themePreset.badgeText} px-1.5 text-[10px] font-bold`}
+              className={`py-0.2 ms-1 rounded-full ${themePreset.badgeBg} ${themePreset.badgeText} px-1.5 text-[10px] font-bold`}
             >
               100
             </span>
@@ -78,12 +83,16 @@ const Navbar = ({ darkMode, toggleDarkMode }: NavbarProps) => {
             }`}
           >
             <Settings className="h-3.5 w-3.5" />
-            Settings
+            {t("nav.settings", "Settings")}
           </Link>
         </nav>
 
-        {/* 3. Actions: [ Notifications ] [ Theme Toggle ] [ + Add Product ] [ Profile ▼ ] */}
-        <div className="flex items-center gap-x-2.5">
+        {/* 3. Actions: [ Language Switcher ] [ Notifications ] [ Theme Toggle ] [ Profile Menu ] */}
+        <div className="flex items-center gap-x-2">
+          {/* Language Switcher */}
+          <LanguageSwitcher />
+
+          {/* Notifications Dropdown */}
           <NotificationDropdown />
 
           {/* Theme Toggle Button */}
@@ -91,8 +100,12 @@ const Navbar = ({ darkMode, toggleDarkMode }: NavbarProps) => {
             type="button"
             onClick={toggleDarkMode}
             className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-700 transition-all duration-200 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-amber-400 dark:hover:bg-zinc-700"
-            aria-label="Toggle Dark Mode"
-            title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            aria-label={t("nav.toggleTheme", "Toggle Dark Mode")}
+            title={
+              darkMode
+                ? t("nav.switchLight", "Switch to Light Mode")
+                : t("nav.switchDark", "Switch to Dark Mode")
+            }
           >
             {darkMode ? (
               <Sun className="h-4 w-4 text-amber-400 transition-transform duration-200 hover:rotate-45" />

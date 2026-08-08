@@ -1,4 +1,8 @@
+import { useTranslation } from "react-i18next";
+
 const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <footer className="mt-20 border-t border-gray-200/80 bg-slate-900 text-slate-400">
       <div className="container mx-auto px-5 py-12">
@@ -6,7 +10,7 @@ const Footer = () => {
           {/* Brand Col */}
           <div className="md:col-span-1">
             <div className="mb-4 flex items-center gap-x-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-white shadow-md">
+              <div className="bg-accent flex h-9 w-9 items-center justify-center rounded-xl text-white shadow-md">
                 <svg
                   className="h-5 w-5"
                   fill="none"
@@ -22,24 +26,29 @@ const Footer = () => {
                 </svg>
               </div>
               <span className="text-lg font-bold tracking-tight text-white">
-                Admin<span className="text-accent">Dash</span>
+                {t("nav.brandName", "Admin")}
+                <span className="text-accent">
+                  {t("nav.brandHighlight", "Dash")}
+                </span>
               </span>
             </div>
             <p className="text-xs leading-relaxed text-slate-400">
-              Manage, organize, and showcase your modern product collections
-              with high-performance dashboard tools.
+              {t(
+                "footer.brandDescription",
+                "Manage, organize, and showcase your modern product collections with high-performance dashboard tools.",
+              )}
             </p>
           </div>
 
           {/* Links Col 1 */}
           <div>
             <h4 className="mb-3 text-xs font-semibold tracking-wider text-slate-200 uppercase">
-              Quick Links
+              {t("footer.quickLinks", "Quick Links")}
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
                 <a href="#" className="transition-colors hover:text-white">
-                  Product Catalog
+                  {t("footer.productCatalog", "Product Catalog")}
                 </a>
               </li>
               <li>
@@ -53,7 +62,7 @@ const Footer = () => {
                   }}
                   className="transition-colors hover:text-white"
                 >
-                  All Products
+                  {t("footer.allProducts", "All Products")}
                 </a>
               </li>
               <li>
@@ -67,7 +76,7 @@ const Footer = () => {
                   }}
                   className="transition-colors hover:text-white"
                 >
-                  Categories
+                  {t("footer.categories", "Categories")}
                 </a>
               </li>
               <li>
@@ -81,7 +90,7 @@ const Footer = () => {
                   }}
                   className="transition-colors hover:text-white"
                 >
-                  Analytics & Reports
+                  {t("footer.analyticsReports", "Analytics & Reports")}
                 </a>
               </li>
             </ul>
@@ -90,27 +99,27 @@ const Footer = () => {
           {/* Links Col 2 */}
           <div>
             <h4 className="mb-3 text-xs font-semibold tracking-wider text-slate-200 uppercase">
-              Categories
+              {t("footer.categories", "Categories")}
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
                 <a href="#" className="transition-colors hover:text-white">
-                  Electronics
+                  {t("footer.electronics", "Electronics")}
                 </a>
               </li>
               <li>
                 <a href="#" className="transition-colors hover:text-white">
-                  Clothes & Fashion
+                  {t("footer.clothesFashion", "Clothes & Fashion")}
                 </a>
               </li>
               <li>
                 <a href="#" className="transition-colors hover:text-white">
-                  Furniture & Decor
+                  {t("footer.furnitureDecor", "Furniture & Decor")}
                 </a>
               </li>
               <li>
                 <a href="#" className="transition-colors hover:text-white">
-                  Automotive & Vehicles
+                  {t("footer.automotive", "Automotive & Vehicles")}
                 </a>
               </li>
             </ul>
@@ -119,27 +128,27 @@ const Footer = () => {
           {/* Links Col 3 */}
           <div>
             <h4 className="mb-3 text-xs font-semibold tracking-wider text-slate-200 uppercase">
-              Support
+              {t("footer.support", "Support")}
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
                 <a href="#" className="transition-colors hover:text-white">
-                  Documentation
+                  {t("footer.documentation", "Documentation")}
                 </a>
               </li>
               <li>
                 <a href="#" className="transition-colors hover:text-white">
-                  API Reference
+                  {t("footer.apiReference", "API Reference")}
                 </a>
               </li>
               <li>
                 <a href="#" className="transition-colors hover:text-white">
-                  Help Center
+                  {t("footer.helpCenter", "Help Center")}
                 </a>
               </li>
               <li>
                 <a href="#" className="transition-colors hover:text-white">
-                  Privacy Policy
+                  {t("footer.privacyPolicy", "Privacy Policy")}
                 </a>
               </li>
             </ul>
@@ -148,16 +157,19 @@ const Footer = () => {
 
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-y-3 border-t border-slate-800 pt-6 text-xs text-slate-500 sm:flex-row">
-          <p>© {new Date().getFullYear()} AdminDash. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} AdminDash.{" "}
+            {t("footer.copyright", "All rights reserved.")}
+          </p>
           <div className="flex gap-x-4">
             <a href="#" className="transition-colors hover:text-slate-400">
-              Terms
+              {t("footer.terms", "Terms")}
             </a>
             <a href="#" className="transition-colors hover:text-slate-400">
-              Privacy
+              {t("footer.privacy", "Privacy")}
             </a>
             <a href="#" className="transition-colors hover:text-slate-400">
-              Cookies
+              {t("footer.cookies", "Cookies")}
             </a>
           </div>
         </div>

@@ -52,7 +52,7 @@ export default function Select<T extends string | number = string>({
         <div className="relative">
           <ListboxButton
             className={cn(
-              "group relative flex w-full cursor-pointer items-center justify-between rounded-xl border border-gray-200/90 bg-white/90 text-left text-gray-900 shadow-2xs backdrop-blur-md transition-all duration-200 focus:outline-hidden hover:border-gray-300 hover:bg-white dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-100 dark:hover:border-slate-700 dark:hover:bg-slate-900 focus-visible:ring-2 focus-visible:ring-indigo-500/20 focus-visible:border-accent",
+              "group focus-visible:border-accent relative flex w-full cursor-pointer items-center justify-between rounded-xl border border-gray-200/90 bg-white/90 text-left text-gray-900 shadow-2xs backdrop-blur-md transition-all duration-200 hover:border-gray-300 hover:bg-white focus:outline-hidden focus-visible:ring-2 focus-visible:ring-indigo-500/20 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-100 dark:hover:border-slate-700 dark:hover:bg-slate-900",
               isSm ? "px-3 py-1.5 text-xs" : "px-3.5 py-2.5 text-xs sm:text-sm",
               disabled && "cursor-not-allowed opacity-50",
             )}
@@ -77,7 +77,7 @@ export default function Select<T extends string | number = string>({
 
             <div className="flex items-center gap-1.5">
               {selectedOption?.badge && (
-                <span className="rounded-full bg-accent-light px-1.5 py-0.5 text-[10px] font-bold text-accent">
+                <span className="bg-accent-light text-accent rounded-full px-1.5 py-0.5 text-[10px] font-bold">
                   {selectedOption.badge}
                 </span>
               )}
@@ -99,7 +99,7 @@ export default function Select<T extends string | number = string>({
               <ListboxOption
                 key={String(option.value)}
                 value={option.value}
-                className="group relative flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-gray-700 transition-colors select-none dark:text-slate-300 data-focus:bg-accent-light data-focus:text-accent data-selected:font-semibold data-selected:text-accent"
+                className="group data-focus:bg-accent-light data-focus:text-accent data-selected:text-accent relative flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-gray-700 transition-colors select-none data-selected:font-semibold dark:text-slate-300"
               >
                 <div className="flex items-center gap-2.5">
                   {option.imageURL && (
@@ -110,7 +110,7 @@ export default function Select<T extends string | number = string>({
                     />
                   )}
                   {option.icon && (
-                    <span className="shrink-0 text-gray-400 group-data-focus:text-accent dark:text-slate-500 dark:group-data-focus:text-accent">
+                    <span className="group-data-focus:text-accent dark:group-data-focus:text-accent shrink-0 text-gray-400 dark:text-slate-500">
                       {option.icon}
                     </span>
                   )}
@@ -121,11 +121,11 @@ export default function Select<T extends string | number = string>({
 
                 <div className="flex items-center gap-2">
                   {option.badge && (
-                    <span className="rounded-full bg-accent-light px-1.5 py-0.5 text-[10px] font-bold text-accent">
+                    <span className="bg-accent-light text-accent rounded-full px-1.5 py-0.5 text-[10px] font-bold">
                       {option.badge}
                     </span>
                   )}
-                  <Check className="h-3.5 w-3.5 opacity-0 group-data-selected:opacity-100 text-accent" />
+                  <Check className="text-accent h-3.5 w-3.5 opacity-0 group-data-selected:opacity-100" />
                 </div>
               </ListboxOption>
             ))}

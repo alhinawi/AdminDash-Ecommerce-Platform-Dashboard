@@ -8,8 +8,7 @@ export interface UserProfile {
   avatarUrl: string;
   bio?: string;
 }
-
-export type   AccentColor =
+export type AccentColor =
   | "#4f46e5" // Indigo
   | "#06b6d4" // Cyan
   | "#10b981" // Emerald
@@ -105,7 +104,7 @@ const DEFAULT_USER: UserProfile = {
   email: "mohamed.alhinawi@company.com",
   role: "Administrator",
   avatarUrl: "https://avatars.githubusercontent.com/u/68702059?v=4",
-  bio: "Managing digital catalog inventory, enterprise supply chains, and quantitative product metrics.",
+  bio: "Senior E-Commerce Operations Lead & Systems Architect. Overseeing global catalog analytics, inventory management, and digital workflow optimizations.",
 };
 
 const DEFAULT_ACCENT: AccentColor = "#4f46e5";
@@ -126,7 +125,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       const saved = localStorage.getItem("app_user_profile");
       if (saved) {
         try {
-          return JSON.parse(saved);
+          const parsed = JSON.parse(saved);
+          if (parsed && (parsed.bio === "ddddddd" || !parsed.bio)) {
+            parsed.bio = DEFAULT_USER.bio;
+          }
+          return parsed;
         } catch {
           // Fallback
         }

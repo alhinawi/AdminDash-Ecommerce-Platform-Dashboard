@@ -1,8 +1,10 @@
 import type { ButtonHTMLAttributes } from "react";
 import { cn } from "../../utils/cn";
 
-interface ToggleProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onChange"> {
+interface ToggleProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "onChange"
+> {
   checked: boolean;
   onChange: (checked: boolean) => void;
   size?: "sm" | "md";
@@ -26,6 +28,7 @@ export default function Toggle({
     <button
       type="button"
       role="switch"
+      dir="ltr"
       aria-checked={checked}
       aria-label={label}
       disabled={disabled}

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { Product } from "../interfaces";
 
 interface KpiStatsProps {
@@ -5,16 +6,18 @@ interface KpiStatsProps {
 }
 
 const KpiStats = ({ products }: KpiStatsProps) => {
+  const { t } = useTranslation();
+
   // Calculate Dynamic KPIs
   const totalProducts = products.length;
 
   const totalCatalogValue = products.reduce(
     (sum, item) => sum + (Number(item.price) || 0),
-    0
+    0,
   );
 
   const uniqueCategoriesCount = new Set(
-    products.map((p) => p.category?.name).filter(Boolean)
+    products.map((p) => p.category?.name).filter(Boolean),
   ).size;
 
   const averagePrice =
@@ -23,9 +26,9 @@ const KpiStats = ({ products }: KpiStatsProps) => {
   const stats = [
     {
       id: "total-products",
-      title: "Total Products",
+      title: t("kpi.totalProducts", "Total Products"),
       value: totalProducts.toLocaleString("en-US"),
-      subtitle: "Active items in catalog",
+      subtitle: t("kpi.totalProductsSub", "Active items in catalog"),
       icon: (
         <svg
           className="h-5 w-5"
@@ -46,9 +49,9 @@ const KpiStats = ({ products }: KpiStatsProps) => {
     },
     {
       id: "catalog-value",
-      title: "Catalog Value",
+      title: t("kpi.catalogValue", "Catalog Value"),
       value: `$${totalCatalogValue.toLocaleString("en-US")}`,
-      subtitle: "Total inventory worth",
+      subtitle: t("kpi.catalogValueSub", "Total inventory worth"),
       icon: (
         <svg
           className="h-5 w-5"
@@ -69,9 +72,9 @@ const KpiStats = ({ products }: KpiStatsProps) => {
     },
     {
       id: "active-categories",
-      title: "Active Categories",
+      title: t("kpi.activeCategories", "Active Categories"),
       value: uniqueCategoriesCount.toString(),
-      subtitle: "Product classifications",
+      subtitle: t("kpi.activeCategoriesSub", "Product classifications"),
       icon: (
         <svg
           className="h-5 w-5"
@@ -92,9 +95,9 @@ const KpiStats = ({ products }: KpiStatsProps) => {
     },
     {
       id: "avg-price",
-      title: "Average Price",
+      title: t("kpi.averagePrice", "Average Price"),
       value: `$${averagePrice.toLocaleString("en-US")}`,
-      subtitle: "Per product item",
+      subtitle: t("kpi.averagePriceSub", "Per product item"),
       icon: (
         <svg
           className="h-5 w-5"
@@ -120,15 +123,15 @@ const KpiStats = ({ products }: KpiStatsProps) => {
       {stats.map((stat) => (
         <div
           key={stat.id}
-          className="group relative overflow-hidden rounded-2xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-gray-200/80 dark:hover:border-slate-700 hover:shadow-md"
+          className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-gray-200/80 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
         >
           {/* Subtle Top Accent Line */}
           <div
-            className={`absolute top-0 left-0 right-0 h-1 bg-linear-to-r ${stat.accentColor} opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
+            className={`absolute top-0 right-0 left-0 h-1 bg-linear-to-r ${stat.accentColor} opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
           />
 
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400">
+            <span className="text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-slate-400">
               {stat.title}
             </span>
             <div

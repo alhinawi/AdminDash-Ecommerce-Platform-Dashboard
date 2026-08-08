@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import Button from "./ui/Button";
@@ -7,60 +8,82 @@ interface Props {
   onAddProduct: () => void;
 }
 
-const HERO_SLIDES = [
-  {
-    id: 1,
-    badge: "🚀 Product Dashboard 2.0",
-    headingTitle: "Build & Manage Your",
-    headingHighlight: "Premium Collection",
-    subtitle:
-      "Seamlessly add, edit, and organize your catalog of luxury accessories, electronics, sneakers, and modern lifestyle items in one place.",
-    ctaPrimaryText: "+ Add New Product",
-    ctaPrimaryAction: "add",
-    ctaSecondaryText: "Explore Catalog ↓",
-    ctaSecondaryHref: "#products-grid",
-    gradient: "from-indigo-900 via-indigo-800 to-slate-900",
-    glowColor1: "bg-indigo-500/20",
-    glowColor2: "bg-purple-500/20",
-  },
-  {
-    id: 2,
-    badge: "📊 Visual Insights",
-    headingTitle: "Track Catalog Worth &",
-    headingHighlight: "Market Share Trends",
-    subtitle:
-      "Real-time SVG market share charts, 12-month revenue curve graphs, and category intelligence metrics at your fingertips.",
-    ctaPrimaryText: "+ Add Product",
-    ctaPrimaryAction: "add",
-    ctaSecondaryText: "View Analytics ↓",
-    ctaSecondaryHref: "#analytics-section",
-    gradient: "from-purple-900 via-slate-900 to-indigo-950",
-    glowColor1: "bg-purple-500/25",
-    glowColor2: "bg-pink-500/20",
-  },
-  {
-    id: 3,
-    badge: "⚡ High-Speed Catalog",
-    headingTitle: "Instant Product Search &",
-    headingHighlight: "Smart Category Filters",
-    subtitle:
-      "Filter luxury goods by category, price range, or custom colors with instant real-time sorting and zero reload latency.",
-    ctaPrimaryText: "+ Add Product",
-    ctaPrimaryAction: "add",
-    ctaSecondaryText: "Categories ↓",
-    ctaSecondaryHref: "#categories-section",
-    gradient: "from-slate-900 via-cyan-950 to-indigo-900",
-    glowColor1: "bg-cyan-500/20",
-    glowColor2: "bg-indigo-500/25",
-  },
-];
-
 const Hero = ({ onAddProduct }: Props) => {
+  const { t, i18n } = useTranslation();
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 25 }, [
-    Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }),
-  ]);
+  const heroSlides = [
+    {
+      id: 1,
+      badge: t("hero.slide1.badge", "🚀 Product Dashboard 2.0"),
+      headingTitle: t("hero.slide1.headingTitle", "Build & Manage Your"),
+      headingHighlight: t("hero.slide1.headingHighlight", "Premium Collection"),
+      subtitle: t(
+        "hero.slide1.subtitle",
+        "Seamlessly add, edit, and organize your catalog of luxury accessories, electronics, sneakers, and modern lifestyle items in one place.",
+      ),
+      ctaPrimaryText: t("hero.slide1.ctaPrimary", "+ Add New Product"),
+      ctaPrimaryAction: "add",
+      ctaSecondaryText: t("hero.slide1.ctaSecondary", "Explore Catalog ↓"),
+      ctaSecondaryHref: "#products-grid",
+      gradient: "from-indigo-900 via-indigo-800 to-slate-900",
+      glowColor1: "bg-indigo-500/20",
+      glowColor2: "bg-purple-500/20",
+    },
+    {
+      id: 2,
+      badge: t("hero.slide2.badge", "📊 Visual Insights"),
+      headingTitle: t("hero.slide2.headingTitle", "Track Catalog Worth &"),
+      headingHighlight: t(
+        "hero.slide2.headingHighlight",
+        "Market Share Trends",
+      ),
+      subtitle: t(
+        "hero.slide2.subtitle",
+        "Real-time SVG market share charts, 12-month revenue curve graphs, and category intelligence metrics at your fingertips.",
+      ),
+      ctaPrimaryText: t("hero.slide2.ctaPrimary", "+ Add Product"),
+      ctaPrimaryAction: "add",
+      ctaSecondaryText: t("hero.slide2.ctaSecondary", "View Analytics ↓"),
+      ctaSecondaryHref: "#analytics-section",
+      gradient: "from-purple-900 via-slate-900 to-indigo-950",
+      glowColor1: "bg-purple-500/25",
+      glowColor2: "bg-pink-500/20",
+    },
+    {
+      id: 3,
+      badge: t("hero.slide3.badge", "⚡ High-Speed Catalog"),
+      headingTitle: t("hero.slide3.headingTitle", "Instant Product Search &"),
+      headingHighlight: t(
+        "hero.slide3.headingHighlight",
+        "Smart Category Filters",
+      ),
+      subtitle: t(
+        "hero.slide3.subtitle",
+        "Filter luxury goods by category, price range, or custom colors with instant real-time sorting and zero reload latency.",
+      ),
+      ctaPrimaryText: t("hero.slide3.ctaPrimary", "+ Add Product"),
+      ctaPrimaryAction: "add",
+      ctaSecondaryText: t("hero.slide3.ctaSecondary", "Categories ↓"),
+      ctaSecondaryHref: "#categories-section",
+      gradient: "from-slate-900 via-cyan-950 to-indigo-900",
+      glowColor1: "bg-cyan-500/20",
+      glowColor2: "bg-indigo-500/25",
+    },
+  ];
+
+  const isRtl = i18n.dir() === "rtl";
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, duration: 25, direction: isRtl ? "rtl" : "ltr" },
+    [
+      Autoplay({
+        delay: 5000,
+        stopOnInteraction: false,
+        stopOnMouseEnter: true,
+      }),
+    ],
+  );
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -94,7 +117,7 @@ const Hero = ({ onAddProduct }: Props) => {
     [emblaApi],
   );
 
-  const activeSlide = HERO_SLIDES[selectedIndex] || HERO_SLIDES[0];
+  const activeSlide = heroSlides[selectedIndex] || heroSlides[0];
 
   return (
     <div
@@ -114,7 +137,7 @@ const Hero = ({ onAddProduct }: Props) => {
         ref={emblaRef}
       >
         <div className="flex w-full">
-          {HERO_SLIDES.map((s) => (
+          {heroSlides.map((s) => (
             <div
               key={s.id}
               className="relative z-10 flex min-h-70 w-full min-w-full shrink-0 flex-col justify-center p-8 pb-16 md:p-12 md:pb-20"
@@ -143,7 +166,7 @@ const Hero = ({ onAddProduct }: Props) => {
                 <div className="flex flex-wrap items-center gap-4">
                   <Button
                     onClick={onAddProduct}
-                    className="w-fit cursor-pointer bg-accent hover:bg-accent-hover px-6 py-3 font-medium text-white shadow-lg transition-all"
+                    className="bg-accent hover:bg-accent-hover w-fit cursor-pointer px-6 py-3 font-medium text-white shadow-lg transition-all"
                   >
                     {s.ctaPrimaryText}
                   </Button>
@@ -174,12 +197,12 @@ const Hero = ({ onAddProduct }: Props) => {
         <button
           type="button"
           onClick={scrollPrev}
-          className="pointer-events-auto absolute bottom-5 left-5 z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/60 backdrop-blur-md transition-all duration-200 hover:scale-105 hover:bg-white/15 hover:text-white active:scale-95 md:left-10"
-          aria-label="Previous Slide"
-          title="Previous Slide"
+          className="pointer-events-auto absolute inset-s-5 bottom-5 z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/60 backdrop-blur-md transition-all duration-200 hover:scale-105 hover:bg-white/15 hover:text-white active:scale-95 md:inset-s-10"
+          aria-label={t("hero.prevSlide", "Previous Slide")}
+          title={t("hero.prevSlide", "Previous Slide")}
         >
           <svg
-            className="h-4 w-4 stroke-current"
+            className="h-4 w-4 stroke-current rtl:rotate-180"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth="2"
@@ -194,7 +217,7 @@ const Hero = ({ onAddProduct }: Props) => {
 
         {/* Minimal Centered Pagination Dots */}
         <div className="pointer-events-auto absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 items-center gap-x-2">
-          {HERO_SLIDES.map((s, idx) => (
+          {heroSlides.map((s, idx) => (
             <button
               key={s.id}
               type="button"
@@ -204,7 +227,10 @@ const Hero = ({ onAddProduct }: Props) => {
                   ? "h-1.5 w-5 bg-white/90 shadow-xs shadow-white/30"
                   : "h-1.5 w-1.5 bg-white/30 hover:bg-white/60"
               }`}
-              aria-label={`Go to slide ${idx + 1}`}
+              aria-label={t("hero.goToSlide", {
+                index: idx + 1,
+                defaultValue: `Go to slide ${idx + 1}`,
+              })}
               title={`Slide ${idx + 1}`}
             />
           ))}
@@ -214,12 +240,12 @@ const Hero = ({ onAddProduct }: Props) => {
         <button
           type="button"
           onClick={scrollNext}
-          className="pointer-events-auto absolute right-5 bottom-5 z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/60 backdrop-blur-md transition-all duration-200 hover:scale-105 hover:bg-white/15 hover:text-white active:scale-95 md:right-10"
-          aria-label="Next Slide"
-          title="Next Slide"
+          className="pointer-events-auto absolute inset-e-5 bottom-5 z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/60 backdrop-blur-md transition-all duration-200 hover:scale-105 hover:bg-white/15 hover:text-white active:scale-95 md:inset-e-10"
+          aria-label={t("hero.nextSlide", "Next Slide")}
+          title={t("hero.nextSlide", "Next Slide")}
         >
           <svg
-            className="h-4 w-4 stroke-current"
+            className="h-4 w-4 stroke-current rtl:rotate-180"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth="2"

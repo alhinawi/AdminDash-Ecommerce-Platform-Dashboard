@@ -45,8 +45,9 @@ const Toast = ({ toasts, onDismiss }: ToastProps) => {
         } else {
           // Update existing details in place and move to front if resetCounter changed
           const existing = updated[existingIdx];
-          const hasNewTrigger = (propToast.resetCounter ?? 0) > (existing.resetCounter ?? 0);
-          
+          const hasNewTrigger =
+            (propToast.resetCounter ?? 0) > (existing.resetCounter ?? 0);
+
           updated.splice(existingIdx, 1);
           updated.unshift({
             ...existing,
@@ -88,7 +89,7 @@ const Toast = ({ toasts, onDismiss }: ToastProps) => {
 
   const handleStartExit = (id: string) => {
     setActiveToasts((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, isExiting: true } : t))
+      prev.map((t) => (t.id === id ? { ...t, isExiting: true } : t)),
     );
   };
 
@@ -100,7 +101,7 @@ const Toast = ({ toasts, onDismiss }: ToastProps) => {
   if (activeToasts.length === 0) return null;
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-y-2.5 max-w-sm w-full px-4 sm:px-0 pointer-events-none">
+    <div className="pointer-events-none fixed right-5 bottom-5 z-50 flex w-full max-w-sm flex-col gap-y-2.5 px-4 sm:px-0">
       {activeToasts.map((toast) => (
         <ToastItem
           key={toast.id}
@@ -147,8 +148,8 @@ const ToastItem = ({
     toast.type === "success"
       ? "bg-slate-900 dark:bg-slate-800 text-white border border-emerald-500/30"
       : toast.type === "error"
-      ? "bg-rose-950 text-white border border-rose-500/40"
-      : "bg-indigo-950 text-white border border-indigo-500/40";
+        ? "bg-rose-950 text-white border border-rose-500/40"
+        : "bg-indigo-950 text-white border border-indigo-500/40";
 
   const icon =
     toast.type === "success" ? "🎉" : toast.type === "error" ? "⚠️" : "ℹ️";
@@ -160,23 +161,23 @@ const ToastItem = ({
       className={`pointer-events-auto flex items-start gap-x-3 rounded-2xl p-4 shadow-xl backdrop-blur-md ${animationClass} ${bgStyles}`}
     >
       <span className="text-base leading-none">{icon}</span>
-      <div className="flex-1 min-w-0">
-        <h5 className="text-xs font-bold leading-tight flex items-center gap-1.5">
+      <div className="min-w-0 flex-1">
+        <h5 className="flex items-center gap-1.5 text-xs leading-tight font-bold">
           {toast.title}
           {toast.count && toast.count > 1 && (
-            <span className="inline-flex items-center justify-center bg-white/20 dark:bg-white/10 px-1.5 py-0.5 rounded-full text-[9px] font-bold">
+            <span className="inline-flex items-center justify-center rounded-full bg-white/20 px-1.5 py-0.5 text-[9px] font-bold dark:bg-white/10">
               x{toast.count}
             </span>
           )}
         </h5>
-        <p className="text-[11px] opacity-90 mt-0.5 leading-relaxed">
+        <p className="mt-0.5 text-[11px] leading-relaxed opacity-90">
           {toast.message}
         </p>
       </div>
       <button
         type="button"
         onClick={() => onStartExit(toast.id)}
-        className="text-xs text-gray-400 hover:text-white transition-colors cursor-pointer"
+        className="cursor-pointer text-xs text-gray-400 transition-colors hover:text-white"
         aria-label="Close Toast"
       >
         ✕

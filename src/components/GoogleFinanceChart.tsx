@@ -1,4 +1,5 @@
 import { useId, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type TimeRange = "1M" | "6M" | "1Y" | "ALL";
 
@@ -8,9 +9,18 @@ interface DataPoint {
   date: string;
 }
 
-const DATA_SETS: Record<TimeRange, { points: DataPoint[]; changeText: string; isPositive: boolean }> = {
+const DATA_SETS: Record<
+  TimeRange,
+  {
+    points: DataPoint[];
+    changeKey: string;
+    defaultChangeText: string;
+    isPositive: boolean;
+  }
+> = {
   "1M": {
-    changeText: "+$8,420 (+7.8%) past month",
+    changeKey: "analytics.pastMonth",
+    defaultChangeText: "+$8,420 (+7.8%) past month",
     isPositive: true,
     points: [
       { label: "Jul 1", value: 98200, date: "July 1, 2026" },
@@ -23,7 +33,8 @@ const DATA_SETS: Record<TimeRange, { points: DataPoint[]; changeText: string; is
     ],
   },
   "6M": {
-    changeText: "+$28,100 (+35.8%) past 6 months",
+    changeKey: "analytics.past6Months",
+    defaultChangeText: "+$28,100 (+35.8%) past 6 months",
     isPositive: true,
     points: [
       { label: "Feb", value: 52400, date: "Feb 2026" },
@@ -35,7 +46,8 @@ const DATA_SETS: Record<TimeRange, { points: DataPoint[]; changeText: string; is
     ],
   },
   "1Y": {
-    changeText: "+$87,500 (+357.1%) past year",
+    changeKey: "analytics.pastYear",
+    defaultChangeText: "+$87,500 (+357.1%) past year",
     isPositive: true,
     points: [
       { label: "Jan", value: 24500, date: "Jan 2026" },
@@ -53,7 +65,8 @@ const DATA_SETS: Record<TimeRange, { points: DataPoint[]; changeText: string; is
     ],
   },
   ALL: {
-    changeText: "+$104,200 (+1,302%) all time",
+    changeKey: "analytics.allTime",
+    defaultChangeText: "+$104,200 (+1,302%) all time",
     isPositive: true,
     points: [
       { label: "2022", value: 8000, date: "2022" },
@@ -66,6 +79,7 @@ const DATA_SETS: Record<TimeRange, { points: DataPoint[]; changeText: string; is
 };
 
 const GoogleFinanceChart = () => {
+  const { t } = useTranslation();
   const [range, setRange] = useState<TimeRange>("1Y");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const filterId = useId();
@@ -89,7 +103,10 @@ const GoogleFinanceChart = () => {
   // Calculate SVG Coordinates
   const coords = points.map((pt, i) => {
     const x = paddingX + (i / (points.length - 1)) * chartWidth;
-    const y = paddingY + chartHeight - ((pt.value - yMin) / (yMax - yMin)) * chartHeight;
+    const y =
+      paddingY +
+      chartHeight -
+      ((pt.value - yMin) / (yMax - yMin)) * chartHeight;
     return { ...pt, x, y };
   });
 
@@ -106,7 +123,8 @@ const GoogleFinanceChart = () => {
 
   const areaPathD = `${linePathD} L ${coords[coords.length - 1].x},${height - paddingY} L ${coords[0].x},${height - paddingY} Z`;
 
-  const activePoint = hoveredIndex !== null ? coords[hoveredIndex] : coords[coords.length - 1];
+  const activePoint =
+    hoveredIndex !== null ? coords[hoveredIndex] : coords[coords.length - 1];
 
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -126,29 +144,46 @@ const GoogleFinanceChart = () => {
     setHoveredIndex(closestIdx);
   };
 
+  const getRangeLabel = (tab: TimeRange) => {
+    switch (tab) {
+      case "1M":
+        return t("timeRange.1m", "1M");
+      case "6M":
+        return t("timeRange.6m", "6M");
+      case "1Y":
+        return t("timeRange.1y", "1Y");
+      case "ALL":
+        return t("timeRange.all", "ALL");
+    }
+  };
+
   return (
-    <div className="rounded-3xl border border-gray-100 dark:border-slate-800/80 bg-white dark:bg-slate-900 p-6 md:p-8 shadow-xs transition-colors duration-300">
+    <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-xs transition-colors duration-300 md:p-8 dark:border-slate-800/80 dark:bg-slate-900">
       {/* Header: Executive Summary & Time Range Selector */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-100 dark:border-slate-800/60">
+      <div className="flex flex-col justify-between gap-4 border-b border-gray-100 pb-6 sm:flex-row sm:items-center dark:border-slate-800/60">
         <div>
           <div className="flex items-center gap-x-2 text-xs font-semibold text-gray-500 dark:text-slate-400">
-            <span>TOTAL REVENUE VALUATION</span>
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span>
+              {t("analytics.totalRevenueValuation", "TOTAL REVENUE VALUATION")}
+            </span>
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
           </div>
 
-          <div className="flex items-baseline gap-x-3 mt-1">
-            <span className="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white font-mono">
+          <div className="mt-1 flex items-baseline gap-x-3">
+            <span className="font-mono text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl dark:text-white">
               ${activePoint.value.toLocaleString("en-US")}
             </span>
-            <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-900">
-              {currentDataset.changeText}
+            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-600 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-400">
+              {t(currentDataset.changeKey, currentDataset.defaultChangeText)}
             </span>
           </div>
-          <p className="text-[11px] text-gray-400 dark:text-slate-500 mt-0.5">{activePoint.date}</p>
+          <p className="mt-0.5 text-[11px] text-gray-400 dark:text-slate-500">
+            {activePoint.date}
+          </p>
         </div>
 
         {/* Time Range Tabs (1M, 6M, 1Y, ALL) */}
-        <div className="flex items-center gap-x-1 rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50/80 dark:bg-slate-800/60 p-1 w-fit">
+        <div className="flex w-fit items-center gap-x-1 rounded-xl border border-gray-200 bg-gray-50/80 p-1 dark:border-slate-800 dark:bg-slate-800/60">
           {(["1M", "6M", "1Y", "ALL"] as TimeRange[]).map((tab) => (
             <button
               key={tab}
@@ -157,13 +192,13 @@ const GoogleFinanceChart = () => {
                 setRange(tab);
                 setHoveredIndex(null);
               }}
-              className={`rounded-lg px-3 py-1 text-xs font-bold transition-all cursor-pointer ${
+              className={`cursor-pointer rounded-lg px-3 py-1 text-xs font-bold transition-all ${
                 range === tab
-                  ? "bg-white dark:bg-slate-700 text-indigo-600 dark:text-white shadow-xs"
-                  : "text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white"
+                  ? "bg-white text-indigo-600 shadow-xs dark:bg-slate-700 dark:text-white"
+                  : "text-gray-500 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white"
               }`}
             >
-              {tab}
+              {getRangeLabel(tab)}
             </button>
           ))}
         </div>
@@ -173,15 +208,29 @@ const GoogleFinanceChart = () => {
       <div className="relative pt-6">
         <svg
           viewBox={`0 0 ${width} ${height}`}
-          className="w-full h-auto overflow-visible cursor-crosshair"
+          className="h-auto w-full cursor-crosshair overflow-visible"
           onMouseMove={handleMouseMove}
           onMouseLeave={() => setHoveredIndex(null)}
         >
           <defs>
             {/* Subtle Gradient Fill */}
-            <linearGradient id={`areaGradient-${filterId}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--primary-accent)" stopOpacity="0.22" />
-              <stop offset="100%" stopColor="var(--primary-accent)" stopOpacity="0.0" />
+            <linearGradient
+              id={`areaGradient-${filterId}`}
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="1"
+            >
+              <stop
+                offset="0%"
+                stopColor="var(--primary-accent)"
+                stopOpacity="0.22"
+              />
+              <stop
+                offset="100%"
+                stopColor="var(--primary-accent)"
+                stopOpacity="0.0"
+              />
             </linearGradient>
           </defs>
 
@@ -249,14 +298,12 @@ const GoogleFinanceChart = () => {
         </svg>
 
         {/* X-Axis Labels */}
-        <div className="flex items-center justify-between pt-3 px-1 text-[11px] font-medium text-gray-400 dark:text-slate-500">
+        <div className="flex items-center justify-between px-1 pt-3 text-[11px] font-medium text-gray-400 dark:text-slate-500">
           {coords.map((pt, idx) => (
             <span
               key={pt.label + idx}
               className={`transition-colors ${
-                hoveredIndex === idx
-                  ? "text-accent font-bold"
-                  : ""
+                hoveredIndex === idx ? "text-accent font-bold" : ""
               }`}
             >
               {pt.label}

@@ -3,7 +3,8 @@ import type { User } from "../types/user";
 export const mockUsers: User[] = [
   {
     id: "usr_001",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
     fullName: "Elena Rostova",
     email: "elena.rostova@linear.app",
     role: "Admin",
@@ -15,7 +16,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_002",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
     fullName: "Marcus Vance",
     email: "marcus.vance@stripe.com",
     role: "Admin",
@@ -27,7 +29,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_003",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
     fullName: "Sophia Chen",
     email: "sophia.chen@vercel.com",
     role: "Editor",
@@ -39,7 +42,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_004",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
     fullName: "Liam O'Connor",
     email: "liam.oconnor@notion.so",
     role: "Moderator",
@@ -51,7 +55,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_005",
-    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
     fullName: "Amara Diallo",
     email: "amara.d@fintech.io",
     role: "User",
@@ -63,7 +68,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_006",
-    avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&auto=format&fit=crop&q=80",
     fullName: "David Miller",
     email: "david.m@acme.corp",
     role: "Admin",
@@ -75,7 +81,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_007",
-    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80",
     fullName: "Chloe Tanaka",
     email: "chloe.tanaka@tokyotech.jp",
     role: "Editor",
@@ -87,7 +94,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_008",
-    avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80",
     fullName: "Alexander Wright",
     email: "a.wright@devops.co",
     role: "User",
@@ -99,7 +107,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_009",
-    avatar: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&auto=format&fit=crop&q=80",
     fullName: "Zoe Martinez",
     email: "zoe.martinez@designs.io",
     role: "Editor",
@@ -111,7 +120,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_010",
-    avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&auto=format&fit=crop&q=80",
     fullName: "Lucas Silva",
     email: "lucas.silva@cloudbr.com",
     role: "User",
@@ -123,7 +133,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_011",
-    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80",
     fullName: "Hannah Abbott",
     email: "hannah.a@cybersec.net",
     role: "Moderator",
@@ -135,7 +146,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_012",
-    avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80",
     fullName: "Tariq Al-Mansoor",
     email: "tariq.mansoor@dubaitch.ae",
     role: "Admin",
@@ -147,7 +159,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_013",
-    avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&auto=format&fit=crop&q=80",
     fullName: "Freja Lindqvist",
     email: "freja.l@nordiclabs.se",
     role: "User",
@@ -159,7 +172,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_014",
-    avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&auto=format&fit=crop&q=80",
     fullName: "Vikram Mehta",
     email: "vikram.m@scale.in",
     role: "Editor",
@@ -171,7 +185,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_015",
-    avatar: "https://images.unsplash.com/photo-1548142813-c348350df52b?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1548142813-c348350df52b?w=150&auto=format&fit=crop&q=80",
     fullName: "Mei-Ling Zhou",
     email: "mei.zhou@ai-research.tw",
     role: "User",
@@ -183,7 +198,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_016",
-    avatar: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&auto=format&fit=crop&q=80",
     fullName: "Benjamin Hayes",
     email: "ben.hayes@saasify.io",
     role: "Moderator",
@@ -195,7 +211,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_017",
-    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
     fullName: "Gabriel Rossi",
     email: "gabriel.rossi@milano.it",
     role: "User",
@@ -207,7 +224,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_018",
-    avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80",
     fullName: "Olivia Schmidt",
     email: "olivia.schmidt@berlingroup.de",
     role: "Admin",
@@ -219,7 +237,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_019",
-    avatar: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&auto=format&fit=crop&q=80",
     fullName: "Noah Williams",
     email: "noah.w@cloudstack.com",
     role: "User",
@@ -231,7 +250,8 @@ export const mockUsers: User[] = [
   },
   {
     id: "usr_020",
-    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
     fullName: "Aria Kim",
     email: "aria.kim@seoultech.kr",
     role: "Editor",
@@ -244,50 +264,162 @@ export const mockUsers: User[] = [
   ...Array.from({ length: 80 }, (_, i) => {
     const idx = i + 21;
     const padId = `usr_${idx < 100 ? `0${idx}` : idx}`;
-    
+
     const firstNames = [
-      "Ethan", "Maya", "Daniel", "Camila", "Mateo", "Charlotte", "Sebastian", "Amelia",
-      "Jack", "Isabella", "Julian", "Harper", "Leo", "Evelyn", "Alexander", "Abigail",
-      "Henry", "Emily", "Jacob", "Ella", "Owen", "Elizabeth", "Wyatt", "Sofia",
-      "Carter", "Avery", "Jayden", "Scarlett", "Luke", "Grace", "Grayson", "Chloe",
-      "Isaac", "Victoria", "Gabriel", "Riley", "Julian", "Aria", "Levi", "Lily"
+      "Ethan",
+      "Maya",
+      "Daniel",
+      "Camila",
+      "Mateo",
+      "Charlotte",
+      "Sebastian",
+      "Amelia",
+      "Jack",
+      "Isabella",
+      "Julian",
+      "Harper",
+      "Leo",
+      "Evelyn",
+      "Alexander",
+      "Abigail",
+      "Henry",
+      "Emily",
+      "Jacob",
+      "Ella",
+      "Owen",
+      "Elizabeth",
+      "Wyatt",
+      "Sofia",
+      "Carter",
+      "Avery",
+      "Jayden",
+      "Scarlett",
+      "Luke",
+      "Grace",
+      "Grayson",
+      "Chloe",
+      "Isaac",
+      "Victoria",
+      "Gabriel",
+      "Riley",
+      "Julian",
+      "Aria",
+      "Levi",
+      "Lily",
     ];
-    
+
     const lastNames = [
-      "Anderson", "Taylor", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson",
-      "Garcia", "Martinez", "Robinson", "Clark", "Rodriguez", "Lewis", "Lee", "Walker",
-      "Hall", "Allen", "Young", "Hernandez", "King", "Wright", "Lopez", "Hill",
-      "Scott", "Green", "Adams", "Baker", "Gonzalez", "Nelson", "Carter", "Mitchell",
-      "Perez", "Roberts", "Turner", "Phillips", "Campbell", "Parker", "Evans", "Edwards"
+      "Anderson",
+      "Taylor",
+      "Thomas",
+      "Jackson",
+      "White",
+      "Harris",
+      "Martin",
+      "Thompson",
+      "Garcia",
+      "Martinez",
+      "Robinson",
+      "Clark",
+      "Rodriguez",
+      "Lewis",
+      "Lee",
+      "Walker",
+      "Hall",
+      "Allen",
+      "Young",
+      "Hernandez",
+      "King",
+      "Wright",
+      "Lopez",
+      "Hill",
+      "Scott",
+      "Green",
+      "Adams",
+      "Baker",
+      "Gonzalez",
+      "Nelson",
+      "Carter",
+      "Mitchell",
+      "Perez",
+      "Roberts",
+      "Turner",
+      "Phillips",
+      "Campbell",
+      "Parker",
+      "Evans",
+      "Edwards",
     ];
 
     const countries = [
-      "United States", "United Kingdom", "Canada", "Germany", "France",
-      "Australia", "Japan", "Netherlands", "Singapore", "Switzerland",
-      "Sweden", "Brazil", "India", "South Korea", "Spain", "Ireland"
+      "United States",
+      "United Kingdom",
+      "Canada",
+      "Germany",
+      "France",
+      "Australia",
+      "Japan",
+      "Netherlands",
+      "Singapore",
+      "Switzerland",
+      "Sweden",
+      "Brazil",
+      "India",
+      "South Korea",
+      "Spain",
+      "Ireland",
     ];
 
-    const roles: Array<"Admin" | "Editor" | "Moderator" | "User"> = ["Admin", "Editor", "Moderator", "User", "User", "User", "Editor"];
-    const plans: Array<"Free" | "Pro" | "Enterprise"> = ["Free", "Pro", "Enterprise", "Pro", "Free", "Enterprise", "Pro"];
+    const roles: Array<"Admin" | "Editor" | "Moderator" | "User"> = [
+      "Admin",
+      "Editor",
+      "Moderator",
+      "User",
+      "User",
+      "User",
+      "Editor",
+    ];
+    const plans: Array<"Free" | "Pro" | "Enterprise"> = [
+      "Free",
+      "Pro",
+      "Enterprise",
+      "Pro",
+      "Free",
+      "Enterprise",
+      "Pro",
+    ];
     const statuses: Array<"Active" | "Inactive" | "Suspended" | "Banned"> = [
-      "Active", "Active", "Active", "Active", "Active", "Inactive", "Suspended", "Active", "Banned"
+      "Active",
+      "Active",
+      "Active",
+      "Active",
+      "Active",
+      "Inactive",
+      "Suspended",
+      "Active",
+      "Banned",
     ];
 
     const fn = firstNames[i % firstNames.length];
     const ln = lastNames[(i * 3) % lastNames.length];
     const fullName = `${fn} ${ln}`;
     const email = `${fn.toLowerCase()}.${ln.toLowerCase()}@${["tech", "dev", "cloud", "agency", "labs", "io"][i % 6]}.com`;
-    
+
     const month = (i % 12) + 1;
     const day = (i % 28) + 1;
     const monthStr = month < 10 ? `0${month}` : `${month}`;
     const dayStr = day < 10 ? `0${day}` : `${day}`;
-    
+
     const year = 2024 + (i % 2);
     const joinedAt = `${year}-${monthStr}-${dayStr}T${(i * 2) % 24}:15:00Z`;
-    
+
     const recentDay = 4 - (i % 5);
-    const recentDayStr = recentDay > 0 ? (recentDay < 10 ? `0${recentDay}` : `${recentDay}`) : "04";
+    const recentDayStr =
+      recentDay > 0
+        ? recentDay < 10
+          ? `0${recentDay}`
+          : `${recentDay}`
+        : "04";
     const lastLogin = `2026-08-${recentDayStr}T${(i * 3) % 24}:${(i * 7) % 60}:00Z`;
 
     const avatarId = 100 + i;

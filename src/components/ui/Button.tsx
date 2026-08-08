@@ -6,10 +6,15 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   width?: "w-full" | "w-fit" | "w-auto";
 }
 
-const Button = ({ children, className = "", width = "w-full", ...rest }: Props) => {
+const Button = ({
+  children,
+  className = "",
+  width = "w-full",
+  ...rest
+}: Props) => {
   return (
     <button
-      className={`${width} p-2.5 rounded-md font-medium cursor-pointer transition-all duration-200 ease-in-out active:scale-[0.98] focus:outline-none ${className}`}
+      className={`${width} cursor-pointer rounded-md p-2.5 font-medium transition-all duration-200 ease-in-out focus:outline-none active:scale-[0.98] ${className}`}
       {...rest}
     >
       {children}

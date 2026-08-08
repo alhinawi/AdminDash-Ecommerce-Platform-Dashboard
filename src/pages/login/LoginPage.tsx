@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Package,
   Mail,
@@ -14,6 +15,7 @@ import {
 } from "lucide-react";
 
 export default function LoginPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,13 +50,16 @@ export default function LoginPage() {
               <Package className="h-5 w-5" />
             </div>
             <span className="text-lg font-bold tracking-tight text-white">
-              Admin<span className="text-indigo-400">Dash</span>
+              {t("nav.brandName", "Admin")}
+              <span className="text-indigo-400">
+                {t("nav.brandHighlight", "Dash")}
+              </span>
             </span>
           </Link>
 
           <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400 backdrop-blur-md">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
-            System Operational
+            {t("login.systemOperational", "System Operational")}
           </span>
         </div>
 
@@ -62,21 +67,22 @@ export default function LoginPage() {
         <div className="relative z-10 my-12 space-y-8 lg:my-0">
           <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3.5 py-1.5 text-xs font-medium text-indigo-300 backdrop-blur-md">
             <ShieldCheck className="h-3.5 w-3.5 text-indigo-400" />
-            Enterprise Access Management
+            {t("login.badge", "Enterprise Access Management")}
           </div>
 
           <div className="space-y-4">
             <h1 className="bg-linear-to-r from-white via-zinc-100 to-zinc-400 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent md:text-5xl lg:text-6xl lg:leading-tight">
-              Manage your business <br />
+              {t("login.heroHeadline", "Manage your business")} <br />
               <span className="bg-linear-to-r from-indigo-300 via-purple-300 to-pink-300 bg-clip-text text-transparent">
-                with confidence
+                {t("login.heroHighlight", "with confidence")}
               </span>
             </h1>
 
             <p className="max-w-lg text-base leading-relaxed text-zinc-400 md:text-lg">
-              Streamline inventory, analyze real-time revenue performance, and
-              manage team permissions with an intuitive, enterprise-grade
-              control panel.
+              {t(
+                "login.heroDesc",
+                "Streamline inventory, analyze real-time revenue performance, and manage team permissions with an intuitive, enterprise-grade control panel.",
+              )}
             </p>
           </div>
 
@@ -86,7 +92,7 @@ export default function LoginPage() {
             <div className="group relative rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4 shadow-2xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-zinc-700/80 hover:bg-zinc-900/80">
               <div className="mb-3 flex items-center justify-between">
                 <span className="text-xs font-medium text-zinc-400">
-                  Products
+                  {t("login.stats.products", "Products")}
                 </span>
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400">
                   <TrendingUp className="h-3.5 w-3.5" />
@@ -96,7 +102,9 @@ export default function LoginPage() {
                 1,248
               </p>
               <div className="mt-1 flex items-center gap-1 text-[11px] font-medium text-emerald-400">
-                <span>+14% this month</span>
+                <span>
+                  {t("login.stats.productsGrowth", "+14% this month")}
+                </span>
               </div>
             </div>
 
@@ -104,7 +112,7 @@ export default function LoginPage() {
             <div className="group relative rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4 shadow-2xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-zinc-700/80 hover:bg-zinc-900/80">
               <div className="mb-3 flex items-center justify-between">
                 <span className="text-xs font-medium text-zinc-400">
-                  Revenue
+                  {t("login.stats.revenue", "Revenue")}
                 </span>
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400">
                   <DollarSign className="h-3.5 w-3.5" />
@@ -114,7 +122,7 @@ export default function LoginPage() {
                 $128.4k
               </p>
               <div className="mt-1 flex items-center gap-1 text-[11px] font-medium text-zinc-400">
-                <span>Real-time sync</span>
+                <span>{t("login.stats.revenueSub", "Real-time sync")}</span>
               </div>
             </div>
 
@@ -122,7 +130,7 @@ export default function LoginPage() {
             <div className="group relative rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4 shadow-2xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-zinc-700/80 hover:bg-zinc-900/80">
               <div className="mb-3 flex items-center justify-between">
                 <span className="text-xs font-medium text-zinc-400">
-                  Categories
+                  {t("login.stats.categories", "Categories")}
                 </span>
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400">
                   <Layers className="h-3.5 w-3.5" />
@@ -130,7 +138,7 @@ export default function LoginPage() {
               </div>
               <p className="text-2xl font-bold tracking-tight text-white">24</p>
               <div className="mt-1 flex items-center gap-1 text-[11px] font-medium text-purple-400">
-                <span>100% active</span>
+                <span>{t("login.stats.categoriesActive", "100% active")}</span>
               </div>
             </div>
           </div>
@@ -138,7 +146,10 @@ export default function LoginPage() {
 
         {/* Footer Note */}
         <div className="relative z-10 pt-4 text-xs text-zinc-500">
-          Trusted by over 10,000+ modern SaaS & eCommerce platforms worldwide.
+          {t(
+            "login.trustedBy",
+            "Trusted by over 10,000+ modern SaaS & eCommerce platforms worldwide.",
+          )}
         </div>
       </div>
 
@@ -148,10 +159,13 @@ export default function LoginPage() {
           {/* Header */}
           <div className="space-y-2 text-left">
             <h2 className="text-3xl font-bold tracking-tight text-white">
-              Welcome back
+              {t("login.formTitle", "Welcome back")}
             </h2>
             <p className="text-sm text-zinc-400">
-              Enter your admin credentials to access your dashboard.
+              {t(
+                "login.formSubtitle",
+                "Enter your admin credentials to access your dashboard.",
+              )}
             </p>
           </div>
 
@@ -163,10 +177,10 @@ export default function LoginPage() {
                 htmlFor="email"
                 className="block text-xs font-semibold tracking-wider text-zinc-300 uppercase"
               >
-                Email Address
+                {t("users.modal.emailAddress", "Email Address")}
               </label>
               <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-zinc-500">
+                <div className="pointer-events-none absolute inset-y-0 inset-s-0 flex items-center ps-3.5 text-zinc-500">
                   <Mail className="h-4 w-4" />
                 </div>
                 <input
@@ -176,7 +190,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@company.com"
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-900/80 py-3 pr-4 pl-10 text-sm text-white placeholder-zinc-500 outline-hidden transition-all focus:border-indigo-500 focus:bg-zinc-900 focus:ring-2 focus:ring-indigo-500/20"
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-900/80 py-3 ps-10 pe-4 text-sm text-white placeholder-zinc-500 outline-hidden transition-all focus:border-indigo-500 focus:bg-zinc-900 focus:ring-2 focus:ring-indigo-500/20"
                 />
               </div>
             </div>
@@ -188,18 +202,18 @@ export default function LoginPage() {
                   htmlFor="password"
                   className="block text-xs font-semibold tracking-wider text-zinc-300 uppercase"
                 >
-                  Password
+                  {t("login.password", "Password")}
                 </label>
                 <a
                   href="#forgot-password"
                   onClick={(e) => e.preventDefault()}
                   className="text-xs font-medium text-indigo-400 transition-colors hover:text-indigo-300"
                 >
-                  Forgot password?
+                  {t("login.forgotPassword", "Forgot password?")}
                 </a>
               </div>
               <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-zinc-500">
+                <div className="pointer-events-none absolute inset-y-0 inset-s-0 flex items-center ps-3.5 text-zinc-500">
                   <Lock className="h-4 w-4" />
                 </div>
                 <input
@@ -209,13 +223,17 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-900/80 py-3 pr-11 pl-10 text-sm text-white placeholder-zinc-500 outline-hidden transition-all focus:border-indigo-500 focus:bg-zinc-900 focus:ring-2 focus:ring-indigo-500/20"
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-900/80 py-3 ps-10 pe-11 text-sm text-white placeholder-zinc-500 outline-hidden transition-all focus:border-indigo-500 focus:bg-zinc-900 focus:ring-2 focus:ring-indigo-500/20"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3.5 text-zinc-400 hover:text-zinc-200"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="absolute inset-y-0 inset-e-0 flex cursor-pointer items-center pe-3.5 text-zinc-400 hover:text-zinc-200"
+                  aria-label={
+                    showPassword
+                      ? t("login.hidePassword", "Hide password")
+                      : t("login.showPassword", "Show password")
+                  }
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -236,7 +254,7 @@ export default function LoginPage() {
                   className="h-4 w-4 cursor-pointer rounded-md border-zinc-700 bg-zinc-900 text-indigo-600 accent-indigo-600 focus:ring-indigo-500/20"
                 />
                 <span className="text-xs font-medium text-zinc-400">
-                  Remember me for 30 days
+                  {t("login.rememberMe", "Remember me for 30 days")}
                 </span>
               </label>
             </div>
@@ -251,8 +269,8 @@ export default function LoginPage() {
                 <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
               ) : (
                 <>
-                  <span>Sign in to Dashboard</span>
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <span>{t("login.signInBtn", "Sign in to Dashboard")}</span>
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
                 </>
               )}
             </button>
@@ -264,7 +282,7 @@ export default function LoginPage() {
               <div className="w-full border-t border-zinc-800/80" />
             </div>
             <div className="relative inline-block bg-zinc-950 px-3 text-xs font-medium tracking-wider text-zinc-500 uppercase">
-              or continue with
+              {t("login.orContinueWith", "or continue with")}
             </div>
           </div>
 
@@ -312,8 +330,10 @@ export default function LoginPage() {
 
           {/* Footer Info */}
           <p className="text-center text-xs text-zinc-500">
-            Protected by reCAPTCHA and subject to Privacy Policy and Terms of
-            Service.
+            {t(
+              "login.protectedBy",
+              "Protected by reCAPTCHA and subject to Privacy Policy and Terms of Service.",
+            )}
           </p>
         </div>
       </div>

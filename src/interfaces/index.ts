@@ -1,9 +1,17 @@
 import type { ProductFormFields } from "../types";
 
+export interface LocalizedText {
+  en: string;
+  ar: string;
+  es: string;
+  de: string;
+  fr: string;
+}
+
 export interface Product {
   id?: string;
-  title: string;
-  description: string;
+  title: string | LocalizedText;
+  description: string | LocalizedText;
   imageURL: string;
   price: string;
   colors: string[];

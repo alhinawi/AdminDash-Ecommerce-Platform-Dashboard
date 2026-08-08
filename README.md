@@ -245,13 +245,13 @@ npm run preview
 
 ## 📸 Screenshots & UI Showcase
 
-| View                             | Screenshot Preview                                                                           |
-| :------------------------------- | :------------------------------------------------------------------------------------------- |
-| **Authentication Page**          | ![Login Page](public/screenshots/login-page.png)                                             |
-| **Dashboard Overview**           | ![Dashboard Overview](public/screenshots/dashboard-overview.png)                             |
-| **Analytics & Valuation Charts** | ![Analytics Charts](public/screenshots/analytics-charts.png)                                 |
-| **Product Catalog Grid**         | ![Products Grid](public/screenshots/products-grid.png)                                       |
-| **Mobile Smart Pagination**      | ![Mobile Pagination](public/screenshots/mobile-pagination.png)                               |
+| View                             | Screenshot Preview                                               |
+| :------------------------------- | :--------------------------------------------------------------- |
+| **Authentication Page**          | ![Login Page](public/screenshots/login-page.png)                 |
+| **Dashboard Overview**           | ![Dashboard Overview](public/screenshots/dashboard-overview.png) |
+| **Analytics & Valuation Charts** | ![Analytics Charts](public/screenshots/analytics-charts.png)     |
+| **Product Catalog Grid**         | ![Products Grid](public/screenshots/products-grid.png)           |
+| **Mobile Smart Pagination**      | ![Mobile Pagination](public/screenshots/mobile-pagination.png)   |
 
 ---
 

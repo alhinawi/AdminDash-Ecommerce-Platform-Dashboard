@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { Globe, Check, ChevronDown } from "lucide-react";
 import { cn } from "../../utils/cn";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
@@ -74,8 +75,11 @@ interface SearchableSelectProps {
 export default function SearchableSelect({
   value,
   onChange,
-  placeholder = "Select a country",
+  placeholder,
 }: SearchableSelectProps) {
+  const { t } = useTranslation();
+  const defaultPlaceholder =
+    placeholder || t("users.modal.selectCountry", "Select a country");
   const [open, setOpen] = React.useState(false);
 
   const selectedCountry = React.useMemo(() => {
@@ -89,9 +93,9 @@ export default function SearchableSelect({
           type="button"
           aria-haspopup="listbox"
           aria-expanded={open}
-          className="relative flex h-10 w-full cursor-pointer items-center justify-between rounded-lg border border-zinc-200 bg-zinc-50 pr-3.5 pl-9 text-left text-sm text-zinc-900 outline-hidden transition-all select-none hover:bg-zinc-100/50 focus:ring-2 focus:ring-zinc-400 dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100 dark:hover:bg-zinc-800 dark:focus:ring-zinc-600"
+          className="relative flex h-10 w-full cursor-pointer items-center justify-between rounded-lg border border-zinc-200 bg-zinc-50 ps-9 pe-3.5 text-left text-sm text-zinc-900 outline-hidden transition-all select-none hover:bg-zinc-100/50 focus:ring-2 focus:ring-zinc-400 dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100 dark:hover:bg-zinc-800 dark:focus:ring-zinc-600"
         >
-          <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-400">
+          <span className="pointer-events-none absolute inset-y-0 inset-s-0 flex items-center ps-3 text-zinc-400">
             <Globe className="h-4 w-4" />
           </span>
           <span className="block truncate">
@@ -102,7 +106,7 @@ export default function SearchableSelect({
               </span>
             ) : (
               <span className="text-zinc-400 dark:text-zinc-500">
-                {placeholder}
+                {defaultPlaceholder}
               </span>
             )}
           </span>
@@ -116,9 +120,16 @@ export default function SearchableSelect({
       </PopoverTrigger>
       <PopoverContent className="w-(--radix-popover-trigger-width) p-0">
         <Command>
-          <CommandInput placeholder="Search countries..." />
+          <CommandInput
+            placeholder={t(
+              "users.modal.searchCountries",
+              "Search countries...",
+            )}
+          />
           <CommandList>
-            <CommandEmpty>No countries found.</CommandEmpty>
+            <CommandEmpty>
+              {t("users.modal.noCountries", "No countries found.")}
+            </CommandEmpty>
             <CommandGroup>
               {COUNTRIES.map((country) => {
                 const isSelected = selectedCountry?.name === country.name;
