@@ -1,5 +1,5 @@
 import type { ChangeEvent, SubmitEvent } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import AnalyticsCharts from "./components/AnalyticsCharts";
@@ -82,7 +82,17 @@ function ProductsView({
   sortBy: string;
   setSortBy: (val: string) => void;
 }) {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("products_dashboard_page");
+      if (saved) {
+        const parsed = parseInt(saved, 10);
+        return parsed > 0 ? parsed : 1;
+      }
+    }
+    return 1;
+  });
+
   const [stockStatus, setStockStatus] = useState("all");
   const [windowWidth, setWindowWidth] = useState(() => {
     if (typeof window !== "undefined") return window.innerWidth;
@@ -116,22 +126,36 @@ function ProductsView({
 
   const isMobile = windowWidth < 640;
 
-  // Reset page during render when filters change to avoid useEffect cascading renders
-  const [prevFilterState, setPrevFilterState] = useState({
+  // Persist current page to localStorage
+  useEffect(() => {
+    localStorage.setItem("products_dashboard_page", String(currentPage));
+  }, [currentPage]);
+
+  // Track previous filters to reset page only on actual changes
+  const prevFiltersRef = useRef({
     searchQuery,
     filterCategory,
     sortBy,
     stockStatus,
   });
-  if (
-    prevFilterState.searchQuery !== searchQuery ||
-    prevFilterState.filterCategory !== filterCategory ||
-    prevFilterState.sortBy !== sortBy ||
-    prevFilterState.stockStatus !== stockStatus
-  ) {
-    setPrevFilterState({ searchQuery, filterCategory, sortBy, stockStatus });
-    setCurrentPage(1);
-  }
+
+  useEffect(() => {
+    const prev = prevFiltersRef.current;
+    if (
+      prev.searchQuery !== searchQuery ||
+      prev.filterCategory !== filterCategory ||
+      prev.sortBy !== sortBy ||
+      prev.stockStatus !== stockStatus
+    ) {
+      setCurrentPage(1);
+      prevFiltersRef.current = {
+        searchQuery,
+        filterCategory,
+        sortBy,
+        stockStatus,
+      };
+    }
+  }, [searchQuery, filterCategory, sortBy, stockStatus]);
 
   const filteredProducts = products
     .filter((p) => {
@@ -168,6 +192,14 @@ function ProductsView({
   const totalItems = filteredProducts.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
   const validPage = Math.max(1, Math.min(currentPage, totalPages));
+
+  // Sync currentPage if it becomes out of bounds
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
 
   const startIndex = (validPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
@@ -271,7 +303,7 @@ function ProductsView({
                           onClick={() => handlePageChange(page)}
                           className={`flex min-h-11 min-w-9 cursor-pointer items-center justify-center rounded-xl text-xs font-bold transition-all sm:min-h-9 sm:min-w-9 ${
                             page === validPage
-                              ? "scale-105 bg-accent text-white shadow-accent-glow"
+                              ? "bg-accent shadow-accent-glow scale-105 text-white"
                               : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
                           }`}
                         >
@@ -387,7 +419,7 @@ function AppContent() {
   ) => {
     setToasts((prev) => {
       const existing = prev.find(
-        (t) => t.title === title && t.message === message
+        (t) => t.title === title && t.message === message,
       );
       if (existing) {
         const filtered = prev.filter((t) => t.id !== existing.id);
@@ -411,7 +443,9 @@ function AppContent() {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
-  {/* ------- HANDLERS -------  */}
+  {
+    /* ------- HANDLERS -------  */
+  }
   const open = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
@@ -481,7 +515,9 @@ function AppContent() {
     );
   };
 
-  {/* ------- Renders -------  */}
+  {
+    /* ------- Renders -------  */
+  }
   const renderFormInputs = formInputsList.map((input) => (
     <div className="flex flex-col" key={input.id}>
       <label

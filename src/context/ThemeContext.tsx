@@ -6,6 +6,7 @@ export interface UserProfile {
   email: string;
   role: string;
   avatarUrl: string;
+  bio?: string;
 }
 
 export type   AccentColor =
@@ -104,6 +105,7 @@ const DEFAULT_USER: UserProfile = {
   email: "mohamed.alhinawi@company.com",
   role: "Administrator",
   avatarUrl: "https://avatars.githubusercontent.com/u/68702059?v=4",
+  bio: "Managing digital catalog inventory, enterprise supply chains, and quantitative product metrics.",
 };
 
 const DEFAULT_ACCENT: AccentColor = "#4f46e5";

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   User,
   Palette,
@@ -36,8 +36,13 @@ export default function SettingsPage({
   toggleDarkMode,
   addToast,
 }: SettingsPageProps) {
-  const { accentColor, setAccentColor, themePreset, userProfile, setUserProfile } =
-    useThemeContext();
+  const {
+    accentColor,
+    setAccentColor,
+    themePreset,
+    userProfile,
+    setUserProfile,
+  } = useThemeContext();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -55,8 +60,19 @@ export default function SettingsPage({
     fullName: userProfile.name,
     email: userProfile.email,
     role: userProfile.role,
-    bio: "Managing digital catalog inventory, enterprise supply chains, and quantitative product metrics.",
+    bio: userProfile.bio || "",
   });
+
+  // Sync form state when userProfile loads or changes
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setProfile({
+      fullName: userProfile.name,
+      email: userProfile.email,
+      role: userProfile.role,
+      bio: userProfile.bio || "",
+    });
+  }, [userProfile.name, userProfile.email, userProfile.role, userProfile.bio]);
 
   const PRESET_AVATARS = [
     "https://avatars.githubusercontent.com/u/68702059?v=4",
@@ -165,6 +181,7 @@ export default function SettingsPage({
       name: profile.fullName,
       email: profile.email,
       role: profile.role,
+      bio: profile.bio,
     }));
     notify(
       "success",
@@ -217,7 +234,9 @@ export default function SettingsPage({
         </div>
 
         <div className="flex items-center gap-2">
-          <span className={`inline-flex items-center gap-1.5 rounded-full border border-gray-200 ${themePreset.badgeBg} ${themePreset.badgeText} px-3 py-1 text-xs font-semibold dark:border-zinc-800`}>
+          <span
+            className={`inline-flex items-center gap-1.5 rounded-full border border-gray-200 ${themePreset.badgeBg} ${themePreset.badgeText} px-3 py-1 text-xs font-semibold dark:border-zinc-800`}
+          >
             <Sparkles className="h-3.5 w-3.5" />
             Enterprise Admin v2.4
           </span>
@@ -273,7 +292,7 @@ export default function SettingsPage({
                     <img
                       src={userProfile.avatarUrl}
                       alt={userProfile.name}
-                      className="h-20 w-20 rounded-full object-cover ring-4 ring-white shadow-md dark:ring-zinc-800"
+                      className="h-20 w-20 rounded-full object-cover shadow-md ring-4 ring-white dark:ring-zinc-800"
                     />
                     <button
                       type="button"
@@ -327,10 +346,10 @@ export default function SettingsPage({
                                 "Preset avatar photo applied.",
                               );
                             }}
-                            className={`h-8 w-8 cursor-pointer rounded-full overflow-hidden transition-all ${
+                            className={`h-8 w-8 cursor-pointer overflow-hidden rounded-full transition-all ${
                               userProfile.avatarUrl === url
-                                ? `ring-2 ${themePreset.border} ring-offset-2 scale-110`
-                                : "opacity-75 hover:opacity-100 hover:scale-105"
+                                ? `ring-2 ${themePreset.border} scale-110 ring-offset-2`
+                                : "opacity-75 hover:scale-105 hover:opacity-100"
                             }`}
                           >
                             <img
@@ -357,7 +376,7 @@ export default function SettingsPage({
                     onChange={(e) =>
                       setProfile({ ...profile, fullName: e.target.value })
                     }
-                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-3.5 py-2.5 text-xs font-medium text-gray-900 focus-accent focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
+                    className="focus-accent w-full rounded-xl border border-gray-200 bg-gray-50/50 px-3.5 py-2.5 text-xs font-medium text-gray-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
                   />
                 </div>
 
@@ -371,7 +390,7 @@ export default function SettingsPage({
                     onChange={(e) =>
                       setProfile({ ...profile, email: e.target.value })
                     }
-                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-3.5 py-2.5 text-xs font-medium text-gray-900 focus-accent focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
+                    className="focus-accent w-full rounded-xl border border-gray-200 bg-gray-50/50 px-3.5 py-2.5 text-xs font-medium text-gray-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
                   />
                 </div>
               </div>
@@ -386,7 +405,7 @@ export default function SettingsPage({
                   onChange={(e) =>
                     setProfile({ ...profile, role: e.target.value })
                   }
-                  className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-3.5 py-2.5 text-xs font-medium text-gray-900 focus-accent focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
+                  className="focus-accent w-full rounded-xl border border-gray-200 bg-gray-50/50 px-3.5 py-2.5 text-xs font-medium text-gray-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
                 />
               </div>
 
@@ -400,14 +419,14 @@ export default function SettingsPage({
                   onChange={(e) =>
                     setProfile({ ...profile, bio: e.target.value })
                   }
-                  className="w-full rounded-xl border border-gray-200 bg-gray-50/50 p-3.5 text-xs font-medium text-gray-900 focus-accent focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
+                  className="focus-accent w-full rounded-xl border border-gray-200 bg-gray-50/50 p-3.5 text-xs font-medium text-gray-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
                 />
               </div>
 
               <div className="flex justify-end pt-2">
                 <Button
                   type="submit"
-                  className="flex items-center gap-2 bg-accent text-xs font-semibold text-white shadow-md shadow-accent-600/20 hover:bg-indigo-700"
+                  className="bg-accent hover:bg-accent-hover shadow-accent-glow flex items-center gap-2 text-xs font-semibold text-white shadow-xs transition-all duration-200"
                 >
                   <Save className="h-4 w-4" />
                   Save Changes
@@ -708,7 +727,7 @@ export default function SettingsPage({
                     onChange={(e) =>
                       setPasswords({ ...passwords, current: e.target.value })
                     }
-                    className="rounded-xl border border-gray-200 bg-gray-50/50 px-3.5 py-2.5 text-xs text-gray-900 focus-accent focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
+                    className="focus-accent rounded-xl border border-gray-200 bg-gray-50/50 px-3.5 py-2.5 text-xs text-gray-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
                   />
                   <input
                     type="password"
@@ -717,7 +736,7 @@ export default function SettingsPage({
                     onChange={(e) =>
                       setPasswords({ ...passwords, newPass: e.target.value })
                     }
-                    className="rounded-xl border border-gray-200 bg-gray-50/50 px-3.5 py-2.5 text-xs text-gray-900 focus-accent focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
+                    className="focus-accent rounded-xl border border-gray-200 bg-gray-50/50 px-3.5 py-2.5 text-xs text-gray-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
                   />
                   <input
                     type="password"
@@ -729,7 +748,7 @@ export default function SettingsPage({
                         confirmPass: e.target.value,
                       })
                     }
-                    className="rounded-xl border border-gray-200 bg-gray-50/50 px-3.5 py-2.5 text-xs text-gray-900 focus-accent focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
+                    className="focus-accent rounded-xl border border-gray-200 bg-gray-50/50 px-3.5 py-2.5 text-xs text-gray-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
                   />
                 </div>
                 <div className="flex justify-end pt-1">
@@ -742,7 +761,7 @@ export default function SettingsPage({
                         "Security credentials updated.",
                       )
                     }
-                    className="bg-accent text-xs font-semibold text-white  hover:bg-accent-hover"
+                    className="bg-accent hover:bg-accent-hover text-xs font-semibold text-white"
                   >
                     Update Password
                   </Button>
@@ -792,7 +811,7 @@ export default function SettingsPage({
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {/* Export Card */}
                 <div className="rounded-xl border border-gray-200/80 bg-gray-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-800/50">
-                  <Download className="h-6 w-6 text-accent" />
+                  <Download className="text-accent h-6 w-6" />
                   <h4 className="mt-2 text-xs font-bold text-gray-900 dark:text-white">
                     Export Dashboard Data
                   </h4>
@@ -802,7 +821,7 @@ export default function SettingsPage({
                   <Button
                     type="button"
                     onClick={handleExportData}
-                    className="mt-4 w-full bg-accent text-xs font-semibold text-white shadow-xs shadow-accent-glow hover:bg-accent-hover"
+                    className="bg-accent shadow-accent-glow hover:bg-accent-hover mt-4 w-full text-xs font-semibold text-white shadow-xs"
                   >
                     Download JSON Export
                   </Button>

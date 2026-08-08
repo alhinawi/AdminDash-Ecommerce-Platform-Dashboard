@@ -22,7 +22,7 @@ const Footer = () => {
                 </svg>
               </div>
               <span className="text-lg font-bold tracking-tight text-white">
-                Product<span className="text-accent">Hub</span>
+                Admin<span className="text-accent">Dash</span>
               </span>
             </div>
             <p className="text-xs leading-relaxed text-slate-400">
@@ -148,7 +148,7 @@ const Footer = () => {
 
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-y-3 border-t border-slate-800 pt-6 text-xs text-slate-500 sm:flex-row">
-          <p>© {new Date().getFullYear()} ProductHub. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} AdminDash. All rights reserved.</p>
           <div className="flex gap-x-4">
             <a href="#" className="transition-colors hover:text-slate-400">
               Terms

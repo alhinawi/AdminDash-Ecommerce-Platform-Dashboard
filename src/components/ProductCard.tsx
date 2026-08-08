@@ -93,7 +93,7 @@ const ProductCard = ({ product }: Props) => {
           </span>
         </div>
 
-        <h3 className="group-hover:text-accent line-clamp-1 text-base font-bold text-gray-900 dark:text-white transition-colors">
+        <h3 className="group-hover:text-accent line-clamp-1 text-base font-bold text-gray-900 transition-colors dark:text-white">
           {title}
         </h3>
         <p className="line-clamp-2 min-h-8 text-xs leading-relaxed wrap-break-word text-gray-600 dark:text-slate-300">

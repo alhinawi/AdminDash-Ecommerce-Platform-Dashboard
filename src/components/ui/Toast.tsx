@@ -19,9 +19,11 @@ interface ToastProps {
 }
 
 const Toast = ({ toasts, onDismiss }: ToastProps) => {
+  const [prevToasts, setPrevToasts] = useState<ToastMessage[]>(toasts);
   const [activeToasts, setActiveToasts] = useState<ActiveToast[]>([]);
 
-  useEffect(() => {
+  if (toasts !== prevToasts) {
+    setPrevToasts(toasts);
     setActiveToasts((prev) => {
       // Start with current local active toasts
       let updated = [...prev];
@@ -82,7 +84,7 @@ const Toast = ({ toasts, onDismiss }: ToastProps) => {
 
       return updated;
     });
-  }, [toasts]);
+  }
 
   const handleStartExit = (id: string) => {
     setActiveToasts((prev) =>

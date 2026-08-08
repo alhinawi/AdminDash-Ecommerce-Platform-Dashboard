@@ -39,7 +39,7 @@ const Navbar = ({ darkMode, toggleDarkMode }: NavbarProps) => {
         </div>
 
         {/* 2. Desktop Navigation */}
-        <nav className="hidden items-center gap-x-1 rounded-xl border border-zinc-200/60 bg-zinc-100/80 p-1 text-xs font-medium md:flex dark:border-zinc-800 dark:bg-zinc-800/60">
+        <nav className="hidden items-center gap-x-1 rounded-xl border border-zinc-200/60 bg-zinc-100/80 p-1 text-xs font-medium lg:flex dark:border-zinc-800 dark:bg-zinc-800/60">
           <Link
             to="/"
             className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 transition-all ${

@@ -245,13 +245,13 @@ npm run preview
 
 ## 📸 Screenshots & UI Showcase
 
-| View                             | Screenshot Preview                                                                                                  |
-| :------------------------------- | :------------------------------------------------------------------------------------------------------------------ |
-| **Authentication Page**          | ![Login Page](https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80)        |
-| **Dashboard Overview**           | ![Dashboard Overview](https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80)   |
-| **Analytics & Valuation Charts** | ![Analytics Charts](https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1000&q=80)  |
-| **Product Catalog Grid**         | ![Products Grid](https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=1000&q=80)     |
-| **Mobile Smart Pagination**      | ![Mobile Pagination](https://images.unsplash.com/photo-1526498460520-4c246339dccb?auto=format&fit=crop&w=1000&q=80) |
+| View                             | Screenshot Preview                                                                           |
+| :------------------------------- | :------------------------------------------------------------------------------------------- |
+| **Authentication Page**          | ![Login Page](public/screenshots/login-page.png)                                             |
+| **Dashboard Overview**           | ![Dashboard Overview](public/screenshots/dashboard-overview.png)                             |
+| **Analytics & Valuation Charts** | ![Analytics Charts](public/screenshots/analytics-charts.png)                                 |
+| **Product Catalog Grid**         | ![Products Grid](public/screenshots/products-grid.png)                                       |
+| **Mobile Smart Pagination**      | ![Mobile Pagination](public/screenshots/mobile-pagination.png)                               |
 
 ---
 
