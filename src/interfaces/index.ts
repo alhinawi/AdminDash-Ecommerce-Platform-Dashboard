@@ -7,6 +7,11 @@ export interface Product {
   imageURL: string;
   price: string;
   colors: string[];
+  stock?: number;
+  sku?: string;
+  rating?: number;
+  reviewCount?: number;
+  createdAt?: string;
   category: {
     name: string;
     imageURL: string;

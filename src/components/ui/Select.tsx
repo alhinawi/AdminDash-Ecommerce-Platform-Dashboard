@@ -1,74 +1,137 @@
-"use client";
+import type { ReactNode } from "react";
 import {
-  Label,
   Listbox,
   ListboxButton,
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import { ChevronUpDownIcon } from "@heroicons/react/16/solid";
-import { CheckIcon } from "@heroicons/react/20/solid";
-import { categories } from "../../data";
-import type { Category } from "../../interfaces";
+import { ChevronDown, Check } from "lucide-react";
+import { cn } from "../../utils/cn";
 
-interface Props {
-  selected: Category;
-  setSelected: (category: Category) => void;
+export interface SelectOption<T = string> {
+  value: T;
+  label: string;
+  imageURL?: string;
+  icon?: ReactNode;
+  badge?: string;
 }
 
-const Select = ({ selected, setSelected }: Props) => {
+interface SelectProps<T = string> {
+  options: SelectOption<T>[];
+  value: T;
+  onChange: (value: T) => void;
+  label?: string;
+  placeholder?: string;
+  className?: string;
+  size?: "sm" | "md";
+  disabled?: boolean;
+}
+
+export default function Select<T extends string | number = string>({
+  options,
+  value,
+  onChange,
+  label,
+  placeholder = "Select an option...",
+  className,
+  size = "md",
+  disabled = false,
+}: SelectProps<T>) {
+  const selectedOption =
+    options.find((opt) => opt.value === value) || options[0];
+  const isSm = size === "sm";
+
   return (
-    <Listbox value={selected} onChange={setSelected}>
-      <Label className="block text-xs font-semibold text-gray-700 dark:text-slate-300 uppercase tracking-wider">
-        Category
-      </Label>
-      <div className="relative mt-1">
-        <ListboxButton className="grid w-full cursor-pointer grid-cols-1 rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50/50 dark:bg-slate-800/50 py-2.5 pr-2 pl-3.5 text-left text-gray-900 dark:text-white shadow-2xs transition-all focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 sm:text-sm">
-          <span className="col-start-1 row-start-1 flex items-center gap-3 pr-6">
-            <img
-              alt={selected.name}
-              src={selected.imageURL}
-              className="size-5 shrink-0 rounded-full object-cover ring-1 ring-gray-200 dark:ring-slate-700"
-            />
-            <span className="block truncate font-medium">{selected.name}</span>
-          </span>
-          <ChevronUpDownIcon
-            aria-hidden="true"
-            className="col-start-1 row-start-1 size-5 self-center justify-self-end text-gray-400 dark:text-slate-500 sm:size-4"
-          />
-        </ListboxButton>
-
-        <ListboxOptions
-          anchor="bottom"
-          transition
-          className="z-50 mt-1 max-h-56 w-(--button-width) overflow-auto rounded-xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-1 text-base shadow-xl outline-none data-leave:transition data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0 sm:text-sm text-gray-900 dark:text-white"
-        >
-          {categories.map((category) => (
-            <ListboxOption
-              key={category.id}
-              value={category}
-              className="group relative cursor-pointer rounded-lg py-2 pr-9 pl-3 text-gray-900 dark:text-slate-200 select-none data-focus:bg-indigo-600 data-focus:text-white"
-            >
-              <div className="flex items-center">
+    <div className={cn("w-full", className)}>
+      {label && (
+        <label className="mb-1.5 block text-xs font-semibold tracking-wider text-gray-700 uppercase dark:text-slate-300">
+          {label}
+        </label>
+      )}
+      <Listbox value={value} onChange={onChange} disabled={disabled}>
+        <div className="relative">
+          <ListboxButton
+            className={cn(
+              "group relative flex w-full cursor-pointer items-center justify-between rounded-xl border border-gray-200/90 bg-white/90 text-left text-gray-900 shadow-2xs backdrop-blur-md transition-all duration-200 focus:outline-hidden hover:border-gray-300 hover:bg-white dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-100 dark:hover:border-slate-700 dark:hover:bg-slate-900 focus-visible:ring-2 focus-visible:ring-indigo-500/20 focus-visible:border-accent",
+              isSm ? "px-3 py-1.5 text-xs" : "px-3.5 py-2.5 text-xs sm:text-sm",
+              disabled && "cursor-not-allowed opacity-50",
+            )}
+          >
+            <div className="flex items-center gap-2.5 overflow-hidden">
+              {selectedOption?.imageURL && (
                 <img
-                  alt={category.name}
-                  src={category.imageURL}
-                  className="size-5 shrink-0 rounded-full object-cover"
+                  src={selectedOption.imageURL}
+                  alt={selectedOption.label}
+                  className="h-4 w-4 shrink-0 rounded-full object-cover ring-1 ring-gray-200 dark:ring-slate-700"
                 />
-                <span className="ml-3 block truncate font-medium group-data-selected:font-semibold">
-                  {category.name}
+              )}
+              {selectedOption?.icon && (
+                <span className="shrink-0 text-gray-500 dark:text-slate-400">
+                  {selectedOption.icon}
                 </span>
-              </div>
-
-              <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-indigo-600 group-not-data-selected:hidden group-data-focus:text-white">
-                <CheckIcon aria-hidden="true" className="size-4" />
+              )}
+              <span className="truncate font-medium">
+                {selectedOption ? selectedOption.label : placeholder}
               </span>
-            </ListboxOption>
-          ))}
-        </ListboxOptions>
-      </div>
-    </Listbox>
-  );
-};
+            </div>
 
-export default Select;
+            <div className="flex items-center gap-1.5">
+              {selectedOption?.badge && (
+                <span className="rounded-full bg-accent-light px-1.5 py-0.5 text-[10px] font-bold text-accent">
+                  {selectedOption.badge}
+                </span>
+              )}
+              <ChevronDown
+                className={cn(
+                  "h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200 group-data-open:rotate-180 dark:text-slate-500",
+                  isSm && "h-3.5 w-3.5",
+                )}
+              />
+            </div>
+          </ListboxButton>
+
+          <ListboxOptions
+            anchor="bottom start"
+            transition
+            className="z-50 mt-1.5 max-h-60 min-w-(--button-width) overflow-auto rounded-xl border border-gray-200/90 bg-white/95 p-1 text-xs shadow-xl outline-hidden backdrop-blur-md transition duration-150 ease-out data-closed:scale-95 data-closed:opacity-0 dark:border-slate-800 dark:bg-slate-900/95 dark:text-slate-100"
+          >
+            {options.map((option) => (
+              <ListboxOption
+                key={String(option.value)}
+                value={option.value}
+                className="group relative flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-gray-700 transition-colors select-none dark:text-slate-300 data-focus:bg-accent-light data-focus:text-accent data-selected:font-semibold data-selected:text-accent"
+              >
+                <div className="flex items-center gap-2.5">
+                  {option.imageURL && (
+                    <img
+                      src={option.imageURL}
+                      alt={option.label}
+                      className="h-4 w-4 shrink-0 rounded-full object-cover"
+                    />
+                  )}
+                  {option.icon && (
+                    <span className="shrink-0 text-gray-400 group-data-focus:text-accent dark:text-slate-500 dark:group-data-focus:text-accent">
+                      {option.icon}
+                    </span>
+                  )}
+                  <span className="block truncate font-medium">
+                    {option.label}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {option.badge && (
+                    <span className="rounded-full bg-accent-light px-1.5 py-0.5 text-[10px] font-bold text-accent">
+                      {option.badge}
+                    </span>
+                  )}
+                  <Check className="h-3.5 w-3.5 opacity-0 group-data-selected:opacity-100 text-accent" />
+                </div>
+              </ListboxOption>
+            ))}
+          </ListboxOptions>
+        </div>
+      </Listbox>
+    </div>
+  );
+}

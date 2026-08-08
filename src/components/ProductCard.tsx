@@ -2,6 +2,8 @@ import Button from "./ui/Button";
 import Image from "./Image";
 import ColorCircle from "./ui/ColorCircle";
 import type { Product } from "../interfaces";
+import { categories } from "../data";
+import { Star } from "lucide-react";
 
 interface Props {
   product?: Product;
@@ -10,55 +12,117 @@ interface Props {
 const ProductCard = ({ product }: Props) => {
   if (!product) return null;
 
-  const { imageURL, title, description, price, colors, category } = product;
+  const {
+    imageURL,
+    title,
+    description,
+    price,
+    colors,
+    category,
+    stock = 15,
+    sku = "SKU-PROD",
+    rating = 4.8,
+    reviewCount = 120,
+  } = product;
+
+  // Resolve category image from the canonical categories array (same source as Add Product modal)
+  const canonicalCategory = categories.find(
+    (c) => c.name.toLowerCase() === category.name.toLowerCase(),
+  );
+  const categoryImageURL = canonicalCategory?.imageURL ?? category.imageURL;
 
   /* ------- RENDER -------  */
-
   const renderProductColors = colors.map((color) => (
     <ColorCircle key={color} color={color} />
   ));
 
+  // Stock status pill
+  const isOutOfStock = stock === 0;
+
+  const stockBadge = isOutOfStock ? (
+    <span className="animate-pulse rounded-md border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 text-[10px] font-bold text-rose-500 shadow-2xs backdrop-blur-md dark:text-rose-400">
+      Out of Stock (0)
+    </span>
+  ) : stock <= 10 ? (
+    <span className="rounded-md border border-amber-500/30 bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-500 shadow-2xs backdrop-blur-md dark:text-amber-400">
+      Low Stock ({stock})
+    </span>
+  ) : (
+    <span className="rounded-md border border-emerald-500/30 bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-500 shadow-2xs backdrop-blur-md dark:text-emerald-400">
+      In Stock ({stock})
+    </span>
+  );
+
   return (
-    <div className="group relative flex w-full max-w-sm flex-col overflow-hidden rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-3.5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gray-300 dark:hover:border-slate-700 hover:shadow-xl sm:mx-0 mx-auto">
+    <div className="group relative mx-auto flex w-full max-w-sm flex-col overflow-hidden rounded-2xl border border-gray-200/90 bg-white p-3.5 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl sm:mx-0 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 dark:hover:shadow-2xl dark:hover:shadow-black/60">
       {/* Product Image Container */}
-      <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-slate-800">
+      <div className="relative aspect-16/16 w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-slate-800">
         <Image
           imageSrc={imageURL}
           altText={title}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          categoryName={category.name}
+          className={`h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 ${
+            isOutOfStock ? "opacity-80 saturate-50" : ""
+          }`}
         />
+
+        {/* Top Badges overlay */}
+        <div className="pointer-events-none absolute top-2 right-2 left-2 flex items-center justify-between">
+          <span className="rounded-md bg-black/60 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-zinc-200 backdrop-blur-md">
+            {sku}
+          </span>
+          {stockBadge}
+        </div>
       </div>
 
       {/* Product Information */}
       <div className="flex flex-1 flex-col gap-y-2 pt-3">
-        <h3 className="line-clamp-1 text-base font-bold text-gray-900 dark:text-white transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+        {/* Rating and Reviews */}
+        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-slate-400">
+          <div className="flex items-center gap-1">
+            <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+            <span className="font-bold text-gray-900 dark:text-white">
+              {rating}
+            </span>
+            <span className="text-[11px] text-gray-400 dark:text-slate-500">
+              ({reviewCount})
+            </span>
+          </div>
+          <span className="text-[11px] font-medium text-gray-400 capitalize dark:text-slate-500">
+            {category.name}
+          </span>
+        </div>
+
+        <h3 className="group-hover:text-accent line-clamp-1 text-base font-bold text-gray-900 dark:text-white transition-colors">
           {title}
         </h3>
-        <p className="line-clamp-2 min-h-8 text-xs leading-relaxed text-gray-600 dark:text-slate-300 wrap-break-word">
+        <p className="line-clamp-2 min-h-8 text-xs leading-relaxed wrap-break-word text-gray-600 dark:text-slate-300">
           {description}
         </p>
 
         {/* Color Circles */}
-        <div className="flex items-center gap-1.5 flex-wrap min-h-5.5 py-1">
+        <div className="flex min-h-5.5 flex-wrap items-center gap-1.5 py-1">
           {colors.length > 0 ? (
             renderProductColors
           ) : (
-            <span className="text-[11px] text-gray-500 dark:text-slate-400 italic">No colors available</span>
+            <span className="text-[11px] text-gray-500 italic dark:text-slate-400">
+              No colors available
+            </span>
           )}
         </div>
 
         {/* Price & Category */}
         <div className="mt-auto flex items-center justify-between gap-x-2 pt-1">
-          <span className="text-xl font-extrabold tracking-tight text-indigo-600 dark:text-indigo-400">
+          <span className="text-accent text-xl font-extrabold tracking-tight">
             ${Number(price).toLocaleString("en-US")}
           </span>
 
-          <div className="flex items-center gap-x-1.5 rounded-full border border-gray-200 dark:border-slate-700 bg-gray-100/80 dark:bg-slate-800 px-2.5 py-1 shadow-2xs">
-            <p className="text-xs font-semibold text-gray-800 dark:text-slate-200 capitalize">
+          <div className="flex items-center gap-x-1.5 rounded-full border border-gray-200 bg-gray-100/80 px-2.5 py-1 shadow-2xs dark:border-slate-700 dark:bg-slate-800">
+            <p className="text-xs font-semibold text-gray-800 capitalize dark:text-slate-200">
               {category.name}
             </p>
             <Image
-              imageSrc={category.imageURL}
+              imageSrc={categoryImageURL}
               altText={category.name}
               className="h-6 w-6 rounded-full object-cover ring-1 ring-gray-300 dark:ring-slate-600"
             />
@@ -69,7 +133,7 @@ const ProductCard = ({ product }: Props) => {
         <div className="flex items-center gap-x-2.5 pt-3">
           <Button
             type="button"
-            className="bg-indigo-600 text-xs font-semibold tracking-wider text-white shadow-xs shadow-indigo-600/20 hover:bg-indigo-700 hover:shadow-md transition-all duration-200"
+            className="bg-accent shadow-accent-glow hover:bg-accent-hover text-xs font-semibold tracking-wider text-white shadow-xs transition-all duration-200 hover:shadow-md"
             onClick={() => {
               /* Edit handler placeholder */
             }}
@@ -78,7 +142,7 @@ const ProductCard = ({ product }: Props) => {
           </Button>
           <Button
             type="button"
-            className="bg-rose-600 text-xs font-semibold tracking-wider text-white shadow-xs shadow-rose-600/20 hover:bg-rose-700 hover:shadow-md transition-all duration-200"
+            className="bg-rose-600 text-xs font-semibold tracking-wider text-white shadow-xs shadow-rose-600/20 transition-all duration-200 hover:bg-rose-700 hover:shadow-md"
             onClick={() => {
               /* Delete handler placeholder */
             }}

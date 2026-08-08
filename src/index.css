@@ -2,6 +2,104 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+:root {
+  --primary-accent: #4f46e5;
+  --primary-accent-hover: #4338ca;
+  --primary-accent-light: rgba(79, 70, 229, 0.15);
+  --primary-accent-glow: rgba(79, 70, 229, 0.25);
+}
+
 html {
   scroll-behavior: smooth;
+}
+
+/* Dynamic Accent Helper Classes */
+.bg-accent {
+  background-color: var(--primary-accent) !important;
+}
+
+.hover\:bg-accent-hover:hover {
+  background-color: var(--primary-accent-hover) !important;
+}
+
+.text-accent {
+  color: var(--primary-accent) !important;
+}
+
+.border-accent {
+  border-color: var(--primary-accent) !important;
+}
+
+.border-accent-light {
+  border-color: var(--primary-accent-light) !important;
+}
+
+.ring-accent {
+  --tw-ring-color: var(--primary-accent) !important;
+}
+
+.bg-accent-light {
+  background-color: var(--primary-accent-light) !important;
+}
+
+.shadow-accent-glow {
+  box-shadow: 0 4px 14px 0 var(--primary-accent-glow) !important;
+}
+
+/* Input focus themed utilities */
+.focus-accent:focus {
+  border-color: var(--primary-accent) !important;
+  box-shadow: 0 0 0 3px var(--primary-accent-light) !important;
+  outline: none !important;
+}
+
+/* Hover accent for text */
+.hover\:text-accent:hover {
+  color: var(--primary-accent) !important;
+}
+
+/* Group hover accent for text */
+.group:hover .group-hover\:text-accent {
+  color: var(--primary-accent) !important;
+}
+
+/* Toast animations */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toast-out {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    max-height: 150px;
+    margin-bottom: 0.625rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(2rem) scale(0.9);
+    max-height: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-width: 0;
+    overflow: hidden;
+  }
+}
+
+.toast-enter {
+  animation: toast-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.toast-exit {
+  animation: toast-out 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

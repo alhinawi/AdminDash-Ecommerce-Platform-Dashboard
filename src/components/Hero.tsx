@@ -143,7 +143,7 @@ const Hero = ({ onAddProduct }: Props) => {
                 <div className="flex flex-wrap items-center gap-4">
                   <Button
                     onClick={onAddProduct}
-                    className="w-fit cursor-pointer bg-indigo-600 px-6 py-3 font-medium text-white shadow-lg shadow-indigo-600/30 transition-all hover:bg-indigo-500"
+                    className="w-fit cursor-pointer bg-accent hover:bg-accent-hover px-6 py-3 font-medium text-white shadow-lg transition-all"
                   >
                     {s.ctaPrimaryText}
                   </Button>

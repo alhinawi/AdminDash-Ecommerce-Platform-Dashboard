@@ -1,13 +1,15 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   ChevronDown,
   Settings,
   LogOut,
   ShieldCheck,
   BarChart2,
-  Users,
+  Users,  
 } from "lucide-react";
+
+import { useThemeContext } from "../context/ThemeContext";
 
 export interface ProfileUser {
   name: string;
@@ -17,23 +19,17 @@ export interface ProfileUser {
   status: "online" | "away" | "offline";
 }
 
-const defaultProfileUser: ProfileUser = {
-  name: "Mohamed Alhinawi",
-  email: "mohamed.alhinawi@company.com",
-  role: "Administrator",
-  avatarUrl: "https://avatars.githubusercontent.com/u/68702059?v=4",
-  status: "online",
-};
-
 interface ProfileMenuProps {
   user?: ProfileUser;
   onItemClick?: (itemKey: string) => void;
 }
 
 export default function ProfileMenu({
-  user = defaultProfileUser,
+  user: userProp,
   onItemClick,
 }: ProfileMenuProps) {
+  const { userProfile, themePreset } = useThemeContext();
+  const user = userProp || { ...userProfile, status: "online" as const };
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -73,10 +69,17 @@ export default function ProfileMenu({
     };
   }, [isOpen, closeMenu]);
 
+  const navigate = useNavigate();
   const isUsersPage = location.pathname === "/users";
-  const isAnalyticsPage = location.pathname === "/" || !isUsersPage;
+  const isSettingsPage = location.pathname === "/settings";
+  const isAnalyticsPage = location.pathname === "/" || (!isUsersPage && !isSettingsPage);
 
   const handleActionClick = (key: string) => {
+    if (key === "logout") {
+      navigate("/login");
+    } else if (key === "settings") {
+      navigate("/settings");
+    }
     if (onItemClick) {
       onItemClick(key);
     }
@@ -116,59 +119,54 @@ export default function ProfileMenu({
         </div>
 
         {/* User Info (Visible on Tablet / Desktop) */}
-        <div className="hidden flex-col text-left sm:flex">
-          <span className="text-xs leading-none font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100 dark:group-hover:text-blue-400">
+        <div className="hidden flex-col text-left md:flex">
+          <span className="truncate text-xs font-semibold text-zinc-900 dark:text-zinc-100">
             {user.name}
           </span>
-          <span className="mt-0.5 text-[11px] leading-tight font-medium text-zinc-500 dark:text-zinc-400">
+          <span className="truncate text-[10px] text-zinc-500 dark:text-zinc-400">
             {user.role}
           </span>
         </div>
 
-        {/* Rotating Chevron */}
+        {/* Dropdown Caret Icon */}
         <ChevronDown
-          className={`h-4 w-4 shrink-0 text-zinc-400 transition-transform duration-200 group-hover:text-zinc-600 dark:group-hover:text-zinc-200 ${
-            isOpen ? "rotate-180" : "rotate-0"
+          className={`h-4 w-4 text-zinc-400 transition-transform duration-200 ${
+            isOpen ? "rotate-180" : ""
           }`}
         />
       </button>
 
-      {/* Dropdown Menu Container */}
+      {/* Profile Dropdown Menu */}
       {isOpen && (
         <div
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="user-menu-button"
-          className="animate-in fade-in slide-in-from-top-2 absolute right-0 z-50 mt-2 w-65 origin-top-right overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/95 p-1.5 shadow-2xl shadow-zinc-900/10 backdrop-blur-md transition-all duration-200 dark:border-zinc-800 dark:bg-zinc-900/95 dark:shadow-black/60"
+          className="absolute right-0 z-50 mt-2 w-72 origin-top-right rounded-2xl border border-zinc-200 bg-white/95 p-1.5 shadow-2xl backdrop-blur-md outline-hidden dark:border-zinc-800 dark:bg-zinc-900/95"
         >
-          {/* Dropdown Header: Email & Role */}
-          <div className="rounded-xl border-b border-zinc-100 bg-zinc-50/50 px-3.5 py-3 dark:border-zinc-800/80 dark:bg-zinc-900/50">
-            <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-900 text-xs font-bold text-white dark:bg-zinc-100 dark:text-zinc-900">
-                {user.name.charAt(0)}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                  {user.name}
-                </p>
-                <p className="truncate font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
-                  {user.email}
-                </p>
-              </div>
+          {/* Header Section */}
+          <div className="flex items-center gap-3 rounded-xl bg-zinc-50 p-3 dark:bg-zinc-800/60">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-zinc-900 text-sm font-bold text-white shadow-inner dark:bg-zinc-100 dark:text-zinc-900">
+              {user.name.charAt(0)}
             </div>
-
-            <div className="mt-2.5 flex items-center justify-between border-t border-zinc-200/50 pt-2 dark:border-zinc-800">
-              <span className="inline-flex items-center gap-1 text-[10px] font-semibold tracking-wider text-emerald-600 uppercase dark:text-emerald-400">
-                <ShieldCheck className="h-3 w-3" /> {user.role}
+            <div className="flex flex-col min-w-0 flex-1">
+              <span className="truncate text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                {user.name}
               </span>
-              <span className="font-mono text-[10px] text-zinc-400">
-                Workspace Owner
+              <span className="truncate text-[11px] text-zinc-500 dark:text-zinc-400">
+                {user.email}
               </span>
+              <div className="mt-1 flex items-center gap-1.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                <span>{user.role}</span>
+              </div>
             </div>
           </div>
 
+          <div className="my-1 border-t border-zinc-100 dark:border-zinc-800/80" />
+
           {/* Navigation Links Group */}
-          <div className="mt-1 space-y-1 p-1" role="none">
+          <div className="space-y-1 p-1" role="none">
             {/* Products & Analytics */}
             <Link
               to="/"
@@ -176,16 +174,14 @@ export default function ProfileMenu({
               onClick={closeMenu}
               className={`flex min-h-11 w-full cursor-pointer items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-medium transition-all duration-150 ${
                 isAnalyticsPage
-                  ? "bg-blue-50/80 font-semibold text-blue-600 dark:bg-blue-500/15 dark:text-blue-400"
+                  ? `${themePreset.badgeBg} font-semibold ${themePreset.text}`
                   : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/80 dark:hover:text-zinc-100"
               }`}
             >
               <div className="flex items-center gap-3">
                 <BarChart2
                   className={`h-4 w-4 ${
-                    isAnalyticsPage
-                      ? "text-blue-600 dark:text-blue-400"
-                      : "text-zinc-400"
+                    isAnalyticsPage ? themePreset.text : "text-zinc-400"
                   }`}
                 />
                 <span>Products & Analytics</span>
@@ -199,22 +195,20 @@ export default function ProfileMenu({
               onClick={closeMenu}
               className={`flex min-h-11 w-full cursor-pointer items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-medium transition-all duration-150 ${
                 isUsersPage
-                  ? "bg-blue-50/80 font-semibold text-blue-600 dark:bg-blue-500/15 dark:text-blue-400"
+                  ? `${themePreset.badgeBg} font-semibold ${themePreset.text}`
                   : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/80 dark:hover:text-zinc-100"
               }`}
             >
               <div className="flex items-center gap-3">
                 <Users
                   className={`h-4 w-4 ${
-                    isUsersPage
-                      ? "text-blue-600 dark:text-blue-400"
-                      : "text-zinc-400"
+                    isUsersPage ? themePreset.text : "text-zinc-400"
                   }`}
                 />
                 <span>Users Management</span>
               </div>
 
-              <span className="rounded-full bg-blue-500/10 px-2 py-0.5 text-[10px] font-bold text-blue-600 dark:text-blue-400">
+              <span className={`rounded-full ${themePreset.badgeBg} px-2 py-0.5 text-[10px] font-bold ${themePreset.badgeText}`}>
                 100
               </span>
             </Link>
@@ -226,17 +220,25 @@ export default function ProfileMenu({
           {/* Additional Options */}
           <div className="space-y-1 p-1" role="none">
             {/* Settings */}
-            <button
-              type="button"
+            <Link
+              to="/settings"
               role="menuitem"
-              onClick={() => handleActionClick("settings")}
-              className="flex min-h-11 w-full cursor-pointer items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-medium text-zinc-700 transition-all duration-150 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/80 dark:hover:text-zinc-100"
+              onClick={closeMenu}
+              className={`flex min-h-11 w-full cursor-pointer items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-medium transition-all duration-150 ${
+                isSettingsPage
+                  ? `${themePreset.badgeBg} font-semibold ${themePreset.text}`
+                  : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800/80 dark:hover:text-zinc-100"
+              }`}
             >
               <div className="flex items-center gap-3">
-                <Settings className="h-4 w-4 text-zinc-400" />
+                <Settings
+                  className={`h-4 w-4 ${
+                    isSettingsPage ? themePreset.text : "text-zinc-400"
+                  }`}
+                />
                 <span>Settings</span>
               </div>
-            </button>
+            </Link>
 
             {/* Logout */}
             <button

@@ -1,6 +1,6 @@
 import type { ChangeEvent, SubmitEvent } from "react";
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import AnalyticsCharts from "./components/AnalyticsCharts";
 import FilterBar from "./components/FilterBar";
@@ -16,10 +16,52 @@ import Input from "./components/ui/Input";
 import Modal from "./components/ui/Modal";
 import Select from "./components/ui/Select";
 import Toast, { type ToastMessage } from "./components/ui/Toast";
+import SettingsPage from "./pages/settings/SettingsPage";
 import UsersPage from "./pages/users/UsersPage";
+import LoginPage from "./pages/login/LoginPage";
 import { categories, colors, formInputsList, productList } from "./data";
 import type { Product } from "./interfaces";
 import { productValidation } from "./schema";
+
+function getPaginationRange(
+  currentPage: number,
+  totalPages: number,
+  isMobile: boolean = false,
+): (number | string)[] {
+  // Desktop mode (>= 640px): Keep existing full pagination (do not collapse)
+  if (!isMobile || totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  // Mobile mode (<640px): Show first page, last page, current page, and 2 pages before & after
+  const delta = 2;
+
+  const left = currentPage - delta;
+  const right = currentPage + delta;
+  const range: number[] = [];
+  const rangeWithDots: (number | string)[] = [];
+  let l: number | null = null;
+
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || (i >= left && i <= right)) {
+      range.push(i);
+    }
+  }
+
+  for (const i of range) {
+    if (l !== null) {
+      if (i - l === 2) {
+        rangeWithDots.push(l + 1);
+      } else if (i - l !== 1) {
+        rangeWithDots.push("...");
+      }
+    }
+    rangeWithDots.push(i);
+    l = i;
+  }
+
+  return rangeWithDots;
+}
 
 function ProductsView({
   open,
@@ -40,6 +82,57 @@ function ProductsView({
   sortBy: string;
   setSortBy: (val: string) => void;
 }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [stockStatus, setStockStatus] = useState("all");
+  const [windowWidth, setWindowWidth] = useState(() => {
+    if (typeof window !== "undefined") return window.innerWidth;
+    return 1024;
+  });
+
+  const [itemsPerPage, setItemsPerPage] = useState(() => {
+    if (typeof window !== "undefined") {
+      if (window.innerWidth >= 1024) return 8;
+      if (window.innerWidth >= 640) return 6;
+      return 4;
+    }
+    return 8;
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setWindowWidth(width);
+      if (width >= 1024) {
+        setItemsPerPage(8);
+      } else if (width >= 640) {
+        setItemsPerPage(6);
+      } else {
+        setItemsPerPage(4);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const isMobile = windowWidth < 640;
+
+  // Reset page during render when filters change to avoid useEffect cascading renders
+  const [prevFilterState, setPrevFilterState] = useState({
+    searchQuery,
+    filterCategory,
+    sortBy,
+    stockStatus,
+  });
+  if (
+    prevFilterState.searchQuery !== searchQuery ||
+    prevFilterState.filterCategory !== filterCategory ||
+    prevFilterState.sortBy !== sortBy ||
+    prevFilterState.stockStatus !== stockStatus
+  ) {
+    setPrevFilterState({ searchQuery, filterCategory, sortBy, stockStatus });
+    setCurrentPage(1);
+  }
+
   const filteredProducts = products
     .filter((p) => {
       const matchesSearch =
@@ -48,19 +141,46 @@ function ProductsView({
       const matchesCategory =
         filterCategory === "all" ||
         p.category.name.toLowerCase() === filterCategory.toLowerCase();
-      return matchesSearch && matchesCategory;
+
+      const itemStock = p.stock ?? 15;
+      const matchesStock =
+        stockStatus === "all" ||
+        (stockStatus === "in-stock" && itemStock > 10) ||
+        (stockStatus === "low-stock" && itemStock > 0 && itemStock <= 10) ||
+        (stockStatus === "out-of-stock" && itemStock === 0);
+
+      return matchesSearch && matchesCategory && matchesStock;
     })
     .sort((a, b) => {
       if (sortBy === "price-asc") return Number(a.price) - Number(b.price);
       if (sortBy === "price-desc") return Number(b.price) - Number(a.price);
+      if (sortBy === "newest") {
+        return (
+          new Date(b.createdAt || "2026-07-01").getTime() -
+          new Date(a.createdAt || "2026-07-01").getTime()
+        );
+      }
+      if (sortBy === "rating") return (b.rating || 0) - (a.rating || 0);
       if (sortBy === "title-asc") return a.title.localeCompare(b.title);
-      if (sortBy === "title-desc") return a.title.localeCompare(b.title);
       return 0;
     });
 
-  const renderProductList = filteredProducts.map((product) => (
-    <ProductCard key={product.id} product={product} />
-  ));
+  const totalItems = filteredProducts.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+  const validPage = Math.max(1, Math.min(currentPage, totalPages));
+
+  const startIndex = (validPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+
+  const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    const grid = document.getElementById("products-grid");
+    if (grid) {
+      grid.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   return (
     <main className="container mx-auto flex-1 p-5 pt-8">
@@ -82,19 +202,99 @@ function ProductsView({
         setSelectedCategory={setFilterCategory}
         sortBy={sortBy}
         setSortBy={setSortBy}
+        stockStatus={stockStatus}
+        setStockStatus={setStockStatus}
         categories={categories}
         totalResults={filteredProducts.length}
         totalProducts={products.length}
       />
 
       {/* Products Grid */}
-      {filteredProducts.length > 0 ? (
-        <div
-          id="products-grid"
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
-        >
-          {renderProductList}
-        </div>
+      {paginatedProducts.length > 0 ? (
+        <>
+          <div
+            id="products-grid"
+            key={`page-${validPage}`}
+            className="animate-in fade-in grid grid-cols-1 gap-6 duration-300 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
+          >
+            {paginatedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+
+          {/* Pagination Control Bar */}
+          {totalPages > 1 && (
+            <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-gray-200 pt-6 sm:flex-row dark:border-zinc-800">
+              <span className="text-xs font-medium text-gray-500 dark:text-zinc-400">
+                Showing{" "}
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  {startIndex + 1}-{endIndex}
+                </span>{" "}
+                of{" "}
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  {totalItems}
+                </span>{" "}
+                products
+              </span>
+
+              <div className="flex max-w-full flex-row flex-nowrap items-center justify-center gap-1 overflow-hidden sm:gap-1.5">
+                {/* Previous Button */}
+                <button
+                  type="button"
+                  disabled={validPage === 1}
+                  onClick={() => handlePageChange(validPage - 1)}
+                  className="flex min-h-11 cursor-pointer items-center gap-1 rounded-xl border border-gray-200 bg-white px-2.5 py-2 text-xs font-semibold text-gray-700 shadow-xs transition-all hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 sm:min-h-9 sm:px-3 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                >
+                  ← Prev
+                </button>
+
+                {/* Page Numbers with Smart Ellipsis */}
+                <div className="flex flex-row flex-nowrap items-center gap-1 sm:gap-1.5">
+                  {getPaginationRange(validPage, totalPages, isMobile).map(
+                    (item, idx) => {
+                      if (typeof item === "string") {
+                        return (
+                          <span
+                            key={`dots-${idx}`}
+                            className="flex min-h-11 min-w-5 items-center justify-center text-xs font-bold text-gray-400 select-none sm:min-h-9 sm:min-w-6 dark:text-zinc-500"
+                          >
+                            ...
+                          </span>
+                        );
+                      }
+
+                      const page = item;
+                      return (
+                        <button
+                          key={page}
+                          type="button"
+                          onClick={() => handlePageChange(page)}
+                          className={`flex min-h-11 min-w-9 cursor-pointer items-center justify-center rounded-xl text-xs font-bold transition-all sm:min-h-9 sm:min-w-9 ${
+                            page === validPage
+                              ? "scale-105 bg-accent text-white shadow-accent-glow"
+                              : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      );
+                    },
+                  )}
+                </div>
+
+                {/* Next Button */}
+                <button
+                  type="button"
+                  disabled={validPage === totalPages}
+                  onClick={() => handlePageChange(validPage + 1)}
+                  className="flex min-h-11 cursor-pointer items-center gap-1 rounded-xl border border-gray-200 bg-white px-2.5 py-2 text-xs font-semibold text-gray-700 shadow-xs transition-all hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 sm:min-h-9 sm:px-3 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                >
+                  Next →
+                </button>
+              </div>
+            </div>
+          )}
+        </>
       ) : (
         <div className="my-6 rounded-2xl border border-dashed border-gray-200 bg-white p-12 text-center dark:border-zinc-800 dark:bg-zinc-900">
           <span className="text-3xl">🔍</span>
@@ -123,6 +323,8 @@ function ProductsView({
 }
 
 function AppContent() {
+  const location = useLocation();
+
   const defaultProduct: Product = {
     title: "",
     description: "",
@@ -183,15 +385,33 @@ function AppContent() {
     title: string,
     message: string,
   ) => {
-    const id = uuid();
-    setToasts((prev) => [...prev, { id, type, title, message }]);
+    setToasts((prev) => {
+      const existing = prev.find(
+        (t) => t.title === title && t.message === message
+      );
+      if (existing) {
+        const filtered = prev.filter((t) => t.id !== existing.id);
+        return [
+          ...filtered,
+          {
+            ...existing,
+            count: (existing.count || 1) + 1,
+            resetCounter: (existing.resetCounter || 0) + 1,
+          },
+        ];
+      }
+      return [
+        ...prev,
+        { id: uuid(), type, title, message, count: 1, resetCounter: 0 },
+      ];
+    });
   };
 
   const dismissToast = (id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
-  /* ------- HANDLERS -------  */
+  {/* ------- HANDLERS -------  */}
   const open = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
@@ -261,6 +481,7 @@ function AppContent() {
     );
   };
 
+  {/* ------- Renders -------  */}
   const renderFormInputs = formInputsList.map((input) => (
     <div className="flex flex-col" key={input.id}>
       <label
@@ -296,6 +517,10 @@ function AppContent() {
     />
   ));
 
+  if (location.pathname === "/login") {
+    return <LoginPage />;
+  }
+
   return (
     <div className="relative flex min-h-screen flex-col bg-zinc-50/50 font-sans text-zinc-900 transition-colors duration-300 dark:bg-zinc-950 dark:text-zinc-100">
       <Navbar
@@ -321,6 +546,16 @@ function AppContent() {
           }
         />
         <Route path="/users" element={<UsersPage />} />
+        <Route
+          path="/settings"
+          element={
+            <SettingsPage
+              darkMode={darkMode}
+              toggleDarkMode={toggleDarkMode}
+              addToast={addToast}
+            />
+          }
+        />
       </Routes>
 
       <Footer />
@@ -333,8 +568,17 @@ function AppContent() {
         <form className="flex flex-col gap-y-3" onSubmit={onSubmitHandler}>
           {renderFormInputs}
           <Select
-            selected={selectedCategory}
-            setSelected={setSelectedCategory}
+            label="Category"
+            options={categories.map((cat) => ({
+              value: cat.name,
+              label: cat.name,
+              imageURL: cat.imageURL,
+            }))}
+            value={selectedCategory.name}
+            onChange={(val) => {
+              const matched = categories.find((c) => c.name === val);
+              if (matched) setSelectedCategory(matched);
+            }}
           />
           <div className="flex flex-wrap items-center justify-center gap-2 py-1">
             {renderProductColors}
@@ -373,7 +617,7 @@ function AppContent() {
             >
               Cancel
             </Button>
-            <Button className="bg-zinc-900 font-semibold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900">
+            <Button className="bg-zinc-900 font-semibold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:text-white">
               Submit
             </Button>
           </div>

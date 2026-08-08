@@ -180,8 +180,8 @@ const GoogleFinanceChart = () => {
           <defs>
             {/* Subtle Gradient Fill */}
             <linearGradient id={`areaGradient-${filterId}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.16" />
-              <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.0" />
+              <stop offset="0%" stopColor="var(--primary-accent)" stopOpacity="0.22" />
+              <stop offset="100%" stopColor="var(--primary-accent)" stopOpacity="0.0" />
             </linearGradient>
           </defs>
 
@@ -210,8 +210,8 @@ const GoogleFinanceChart = () => {
           <path
             d={linePathD}
             fill="none"
-            stroke="#38bdf8"
-            strokeWidth="2.2"
+            stroke="var(--primary-accent)"
+            strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -224,7 +224,7 @@ const GoogleFinanceChart = () => {
                 y1={paddingY}
                 x2={coords[hoveredIndex].x}
                 y2={height - paddingY}
-                stroke="#38bdf8"
+                stroke="var(--primary-accent)"
                 strokeWidth="1"
                 strokeDasharray="3 3"
                 opacity="0.6"
@@ -235,8 +235,8 @@ const GoogleFinanceChart = () => {
                 cx={coords[hoveredIndex].x}
                 cy={coords[hoveredIndex].y}
                 r="5"
-                fill="#38bdf8"
-                className="ring-4 ring-sky-500/20"
+                fill="var(--primary-accent)"
+                className="ring-4 ring-indigo-500/20"
               />
               <circle
                 cx={coords[hoveredIndex].x}
@@ -255,7 +255,7 @@ const GoogleFinanceChart = () => {
               key={pt.label + idx}
               className={`transition-colors ${
                 hoveredIndex === idx
-                  ? "text-sky-500 dark:text-sky-400 font-bold"
+                  ? "text-accent font-bold"
                   : ""
               }`}
             >

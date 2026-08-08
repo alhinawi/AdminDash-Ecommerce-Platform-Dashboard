@@ -6,7 +6,7 @@ const Footer = () => {
           {/* Brand Col */}
           <div className="md:col-span-1">
             <div className="mb-4 flex items-center gap-x-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-tr from-indigo-500 to-purple-500 text-white shadow-md">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-white shadow-md">
                 <svg
                   className="h-5 w-5"
                   fill="none"
@@ -22,7 +22,7 @@ const Footer = () => {
                 </svg>
               </div>
               <span className="text-lg font-bold tracking-tight text-white">
-                Product<span className="text-indigo-400">Hub</span>
+                Product<span className="text-accent">Hub</span>
               </span>
             </div>
             <p className="text-xs leading-relaxed text-slate-400">
@@ -110,7 +110,7 @@ const Footer = () => {
               </li>
               <li>
                 <a href="#" className="transition-colors hover:text-white">
-                  Cars & Vehicles
+                  Automotive & Vehicles
                 </a>
               </li>
             </ul>
