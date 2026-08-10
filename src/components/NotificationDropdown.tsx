@@ -85,7 +85,7 @@ const NotificationDropdown = () => {
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl border border-gray-200 bg-gray-50 text-gray-700 transition-all hover:bg-gray-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+        className="relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-xl border border-gray-200 bg-gray-50 text-gray-700 transition-all hover:bg-gray-100 sm:h-9 sm:w-9 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
         aria-label={t("nav.notifications", "Notifications")}
         title={t("nav.viewNotifications", "View Notifications")}
       >
@@ -119,7 +119,7 @@ const NotificationDropdown = () => {
             onClick={() => setIsOpen(false)}
           />
 
-          <div className="animate-in fade-in slide-in-from-top-2 absolute inset-e-0 z-50 mt-2 w-80 rounded-2xl border border-gray-100 bg-white p-4 shadow-xl sm:w-96 dark:border-slate-800 dark:bg-slate-900">
+          <div className="animate-in fade-in slide-in-from-top-2 fixed inset-x-3 top-14 z-50 rounded-2xl border border-gray-100 bg-white p-4 shadow-xl sm:absolute sm:inset-x-auto sm:inset-e-0 sm:top-auto sm:mt-2 sm:w-96 dark:border-slate-800 dark:bg-slate-900">
             {/* Popover Header */}
             <div className="flex items-center justify-between border-b border-gray-100 pb-3 dark:border-slate-800">
               <div className="flex items-center gap-x-2">

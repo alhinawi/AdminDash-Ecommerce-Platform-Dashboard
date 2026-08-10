@@ -99,14 +99,14 @@ export default function ProfileMenu({
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-label="User profile menu"
-        className="group flex cursor-pointer items-center gap-3 rounded-xl border border-zinc-200/80 bg-white/50 p-1.5 outline-hidden transition-all duration-200 select-none hover:bg-zinc-100/80 focus-visible:ring-2 focus-visible:ring-zinc-400 dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:bg-zinc-800/60 dark:focus-visible:ring-zinc-600"
+        className="group flex cursor-pointer items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white/50 p-1 outline-hidden transition-all duration-200 select-none hover:bg-zinc-100/80 focus-visible:ring-2 focus-visible:ring-zinc-400 sm:gap-3 sm:p-1.5 dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:bg-zinc-800/60 dark:focus-visible:ring-zinc-600"
       >
         {/* Avatar with Status Indicator */}
         <div className="relative shrink-0">
           <img
             src={user.avatarUrl}
             alt={user.name}
-            className="h-9 w-9 rounded-full object-cover ring-1 ring-zinc-200 transition-transform group-hover:scale-105 dark:ring-zinc-800"
+            className="h-7 w-7 rounded-full object-cover ring-1 ring-zinc-200 transition-transform group-hover:scale-105 sm:h-9 sm:w-9 dark:ring-zinc-800"
             onError={(e) => {
               (e.target as HTMLImageElement).src =
                 `https://ui-avatars.com/api/?name=${encodeURIComponent(
@@ -133,7 +133,7 @@ export default function ProfileMenu({
 
         {/* Dropdown Caret Icon */}
         <ChevronDown
-          className={`h-4 w-4 shrink-0 text-zinc-400 transition-transform duration-200 group-hover:text-zinc-600 dark:group-hover:text-zinc-200 ${
+          className={`h-3.5 w-3.5 shrink-0 text-zinc-400 transition-transform duration-200 group-hover:text-zinc-600 sm:h-4 sm:w-4 dark:group-hover:text-zinc-200 ${
             isOpen ? "rotate-180" : ""
           }`}
         />

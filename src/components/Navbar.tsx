@@ -22,10 +22,10 @@ const Navbar = ({ darkMode, toggleDarkMode }: NavbarProps) => {
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200/80 bg-white/90 backdrop-blur-md transition-colors duration-300 dark:border-zinc-800 dark:bg-zinc-900/90">
-      <div className="container mx-auto flex items-center justify-between px-3.5 py-2.5 sm:px-5 sm:py-3">
+      <div className="container mx-auto flex items-center justify-between px-2 py-2.5 sm:px-5 sm:py-3">
         {/* 1. Logo */}
         <div className="flex items-center gap-x-3">
-          <Link to="/" className="group flex items-center gap-x-2.5 sm:gap-x-3">
+          <Link to="/" className="group flex items-center gap-x-2 sm:gap-x-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-linear-to-tr from-zinc-900 to-zinc-700 text-white shadow-md transition-transform group-hover:scale-105 sm:h-9 sm:w-9 dark:from-zinc-100 dark:to-zinc-300 dark:text-zinc-900">
               <Package className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
@@ -88,7 +88,7 @@ const Navbar = ({ darkMode, toggleDarkMode }: NavbarProps) => {
         </nav>
 
         {/* 3. Actions: [ Language Switcher ] [ Notifications ] [ Theme Toggle ] [ Profile Menu ] */}
-        <div className="flex items-center gap-x-1 sm:gap-x-2">
+        <div className="flex items-center gap-x-0.5 sm:gap-x-2">
           {/* Language Switcher */}
           <LanguageSwitcher />
 
@@ -99,7 +99,7 @@ const Navbar = ({ darkMode, toggleDarkMode }: NavbarProps) => {
           <button
             type="button"
             onClick={toggleDarkMode}
-            className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-700 transition-all duration-200 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-amber-400 dark:hover:bg-zinc-700"
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-700 transition-all duration-200 hover:bg-zinc-100 sm:h-9 sm:w-9 dark:border-zinc-700 dark:bg-zinc-800 dark:text-amber-400 dark:hover:bg-zinc-700"
             aria-label={t("nav.toggleTheme", "Toggle Dark Mode")}
             title={
               darkMode
