@@ -1,8 +1,9 @@
-import type { Product } from "../interfaces";
-
-export type ProductFormFields = Pick<
-  Product,
-  "title" | "description" | "imageURL" | "price" | "colors"
->;
+export interface ProductFormFields {
+  title: string;
+  description: string;
+  imageURL: string;
+  price: string;
+  colors: string[];
+}
 
 export type ProductFormErrors = Record<keyof ProductFormFields, string>;

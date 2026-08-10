@@ -115,8 +115,8 @@
     "realTimeCatalog": "Echtzeit-Katalogbewertung",
     "valuationTrend": "12-Monats-Bewertungstrend",
     "marketShare": "Marktanteil",
-    "categoryBreakdown": "Kategorie-Inventaraufteilung",
-    "livePolling": "Live-Synchronisation",
+    "categoryBreakdown": "Kategorie-Inventaraufschlüsselung",
+    "livePolling": "Demo-Modus",
     "activeCategories": "Aktive Kategorien",
     "totalPortfolio": "Gesamtportfolio",
     "topShare": "Höchster Anteil",
@@ -339,13 +339,15 @@
       "layoutDensity": "Layout-Abstandsdichte"
     },
     "dashboard": {
-      "title": "Dashboard-Präferenzen",
-      "subtitle": "Standardansichten, Artikelanzahl pro Seite und Demo-Modus konfigurieren.",
-      "demoModeEngine": "Globaler Demo-Modus",
-      "demoModeHint": "250 Enterprise-Katalogartikel in Diagrammen simulieren.",
-      "defaultDemoMode": "Standardstatus des Demo-Modus",
-      "defaultAnalyticsTab": "Standard-Analysetab",
-      "defaultItemsPerPage": "Standard-Artikelanzahl pro Seite (Desktop)"
+      "title": "Dashboard-Einstellungen",
+      "subtitle": "Konfigurieren Sie Standardansichten, Elemente pro Seite und Demo-Modus.",
+      "demoModeEngine": "Globaler Demo-Modus Engine",
+      "demoModeHint": "Simulieren Sie 250 Katalogartikel in den Diagrammen.",
+      "defaultDemoMode": "Standard-Status des Demo-Modus",
+      "defaultAnalyticsTab": "Standard-Analytik-Tab",
+      "defaultItemsPerPage": "Standard-Elemente pro Seite auf Desktop",
+      "itemsCount": "{{count}} Artikel",
+      "itemsCountStandard": "{{count}} Artikel (Standard)"
     },
     "notifications": {
       "title": "Benachrichtigungen & Warnungen",

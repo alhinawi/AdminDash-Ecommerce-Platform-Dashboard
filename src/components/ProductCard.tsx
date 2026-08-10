@@ -5,15 +5,19 @@ import ColorCircle from "./ui/ColorCircle";
 import type { Product } from "../interfaces";
 import { categories } from "../data";
 import { Star } from "lucide-react";
+import { getLocalizedText } from "../utils/productUtils";
 
 interface Props {
   product?: Product;
   setProductToEdit: (product: Product) => void;
+  onDelete?: (productId: string) => void;
 }
 
-const ProductCard = ({ product, setProductToEdit }: Props) => {
-  const { t } = useTranslation();
+const ProductCard = ({ product, setProductToEdit, onDelete }: Props) => {
+  const { t, i18n } = useTranslation();
   if (!product) return null;
+
+  const currentLang = i18n.language || "en";
 
   const {
     imageURL,
@@ -27,6 +31,9 @@ const ProductCard = ({ product, setProductToEdit }: Props) => {
     rating = 4.8,
     reviewCount = 120,
   } = product;
+
+  const displayTitle = getLocalizedText(title, currentLang);
+  const displayDescription = getLocalizedText(description, currentLang);
 
   // Resolve category image from the canonical categories array (same source as Add Product modal)
   const canonicalCategory = categories.find(
@@ -72,10 +79,10 @@ const ProductCard = ({ product, setProductToEdit }: Props) => {
   return (
     <div className="group relative mx-auto flex w-full max-w-sm flex-col overflow-hidden rounded-2xl border border-gray-200/90 bg-white p-3.5 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl sm:mx-0 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 dark:hover:shadow-2xl dark:hover:shadow-black/60">
       {/* Product Image Container */}
-      <div className="relative aspect-16/16 w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-slate-800">
+      <div className="relative aspect-16/19 w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-slate-800">
         <Image
           imageSrc={imageURL}
-          altText={title}
+          altText={displayTitle}
           categoryName={category.name}
           className={`h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 ${
             isOutOfStock ? "opacity-80 saturate-50" : ""
@@ -110,10 +117,10 @@ const ProductCard = ({ product, setProductToEdit }: Props) => {
         </div>
 
         <h3 className="group-hover:text-accent line-clamp-1 text-base font-bold text-gray-900 transition-colors dark:text-white">
-          {title}
+          {displayTitle}
         </h3>
         <p className="line-clamp-2 min-h-8 text-xs leading-relaxed wrap-break-word text-gray-600 dark:text-slate-300">
-          {description}
+          {displayDescription}
         </p>
 
         {/* Color Circles */}
@@ -158,7 +165,9 @@ const ProductCard = ({ product, setProductToEdit }: Props) => {
             type="button"
             className="bg-rose-600 text-xs font-semibold tracking-wider text-white shadow-xs shadow-rose-600/20 transition-all duration-200 hover:bg-rose-700 hover:shadow-md"
             onClick={() => {
-              /* Delete handler placeholder */
+              if (product?.id && onDelete) {
+                onDelete(product.id);
+              }
             }}
           >
             {t("products.delete", "DELETE")}

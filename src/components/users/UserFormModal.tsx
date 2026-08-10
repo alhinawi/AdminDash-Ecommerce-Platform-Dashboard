@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { X, User as UserIcon, Mail } from "lucide-react";
 import type { User } from "../../types/user";
+import Select from "../ui/Select";
 import SearchableSelect from "../ui/SearchableSelect";
 
 interface UserFormModalProps {
@@ -205,65 +206,63 @@ export default function UserFormModal({
           {/* Select Controls Row: Role, Plan, Status */}
           <div className="grid grid-cols-3 gap-3 pt-1">
             {/* Role */}
-            <div>
-              <label className="mb-1.5 block text-xs font-medium text-zinc-700 dark:text-zinc-300">
-                {t("users.table.roleCol", "Role")}
-              </label>
-              <select
-                name="role"
-                value={formData.role || "User"}
-                onChange={handleChange}
-                className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-900 focus:ring-2 focus:ring-zinc-400 focus:outline-hidden dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100 dark:focus:ring-zinc-600"
-              >
-                <option value="Admin">{t("common.admin", "Admin")}</option>
-                <option value="Editor">{t("common.editor", "Editor")}</option>
-                <option value="Moderator">
-                  {t("common.moderator", "Moderator")}
-                </option>
-                <option value="User">{t("common.user", "User")}</option>
-              </select>
-            </div>
+            <Select
+              size="sm"
+              label={t("users.table.roleCol", "Role")}
+              value={formData.role || "User"}
+              onChange={(val) =>
+                setFormData((prev) => ({ ...prev, role: val as User["role"] }))
+              }
+              options={[
+                { value: "Admin", label: t("common.admin", "Admin") },
+                { value: "Editor", label: t("common.editor", "Editor") },
+                {
+                  value: "Moderator",
+                  label: t("common.moderator", "Moderator"),
+                },
+                { value: "User", label: t("common.user", "User") },
+              ]}
+            />
 
             {/* Plan */}
-            <div>
-              <label className="mb-1.5 block text-xs font-medium text-zinc-700 dark:text-zinc-300">
-                {t("users.modal.subscription", "Subscription")}
-              </label>
-              <select
-                name="plan"
-                value={formData.plan || "Free"}
-                onChange={handleChange}
-                className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-900 focus:ring-2 focus:ring-zinc-400 focus:outline-hidden dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100 dark:focus:ring-zinc-600"
-              >
-                <option value="Free">{t("common.free", "Free")}</option>
-                <option value="Pro">{t("common.pro", "Pro")}</option>
-                <option value="Enterprise">
-                  {t("common.enterprise", "Enterprise")}
-                </option>
-              </select>
-            </div>
+            <Select
+              size="sm"
+              label={t("users.modal.subscription", "Subscription")}
+              value={formData.plan || "Free"}
+              onChange={(val) =>
+                setFormData((prev) => ({ ...prev, plan: val as User["plan"] }))
+              }
+              options={[
+                { value: "Free", label: t("common.free", "Free") },
+                { value: "Pro", label: t("common.pro", "Pro") },
+                {
+                  value: "Enterprise",
+                  label: t("common.enterprise", "Enterprise"),
+                },
+              ]}
+            />
 
             {/* Status */}
-            <div>
-              <label className="mb-1.5 block text-xs font-medium text-zinc-700 dark:text-zinc-300">
-                {t("users.modal.accountStatus", "Account Status")}
-              </label>
-              <select
-                name="status"
-                value={formData.status || "Active"}
-                onChange={handleChange}
-                className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-900 focus:ring-2 focus:ring-zinc-400 focus:outline-hidden dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100 dark:focus:ring-zinc-600"
-              >
-                <option value="Active">{t("common.active", "Active")}</option>
-                <option value="Inactive">
-                  {t("common.inactive", "Inactive")}
-                </option>
-                <option value="Suspended">
-                  {t("common.suspended", "Suspended")}
-                </option>
-                <option value="Banned">{t("common.banned", "Banned")}</option>
-              </select>
-            </div>
+            <Select
+              size="sm"
+              label={t("users.modal.accountStatus", "Account Status")}
+              value={formData.status || "Active"}
+              onChange={(val) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  status: val as User["status"],
+                }))
+              }
+              options={[
+                { value: "Active", label: t("common.active", "Active") },
+                { value: "Inactive", label: t("common.inactive", "Inactive") },
+                {
+                  value: "Suspended",
+                  label: t("common.suspended", "Suspended"),
+                },
+                { value: "Banned", label: t("common.banned", "Banned") },
+              ]}
+            />
           </div>
 
           {/* Form Actions */}

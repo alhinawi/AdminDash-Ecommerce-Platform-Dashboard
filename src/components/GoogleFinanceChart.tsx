@@ -169,11 +169,11 @@ const GoogleFinanceChart = () => {
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
           </div>
 
-          <div className="mt-1 flex items-baseline gap-x-3">
-            <span className="font-mono text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl dark:text-white">
+          <div className="mt-1 flex flex-wrap items-baseline gap-2 sm:gap-x-3">
+            <span className="font-mono text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl md:text-4xl dark:text-white">
               ${activePoint.value.toLocaleString("en-US")}
             </span>
-            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-600 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-400">
+            <span className="inline-block max-w-full rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs leading-relaxed font-semibold text-emerald-600 sm:rounded-full sm:px-3 sm:py-1 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-400">
               {t(currentDataset.changeKey, currentDataset.defaultChangeText)}
             </span>
           </div>

@@ -80,14 +80,14 @@ export const ACCENT_PRESETS: Record<AccentColor, ThemePreset> = {
     badgeText: "text-purple-600 dark:text-purple-400",
   },
   "#ea580c": {
-    name: "amber",
+    name: "orange",
     hex: "#ea580c",
-    bg: "bg-amber-600",
-    bgHover: "hover:bg-amber-700",
-    text: "text-amber-600 dark:text-amber-400",
-    border: "border-amber-600 dark:border-amber-400",
-    badgeBg: "bg-amber-500/10 dark:bg-amber-400/10",
-    badgeText: "text-amber-600 dark:text-amber-400",
+    bg: "bg-orange-600",
+    bgHover: "hover:bg-orange-700",
+    text: "text-orange-600 dark:text-orange-400",
+    border: "border-orange-600 dark:border-orange-400",
+    badgeBg: "bg-orange-500/10 dark:bg-orange-400/10",
+    badgeText: "text-orange-600 dark:text-orange-400",
   },
 };
 
@@ -145,15 +145,41 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (typeof window !== "undefined") {
       localStorage.setItem("app_accent_color", accentColor);
 
-      const themeHexMap: Record<AccentColor, { hover: string; light: string }> =
-        {
-          "#4f46e5": { hover: "#4338ca", light: "rgba(79, 70, 229, 0.15)" },
-          "#06b6d4": { hover: "#0891b2", light: "rgba(6, 182, 212, 0.15)" },
-          "#10b981": { hover: "#059669", light: "rgba(16, 185, 129, 0.15)" },
-          "#f43f5e": { hover: "#e11d48", light: "rgba(244, 63, 94, 0.15)" },
-          "#8b5cf6": { hover: "#7c3aed", light: "rgba(139, 92, 246, 0.15)" },
-          "#ea580c": { hover: "#c2410c", light: "rgba(234, 88, 12, 0.15)" },
-        };
+      const themeHexMap: Record<
+        AccentColor,
+        { hover: string; light: string; glow: string }
+      > = {
+        "#4f46e5": {
+          hover: "#4338ca",
+          light: "rgba(79, 70, 229, 0.15)",
+          glow: "rgba(79, 70, 229, 0.35)",
+        },
+        "#06b6d4": {
+          hover: "#0891b2",
+          light: "rgba(6, 182, 212, 0.15)",
+          glow: "rgba(6, 182, 212, 0.35)",
+        },
+        "#10b981": {
+          hover: "#059669",
+          light: "rgba(16, 185, 129, 0.15)",
+          glow: "rgba(16, 185, 129, 0.35)",
+        },
+        "#f43f5e": {
+          hover: "#e11d48",
+          light: "rgba(244, 63, 94, 0.15)",
+          glow: "rgba(244, 63, 94, 0.35)",
+        },
+        "#8b5cf6": {
+          hover: "#7c3aed",
+          light: "rgba(139, 92, 246, 0.15)",
+          glow: "rgba(139, 92, 246, 0.35)",
+        },
+        "#ea580c": {
+          hover: "#c2410c",
+          light: "rgba(234, 88, 12, 0.15)",
+          glow: "rgba(234, 88, 12, 0.35)",
+        },
+      };
 
       const meta = themeHexMap[accentColor] || themeHexMap[DEFAULT_ACCENT];
       document.documentElement.style.setProperty(
@@ -167,6 +193,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       document.documentElement.style.setProperty(
         "--primary-accent-light",
         meta.light,
+      );
+      document.documentElement.style.setProperty(
+        "--primary-accent-glow",
+        meta.glow,
       );
     }
   }, [accentColor]);

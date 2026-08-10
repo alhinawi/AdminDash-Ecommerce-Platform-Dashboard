@@ -116,8 +116,8 @@
     "valuationTrend": "Tendencia de Valoración a 12 Meses",
     "marketShare": "Cuota de Mercado",
     "categoryBreakdown": "Desglose de Inventario por Categoría",
-    "livePolling": "Sincronización en vivo",
-    "activeCategories": "Categorías activas",
+    "livePolling": "Modo demo",
+    "activeCategories": "Categorías Activas",
     "totalPortfolio": "Portafolio total",
     "topShare": "Mayor cuota",
     "monthlyTrend": "Tendencia mensual",
@@ -126,7 +126,7 @@
     "overviewTab": "Resumen",
     "categoriesTab": "Categorías y Valoración",
     "pricingTab": "Niveles de Precios",
-    "demoMode": "Modo Demo",
+    "demoMode": "Modo demo",
     "demoModeSimulated": "Simular 250 artículos del catálogo en gráficos.",
     "totalCatalogWorth": "Valor Total",
     "categoriesCount": "{{count}} Categorías",
@@ -345,7 +345,9 @@
       "demoModeHint": "Simula 250 artículos del catálogo empresarial en los gráficos.",
       "defaultDemoMode": "Estado predeterminado del Modo Demo",
       "defaultAnalyticsTab": "Pestaña de analíticas predeterminada",
-      "defaultItemsPerPage": "Artículos por página predeterminados en escritorio"
+      "defaultItemsPerPage": "Artículos por página predeterminados en escritorio",
+      "itemsCount": "{{count}} Artículos",
+      "itemsCountStandard": "{{count}} Artículos (Estándar)"
     },
     "notifications": {
       "title": "Notificaciones y Alertas",
@@ -461,8 +463,8 @@
     "categories": "Categorías",
     "analyticsReports": "Analíticas e Informes",
     "electronics": "Electrónica",
-    "clothesFashion": "Ropa y Moda",
-    "furnitureDecor": "Muebles y Decoración",
+    "clothesFashion": "Ropa",
+    "furnitureDecor": "Muebles",
     "automotive": "Automoción y Vehículos",
     "support": "Soporte",
     "documentation": "Documentación",
@@ -476,9 +478,9 @@
   },
   "categories": {
     "electronics": "Electrónica",
-    "clothes": "Ropa y Moda",
+    "clothes": "Ropa",
     "photography": "Fotografía",
-    "furniture": "Muebles y Decoración",
+    "furniture": "Muebles",
     "sneakers": "Zapatillas",
     "automotive": "Automoción",
     "accessories": "Accesorios"

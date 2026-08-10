@@ -9,7 +9,7 @@ export interface LocalizedText {
 }
 
 export interface Product {
-  id?: string;
+  id?: string | undefined;
   title: string | LocalizedText;
   description: string | LocalizedText;
   imageURL: string;

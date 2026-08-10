@@ -345,7 +345,9 @@
       "demoModeHint": "Simulate 250 enterprise catalog items across charts.",
       "defaultDemoMode": "Default Demo Mode State",
       "defaultAnalyticsTab": "Default Analytics Tab",
-      "defaultItemsPerPage": "Default Desktop Items Per Page"
+      "defaultItemsPerPage": "Default Desktop Items Per Page",
+      "itemsCount": "{{count}} Items",
+      "itemsCountStandard": "{{count}} Items (Standard)"
     },
     "notifications": {
       "title": "Notifications & Alerts",

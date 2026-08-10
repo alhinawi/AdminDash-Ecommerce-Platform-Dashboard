@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Globe, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import {
   SUPPORTED_LANGUAGES,
   type SupportedLanguage,
   type LanguageOption,
 } from "../i18n/types";
 import { useThemeContext } from "../context/ThemeContext";
+import FlagIcon from "./ui/FlagIcon";
 
 export default function LanguageSwitcher() {
   const { i18n, t } = useTranslation();
@@ -70,19 +71,12 @@ export default function LanguageSwitcher() {
         aria-haspopup="true"
         aria-label={t("nav.selectLanguage", "Select Language")}
         title={t("nav.language", "Language")}
-        className="flex h-9 cursor-pointer items-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 text-xs font-semibold text-zinc-700 transition-all duration-200 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+        className="flex h-9 cursor-pointer items-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 px-2 text-xs font-semibold text-zinc-700 transition-all duration-200 hover:bg-zinc-100 sm:px-2.5 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
       >
-        <span
-          className="text-sm leading-none"
-          role="img"
-          aria-label={currentLang.name}
-        >
-          {currentLang.flag}
-        </span>
-        <span className="font-mono text-[11px] font-bold tracking-wider uppercase">
+        <FlagIcon code={currentLang.code} className="h-3.5 w-5" />
+        <span className="hidden font-mono text-[11px] font-bold tracking-wider uppercase sm:inline">
           {currentLang.code.toUpperCase()}
         </span>
-        <Globe className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-400" />
       </button>
 
       {/* Popover Dropdown */}
@@ -107,15 +101,11 @@ export default function LanguageSwitcher() {
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
-                    <span
-                      className="text-base leading-none"
-                      role="img"
-                      aria-label={lang.name}
-                    >
-                      {lang.flag}
-                    </span>
+                    <FlagIcon code={lang.code} className="h-4 w-5.5" />
                     <div className="flex flex-col text-start">
-                      <span className="text-xs font-semibold leading-tight">{lang.nativeName}</span>
+                      <span className="text-xs leading-tight font-semibold">
+                        {lang.nativeName}
+                      </span>
                       <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
                         {lang.name}
                       </span>

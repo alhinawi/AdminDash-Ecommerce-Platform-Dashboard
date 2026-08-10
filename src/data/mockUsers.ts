@@ -411,16 +411,15 @@ export const mockUsers: User[] = [
     const dayStr = day < 10 ? `0${day}` : `${day}`;
 
     const year = 2024 + (i % 2);
-    const joinedAt = `${year}-${monthStr}-${dayStr}T${(i * 2) % 24}:15:00Z`;
+    const joinedHourStr = String((i * 2) % 24).padStart(2, "0");
+    const joinedAt = `${year}-${monthStr}-${dayStr}T${joinedHourStr}:15:00Z`;
 
     const recentDay = 4 - (i % 5);
-    const recentDayStr =
-      recentDay > 0
-        ? recentDay < 10
-          ? `0${recentDay}`
-          : `${recentDay}`
-        : "04";
-    const lastLogin = `2026-08-${recentDayStr}T${(i * 3) % 24}:${(i * 7) % 60}:00Z`;
+    const recentDayVal = recentDay > 0 ? recentDay : 4;
+    const recentDayStr = String(recentDayVal).padStart(2, "0");
+    const hourStr = String((i * 3) % 24).padStart(2, "0");
+    const minStr = String((i * 7) % 60).padStart(2, "0");
+    const lastLogin = `2026-08-${recentDayStr}T${hourStr}:${minStr}:00Z`;
 
     const avatarId = 100 + i;
     const avatar = `https://picsum.photos/id/${avatarId}/150/150`;

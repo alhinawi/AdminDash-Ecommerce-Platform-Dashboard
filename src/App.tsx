@@ -18,6 +18,7 @@ import Input from "./components/ui/Input";
 import Modal from "./components/ui/Modal";
 import Select from "./components/ui/Select";
 import Toast, { type ToastMessage } from "./components/ui/Toast";
+import { getLocalizedText } from "./utils/productUtils";
 
 import SettingsPage from "./pages/settings/SettingsPage";
 import UsersPage from "./pages/users/UsersPage";
@@ -32,11 +33,11 @@ function getPaginationRange(
   totalPages: number,
   isMobile: boolean = false,
 ): (number | string)[] {
-  if (!isMobile || totalPages <= 7) {
+  if (totalPages <= 5) {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
 
-  const delta = 2;
+  const delta = isMobile ? 1 : 2;
 
   const left = currentPage - delta;
   const right = currentPage + delta;
@@ -76,6 +77,7 @@ function ProductsView({
   sortBy,
   setSortBy,
   setProductToEdit,
+  onDeleteProduct,
 }: {
   open: () => void;
   products: Product[];
@@ -85,9 +87,11 @@ function ProductsView({
   setFilterCategory: (val: string) => void;
   sortBy: string;
   setSortBy: (val: string) => void;
-  setProductToEdit: (product: Product) => void;
+  setProductToEdit: (selectedProduct: Product) => void;
+  onDeleteProduct?: (productId: string) => void;
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language || "en";
   const [currentPage, setCurrentPage] = useState<number>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("products_dashboard_page");
@@ -177,9 +181,12 @@ function ProductsView({
 
   const filteredProducts = products
     .filter((p) => {
+      const pTitle = getLocalizedText(p.title, currentLang);
+      const pDesc = getLocalizedText(p.description, currentLang);
+
       const matchesSearch =
-        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.description.toLowerCase().includes(searchQuery.toLowerCase());
+        pTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        pDesc.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesCategory =
         filterCategory === "all" ||
@@ -216,7 +223,9 @@ function ProductsView({
       }
 
       if (sortBy === "title-asc") {
-        return a.title.localeCompare(b.title);
+        const titleA = getLocalizedText(a.title, currentLang);
+        const titleB = getLocalizedText(b.title, currentLang);
+        return titleA.localeCompare(titleB);
       }
 
       return 0;
@@ -290,6 +299,7 @@ function ProductsView({
                 key={product.id}
                 product={product}
                 setProductToEdit={setProductToEdit}
+                onDelete={onDeleteProduct}
               />
             ))}
           </div>
@@ -308,12 +318,12 @@ function ProductsView({
                 {t("common.products", "products")}
               </span>
 
-              <div className="flex max-w-full flex-row flex-nowrap items-center justify-center gap-1 overflow-hidden sm:gap-1.5">
+              <div className="flex max-w-full flex-row flex-wrap items-center justify-center gap-1 overflow-hidden sm:gap-1.5">
                 <button
                   type="button"
                   disabled={validPage === 1}
                   onClick={() => handlePageChange(validPage - 1)}
-                  className="flex min-h-11 cursor-pointer items-center gap-1 rounded-xl border border-gray-200 bg-white px-2.5 py-2 text-xs font-semibold text-gray-700 shadow-xs transition-all hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 sm:min-h-9 sm:px-3 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  className="flex h-8 cursor-pointer items-center gap-0.5 rounded-lg border border-gray-200 bg-white px-2 text-[11px] font-semibold text-gray-700 shadow-xs transition-all hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 sm:h-9 sm:rounded-xl sm:px-3 sm:text-xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
                 >
                   {t("common.prev", "← Prev")}
                 </button>
@@ -325,7 +335,7 @@ function ProductsView({
                         return (
                           <span
                             key={`dots-${idx}`}
-                            className="flex min-h-11 min-w-5 items-center justify-center text-xs font-bold text-gray-400 select-none sm:min-h-9 sm:min-w-6 dark:text-zinc-500"
+                            className="flex h-8 min-w-4 items-center justify-center text-[10px] font-bold text-gray-400 select-none sm:h-9 sm:min-w-6 sm:text-xs dark:text-zinc-500"
                           >
                             ...
                           </span>
@@ -339,7 +349,7 @@ function ProductsView({
                           key={page}
                           type="button"
                           onClick={() => handlePageChange(page)}
-                          className={`flex min-h-11 min-w-9 cursor-pointer items-center justify-center rounded-xl text-xs font-bold transition-all sm:min-h-9 sm:min-w-9 ${
+                          className={`flex h-8 min-w-7 cursor-pointer items-center justify-center rounded-lg px-1.5 text-[11px] font-bold transition-all sm:h-9 sm:min-w-9 sm:rounded-xl sm:px-0 sm:text-xs ${
                             page === validPage
                               ? "bg-accent shadow-accent-glow scale-105 text-white"
                               : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
@@ -356,7 +366,7 @@ function ProductsView({
                   type="button"
                   disabled={validPage === totalPages}
                   onClick={() => handlePageChange(validPage + 1)}
-                  className="flex min-h-11 cursor-pointer items-center gap-1 rounded-xl border border-gray-200 bg-white px-2.5 py-2 text-xs font-semibold text-gray-700 shadow-xs transition-all hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 sm:min-h-9 sm:px-3 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  className="flex h-8 cursor-pointer items-center gap-0.5 rounded-lg border border-gray-200 bg-white px-2 text-[11px] font-semibold text-gray-700 shadow-xs transition-all hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 sm:h-9 sm:rounded-xl sm:px-3 sm:text-xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
                 >
                   {t("common.next", "Next →")}
                 </button>
@@ -397,7 +407,8 @@ function ProductsView({
 }
 
 function AppContent() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language || "en";
   const location = useLocation();
 
   const defaultProduct: Product = {
@@ -435,10 +446,10 @@ function AppContent() {
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [productToEdit, setProductToEdit] = useState<Product | null>(null);
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
 
   const [products, setProducts] = useState<Product[]>(productList);
-
-  const [productToEdit, setProductToEdit] = useState<Product | null>(null);
 
   const [product, setProduct] = useState<Product>(defaultProduct);
 
@@ -497,15 +508,15 @@ function AppContent() {
     });
   };
 
-  const dismissToast = (id: string) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-  };
-
   /*
    * -------------------------
    * HANDLERS
    * -------------------------
    */
+
+  const dismissToast = (id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
 
   const open = () => {
     setProductToEdit(null);
@@ -567,8 +578,8 @@ function AppContent() {
     const { title, description, imageURL, price } = product;
 
     const validationErrors = productValidation({
-      title,
-      description,
+      title: getLocalizedText(title, currentLang),
+      description: getLocalizedText(description, currentLang),
       imageURL,
       price,
       colors: tempColors,
@@ -683,6 +694,39 @@ function AppContent() {
     );
   };
 
+  const handleOpenDeleteModal = (productId: string) => {
+    if (!productId) return;
+    const foundProduct = products.find((p) => p.id === productId);
+    if (foundProduct) {
+      setProductToDelete(foundProduct);
+    }
+  };
+
+  const handleConfirmDelete = () => {
+    if (!productToDelete) return;
+
+    const targetId = productToDelete.id;
+    const targetTitle = getLocalizedText(
+      productToDelete.title,
+      i18n.language || "en",
+    );
+
+    setProducts((prevProducts) =>
+      prevProducts.filter((product) => product.id !== targetId),
+    );
+
+    addToast(
+      "success",
+      t("products.productDeleted", "Product Deleted! 🗑️"),
+      t("products.productDeletedMsg", {
+        title: targetTitle,
+        defaultValue: `"${targetTitle}" has been removed from the catalog.`,
+      }),
+    );
+
+    setProductToDelete(null);
+  };
+
   /*
    * -------------------------
    * FORM
@@ -702,7 +746,7 @@ function AppContent() {
         type={input.type}
         name={input.name}
         id={input.id}
-        value={product[input.name]}
+        value={String(product[input.name] || "")}
         onChange={onChangeHandler}
       />
 
@@ -753,6 +797,7 @@ function AppContent() {
               sortBy={sortBy}
               setSortBy={setSortBy}
               setProductToEdit={openEditModal}
+              onDeleteProduct={handleOpenDeleteModal}
             />
           }
         />
@@ -775,6 +820,7 @@ function AppContent() {
 
       <Toast toasts={toasts} onDismiss={dismissToast} />
 
+      {/* Add & Edit Product Modal */}
       <Modal
         isOpen={isOpen}
         closeModal={closeModal}
@@ -795,7 +841,7 @@ function AppContent() {
               imageURL: cat.imageURL,
             }))}
             value={selectedCategory.name}
-            onChange={(val) => {
+            onChange={(val: string) => {
               const matched = categories.find((c) => c.name === val);
 
               if (matched) {
@@ -855,6 +901,46 @@ function AppContent() {
             </Button>
           </div>
         </form>
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={!!productToDelete}
+        closeModal={() => setProductToDelete(null)}
+        title={t("products.delete", "DELETE")}
+      >
+        <div className="flex flex-col gap-4">
+          <p className="text-sm leading-relaxed text-gray-600 dark:text-slate-300">
+            {t("products.deleteConfirmation", {
+              title: productToDelete
+                ? getLocalizedText(productToDelete.title, currentLang)
+                : "",
+              defaultValue: `Are you sure you want to remove "${
+                productToDelete
+                  ? getLocalizedText(productToDelete.title, currentLang)
+                  : ""
+              }" from the catalog?`,
+            })}
+          </p>
+
+          <div className="flex items-center justify-end gap-x-3 pt-2">
+            <Button
+              type="button"
+              className="border border-gray-200 bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+              onClick={() => setProductToDelete(null)}
+            >
+              {t("common.cancel", "Cancel")}
+            </Button>
+
+            <Button
+              type="button"
+              className="bg-rose-600 font-semibold text-white shadow-xs hover:bg-rose-700"
+              onClick={handleConfirmDelete}
+            >
+              {t("products.delete", "DELETE")}
+            </Button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

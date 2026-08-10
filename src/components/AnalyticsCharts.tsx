@@ -106,7 +106,7 @@ const CATEGORY_CONFIG: Record<string, CategoryMeta> = {
     imageURL:
       "https://images.unsplash.com/photo-1542362567-b07e54358753?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
     demoCount: 35,
-    demoBasePrice: 2400,
+    demoBasePrice: 480,
   },
   accessories: {
     key: "accessories",

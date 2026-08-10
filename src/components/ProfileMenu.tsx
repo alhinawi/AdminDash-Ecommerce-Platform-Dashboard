@@ -99,7 +99,7 @@ export default function ProfileMenu({
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-label="User profile menu"
-        className="group flex min-h-11 cursor-pointer items-center gap-3 rounded-xl border border-zinc-200/80 bg-white/50 p-1.5 outline-hidden transition-all duration-200 select-none hover:bg-zinc-100/80 focus-visible:ring-2 focus-visible:ring-zinc-400 dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:bg-zinc-800/60 dark:focus-visible:ring-zinc-600"
+        className="group flex cursor-pointer items-center gap-3 rounded-xl border border-zinc-200/80 bg-white/50 p-1.5 outline-hidden transition-all duration-200 select-none hover:bg-zinc-100/80 focus-visible:ring-2 focus-visible:ring-zinc-400 dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:bg-zinc-800/60 dark:focus-visible:ring-zinc-600"
       >
         {/* Avatar with Status Indicator */}
         <div className="relative shrink-0">
@@ -133,7 +133,7 @@ export default function ProfileMenu({
 
         {/* Dropdown Caret Icon */}
         <ChevronDown
-          className={`h-4 w-4 text-zinc-400 transition-transform duration-200 ${
+          className={`h-4 w-4 shrink-0 text-zinc-400 transition-transform duration-200 group-hover:text-zinc-600 dark:group-hover:text-zinc-200 ${
             isOpen ? "rotate-180" : ""
           }`}
         />

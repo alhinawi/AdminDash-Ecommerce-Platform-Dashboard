@@ -728,10 +728,34 @@ export default function SettingsPage({
                     "Default Desktop Items Per Page",
                   )}
                   options={[
-                    { value: "4", label: "4 Items" },
-                    { value: "6", label: "6 Items" },
-                    { value: "8", label: "8 Items (Standard)" },
-                    { value: "12", label: "12 Items" },
+                    {
+                      value: "4",
+                      label: t("settings.dashboard.itemsCount", {
+                        count: 4,
+                        defaultValue: "4 Items",
+                      }),
+                    },
+                    {
+                      value: "6",
+                      label: t("settings.dashboard.itemsCount", {
+                        count: 6,
+                        defaultValue: "6 Items",
+                      }),
+                    },
+                    {
+                      value: "8",
+                      label: t("settings.dashboard.itemsCountStandard", {
+                        count: 8,
+                        defaultValue: "8 Items (Standard)",
+                      }),
+                    },
+                    {
+                      value: "12",
+                      label: t("settings.dashboard.itemsCount", {
+                        count: 12,
+                        defaultValue: "12 Items",
+                      }),
+                    },
                   ]}
                   value={defaultItemsPerPage}
                   onChange={(val) => setDefaultItemsPerPage(String(val))}

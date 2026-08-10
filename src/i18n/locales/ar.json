@@ -116,7 +116,7 @@
     "valuationTrend": "اتجاه التقييم خلال 12 شهراً",
     "marketShare": "الحصة السوقية",
     "categoryBreakdown": "توزيع مخزون الفئات",
-    "livePolling": "مزامنة حية",
+    "livePolling": "الوضع التجريبي",
     "activeCategories": "الفئات النشطة",
     "totalPortfolio": "إجمالي المحفظة",
     "topShare": "الحصة الكبرى",
@@ -345,7 +345,9 @@
       "demoModeHint": "محاكاة 250 عنصراً تجارياً عبر الرسوم البيانية والتحليلات.",
       "defaultDemoMode": "حالة الوضع التجريبي الافتراضية",
       "defaultAnalyticsTab": "تبويب التحليلات الافتراضي",
-      "defaultItemsPerPage": "عدد العناصر الافتراضي لكل صفحة على سطح المكتب"
+      "defaultItemsPerPage": "عدد العناصر الافتراضي لكل صفحة على سطح المكتب",
+      "itemsCount": "{{count}} عناصر",
+      "itemsCountStandard": "{{count}} عناصر (قياسي)"
     },
     "notifications": {
       "title": "الإشعارات والتنبيهات",
@@ -476,7 +478,7 @@
   },
   "categories": {
     "electronics": "إلكترونيات",
-    "clothes":  "ملابس",
+    "clothes": "ملابس",
     "photography": "تصوير",
     "furniture": "أثاث",
     "sneakers": "أحذية",

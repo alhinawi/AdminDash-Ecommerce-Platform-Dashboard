@@ -33,18 +33,17 @@ export default function UserDetailDrawer({
   const { t } = useTranslation();
   if (!isOpen || !user) return null;
 
-  const formatDate = (iso: string) => {
-    try {
-      return new Date(iso).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    } catch {
-      return iso;
-    }
+  const formatDate = (iso?: string | null) => {
+    if (!iso) return "—";
+    const date = new Date(iso);
+    if (isNaN(date.getTime())) return "—";
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   const getStatusBadge = (status: User["status"]) => {

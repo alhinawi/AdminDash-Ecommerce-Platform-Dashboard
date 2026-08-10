@@ -31,6 +31,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import type { User, Role, Plan, Status } from "../../types/user";
+import Select from "../ui/Select";
 
 interface UsersTableProps {
   users: User[];
@@ -70,16 +71,15 @@ export default function UsersTable({
   );
 
   // Formatter helper
-  const formatDate = (iso: string) => {
-    try {
-      return new Date(iso).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
-    } catch {
-      return iso;
-    }
+  const formatDate = (iso?: string | null) => {
+    if (!iso) return "—";
+    const date = new Date(iso);
+    if (isNaN(date.getTime())) return "—";
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
   /* ------- FILTERED DATA DERIVATION ------- */
@@ -570,54 +570,54 @@ export default function UsersTable({
         {/* Filter Selects & View Column Controls */}
         <div className="flex flex-wrap items-center gap-2">
           {/* Role Filter */}
-          <select
+          <Select
+            size="sm"
             value={selectedRole}
-            onChange={(e) => setSelectedRole(e.target.value)}
-            className="rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-700 focus:outline-hidden dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-300"
-          >
-            <option value="all">
-              {t("users.table.allRoles", "All Roles")}
-            </option>
-            <option value="Admin">{t("common.admin", "Admin")}</option>
-            <option value="Editor">{t("common.editor", "Editor")}</option>
-            <option value="Moderator">
-              {t("common.moderator", "Moderator")}
-            </option>
-            <option value="User">{t("common.user", "User")}</option>
-          </select>
+            onChange={setSelectedRole}
+            options={[
+              { value: "all", label: t("users.table.allRoles", "All Roles") },
+              { value: "Admin", label: t("common.admin", "Admin") },
+              { value: "Editor", label: t("common.editor", "Editor") },
+              { value: "Moderator", label: t("common.moderator", "Moderator") },
+              { value: "User", label: t("common.user", "User") },
+            ]}
+            className="w-36 shrink-0"
+          />
 
           {/* Plan Filter */}
-          <select
+          <Select
+            size="sm"
             value={selectedPlan}
-            onChange={(e) => setSelectedPlan(e.target.value)}
-            className="rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-700 focus:outline-hidden dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-300"
-          >
-            <option value="all">
-              {t("users.table.allPlans", "All Plans")}
-            </option>
-            <option value="Enterprise">
-              {t("common.enterprise", "Enterprise")}
-            </option>
-            <option value="Pro">{t("common.pro", "Pro")}</option>
-            <option value="Free">{t("common.free", "Free")}</option>
-          </select>
+            onChange={setSelectedPlan}
+            options={[
+              { value: "all", label: t("users.table.allPlans", "All Plans") },
+              {
+                value: "Enterprise",
+                label: t("common.enterprise", "Enterprise"),
+              },
+              { value: "Pro", label: t("common.pro", "Pro") },
+              { value: "Free", label: t("common.free", "Free") },
+            ]}
+            className="w-36 shrink-0"
+          />
 
           {/* Status Filter */}
-          <select
+          <Select
+            size="sm"
             value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-            className="rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-700 focus:outline-hidden dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-300"
-          >
-            <option value="all">
-              {t("users.table.allStatuses", "All Statuses")}
-            </option>
-            <option value="Active">{t("common.active", "Active")}</option>
-            <option value="Inactive">{t("common.inactive", "Inactive")}</option>
-            <option value="Suspended">
-              {t("common.suspended", "Suspended")}
-            </option>
-            <option value="Banned">{t("common.banned", "Banned")}</option>
-          </select>
+            onChange={setSelectedStatus}
+            options={[
+              {
+                value: "all",
+                label: t("users.table.allStatuses", "All Statuses"),
+              },
+              { value: "Active", label: t("common.active", "Active") },
+              { value: "Inactive", label: t("common.inactive", "Inactive") },
+              { value: "Suspended", label: t("common.suspended", "Suspended") },
+              { value: "Banned", label: t("common.banned", "Banned") },
+            ]}
+            className="w-36 shrink-0"
+          />
 
           {/* Columns Visibility Popover */}
           <div className="relative">
@@ -837,17 +837,16 @@ export default function UsersTable({
             {/* Page Size Selector */}
             <div className="ms-4 flex items-center gap-1.5">
               <span>{t("users.table.show", "Show:")}</span>
-              <select
-                value={table.getState().pagination.pageSize}
-                onChange={(e) => table.setPageSize(Number(e.target.value))}
-                className="rounded-md border border-zinc-200 bg-white px-2 py-1 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-              >
-                {[10, 25, 50, 100].map((size) => (
-                  <option key={size} value={size}>
-                    {size}
-                  </option>
-                ))}
-              </select>
+              <Select
+                size="sm"
+                value={String(table.getState().pagination.pageSize)}
+                onChange={(val) => table.setPageSize(Number(val))}
+                options={[10, 25, 50, 100].map((size) => ({
+                  value: String(size),
+                  label: String(size),
+                }))}
+                className="w-20"
+              />
             </div>
           </div>
 
