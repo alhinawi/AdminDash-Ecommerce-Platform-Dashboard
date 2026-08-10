@@ -231,7 +231,7 @@ export const productList: Product[] = [
     description:
       "Structured single-breasted blazer made from 100% fine Italian virgin wool. Horn buttons, peak lapels, and double vented back for a sleek modern fit.",
     imageURL:
-      "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80",
+      "https://i.pinimg.com/736x/86/da/2e/86da2ee5c5bc3de6447393da0a7d844c.jpg",
     price: "390",
     colors: ["#121212", "#2563eb"],
     stock: 0,
@@ -271,9 +271,9 @@ export const productList: Product[] = [
     description:
       "14oz Kurabo mill selvedge denim crafted in Okayama, Japan. Custom brass hardware, leather patch, and classic straight leg fit.",
     imageURL:
-      "https://i.pinimg.com/1200x/27/d4/55/27d4556d5a8e38ec3d2428222de280a3.jpg",
+      "https://i.pinimg.com/736x/e7/2a/7f/e72a7f8dff94b9b0e40a442448bf4e2a.jpg",
     price: "185",
-    colors: ["#323240", "#121212"],
+    colors: ["#4F6B82", "#323240", "#121212"],
     stock: 36,
     sku: "SKU-CLOT-004",
     rating: 4.8,
@@ -293,7 +293,7 @@ export const productList: Product[] = [
     imageURL:
       "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=800&q=80",
     price: "280",
-    colors: ["#C0C0C0", "#3C2A21", "#121212"],
+    colors: ["#EEE7ED", "#3C2A21", "#121212"],
     stock: 20,
     sku: "SKU-CLOT-005",
     rating: 4.9,
@@ -900,7 +900,7 @@ export const productList: Product[] = [
       "Tri-motor all-wheel drive with 1,020 horsepower. 0-60 mph in 1.99 seconds with carbon-sleeved rotors and aerodynamic spoiler upgrade.",
     imageURL:
       "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80",
-    price: "29900",
+    price: "2990",
     colors: ["#121212", "#F7F9F9", "#FF0032"],
     stock: 3,
     sku: "SKU-AUTO-001",
@@ -920,7 +920,7 @@ export const productList: Product[] = [
       "3.0-liter twin-turbo flat-six engine generating 379 hp. 8-speed Porsche Doppelkupplung (PDK) transmission with sport chrono package.",
     imageURL:
       "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80",
-    price: "28500",
+    price: "2850",
     colors: ["#121212", "#C0C0C0", "#FF6E31"],
     stock: 0,
     sku: "SKU-AUTO-002",
@@ -940,7 +940,7 @@ export const productList: Product[] = [
       "M TwinPower Turbo inline 6-cylinder engine producing 503 hp. M xDrive intelligent all-wheel drive system with active M differential.",
     imageURL:
       "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80",
-    price: "26000",
+    price: "2600",
     colors: ["#D6DEE0", "#121212"],
     stock: 4,
     sku: "SKU-AUTO-003",
@@ -960,7 +960,7 @@ export const productList: Product[] = [
       "Bold blue finish with 6.2L LT1 V8 engine pumping 455 hp. Magnetic ride control and Brembo performance brakes.",
     imageURL:
       "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80",
-    price: "18500",
+    price: "1850",
     colors: ["#2563eb", "#FF0032", "#121212"],
     stock: 5,
     sku: "SKU-AUTO-004",
@@ -980,7 +980,7 @@ export const productList: Product[] = [
       "Iconic 5.0L Coyote V8 engine with active valve performance exhaust. Digital instrument cluster and Brembo 6-piston front calipers.",
     imageURL:
       "https://images.unsplash.com/photo-1584345604476-8ec5e12e42dd?auto=format&fit=crop&w=800&q=80",
-    price: "14500",
+    price: "1450",
     colors: ["#FF0032", "#121212", "#C0C0C0"],
     stock: 6,
     sku: "SKU-AUTO-005",
@@ -1000,7 +1000,7 @@ export const productList: Product[] = [
       "800V architecture delivering up to 637 hp with boost launch control. Carbon fiber roof and tungsten carbide coated brakes.",
     imageURL:
       "https://images.unsplash.com/photo-1614200187524-dc4b892acf16?auto=format&fit=crop&w=800&q=80",
-    price: "29500",
+    price: "2950",
     colors: ["#121212", "#C34038"],
     stock: 2,
     sku: "SKU-AUTO-006",
@@ -1020,7 +1020,7 @@ export const productList: Product[] = [
       "Handcrafted AMG 4.0L V8 biturbo engine with 577 hp. AMG coilover suspension and 9-mode AMG traction control system.",
     imageURL:
       "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=800&q=80",
-    price: "27500",
+    price: "2750",
     colors: ["#E5AA4B", "#121212"],
     stock: 3,
     sku: "SKU-AUTO-007",
@@ -1040,7 +1040,7 @@ export const productList: Product[] = [
       "Twin-turbo V8 mild-hybrid engine with 626 hp. 6D Dynamics air suspension and 23-inch ultra-lightweight carbon fiber wheels.",
     imageURL:
       "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80",
-    price: "24000",
+    price: "2400",
     colors: ["#121212", "#3C2A21"],
     stock: 4,
     sku: "SKU-AUTO-008",
@@ -1060,7 +1060,7 @@ export const productList: Product[] = [
       "2.9L twin-turbo V6 engine developed with Ferrari expertise pumping 505 hp. Carbon fiber active aero front splitter.",
     imageURL:
       "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=800&q=80",
-    price: "16800",
+    price: "1680",
     colors: ["#FF0032", "#121212", "#C34038"],
     stock: 7,
     sku: "SKU-AUTO-009",
@@ -1080,7 +1080,7 @@ export const productList: Product[] = [
       "Symmetrical All-Wheel Drive with 2.5L turbocharged BOXER engine. Driver Controlled Center Differential (DCCD) and Brembo brakes.",
     imageURL:
       "https://images.unsplash.com/photo-1621993202323-f438eec934ff?auto=format&fit=crop&w=800&q=80",
-    price: "9800",
+    price: "980",
     colors: ["#2563eb", "#C0C0C0"],
     stock: 11,
     sku: "SKU-AUTO-010",

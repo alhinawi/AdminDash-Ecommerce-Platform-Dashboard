@@ -79,7 +79,7 @@ const ProductCard = ({ product, setProductToEdit, onDelete }: Props) => {
   return (
     <div className="group relative mx-auto flex w-full max-w-sm flex-col overflow-hidden rounded-2xl border border-gray-200/90 bg-white p-3.5 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl sm:mx-0 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 dark:hover:shadow-2xl dark:hover:shadow-black/60">
       {/* Product Image Container */}
-      <div className="relative aspect-16/19 w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-slate-800">
+      <div className="relative aspect-16/15 w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-slate-800">
         <Image
           imageSrc={imageURL}
           altText={displayTitle}
