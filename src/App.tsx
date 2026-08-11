@@ -24,6 +24,11 @@ import SettingsPage from "./pages/settings/SettingsPage";
 import UsersPage from "./pages/users/UsersPage";
 import LoginPage from "./pages/login/LoginPage";
 
+import { AIProvider } from "./context/AIContext";
+import FloatingAIButton from "./components/ai/FloatingAIButton";
+import AIChatPanel from "./components/ai/AIChatPanel";
+import { mockUsers } from "./data/mockUsers";
+
 import { categories, colors, formInputsList, productList } from "./data";
 import type { Product } from "./interfaces";
 import { productValidation } from "./schema";
@@ -776,173 +781,190 @@ function AppContent() {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-zinc-50/50 font-sans text-zinc-900 transition-colors duration-300 dark:bg-zinc-950 dark:text-zinc-100">
-      <Navbar
-        onAddProduct={open}
-        darkMode={darkMode}
-        toggleDarkMode={toggleDarkMode}
-      />
-
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <ProductsView
-              open={open}
-              products={products}
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              filterCategory={filterCategory}
-              setFilterCategory={setFilterCategory}
-              sortBy={sortBy}
-              setSortBy={setSortBy}
-              setProductToEdit={openEditModal}
-              onDeleteProduct={handleOpenDeleteModal}
-            />
-          }
+    <AIProvider
+      products={products}
+      setProducts={setProducts}
+      users={mockUsers}
+      addToast={(type, title, msg) =>
+        addToast(
+          type === "danger" ? "error" : (type as "success" | "error" | "info"),
+          title,
+          msg || "",
+        )
+      }
+    >
+      <div className="relative flex min-h-screen flex-col bg-zinc-50/50 font-sans text-zinc-900 transition-colors duration-300 dark:bg-zinc-950 dark:text-zinc-100">
+        <Navbar
+          onAddProduct={open}
+          darkMode={darkMode}
+          toggleDarkMode={toggleDarkMode}
         />
 
-        <Route path="/users" element={<UsersPage />} />
-
-        <Route
-          path="/settings"
-          element={
-            <SettingsPage
-              darkMode={darkMode}
-              toggleDarkMode={toggleDarkMode}
-              addToast={addToast}
-            />
-          }
-        />
-      </Routes>
-
-      <Footer />
-
-      <Toast toasts={toasts} onDismiss={dismissToast} />
-
-      {/* Add & Edit Product Modal */}
-      <Modal
-        isOpen={isOpen}
-        closeModal={closeModal}
-        title={
-          productToEdit
-            ? t("common.edit", "Edit Product")
-            : t("products.addModalTitle", "Add A New Product")
-        }
-      >
-        <form className="flex flex-col gap-y-3" onSubmit={onSubmitHandler}>
-          {renderFormInputs}
-
-          <Select
-            label={t("products.inputs.category", "Category")}
-            options={categories.map((cat) => ({
-              value: cat.name,
-              label: t(`categories.${cat.name.toLowerCase()}`, cat.name),
-              imageURL: cat.imageURL,
-            }))}
-            value={selectedCategory.name}
-            onChange={(val: string) => {
-              const matched = categories.find((c) => c.name === val);
-
-              if (matched) {
-                setSelectedCategory(matched);
-              }
-            }}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProductsView
+                open={open}
+                products={products}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                filterCategory={filterCategory}
+                setFilterCategory={setFilterCategory}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                setProductToEdit={openEditModal}
+                onDeleteProduct={handleOpenDeleteModal}
+              />
+            }
           />
 
-          <div className="flex flex-wrap items-center justify-center gap-2 py-1">
-            {renderProductColors}
-          </div>
+          <Route path="/users" element={<UsersPage />} />
 
-          <div
-            className={`grid transition-all duration-300 ease-in-out ${
-              tempColors.length > 0
-                ? "mt-1 grid-rows-[1fr] opacity-100"
-                : "mt-0 grid-rows-[0fr] opacity-0"
-            }`}
-          >
-            <div className="min-h-0 overflow-hidden">
-              <div className="flex flex-wrap items-center justify-center gap-1.5 py-1.5">
-                {tempColors.map((color) => (
-                  <span
-                    key={color}
-                    className="inline-flex cursor-pointer items-center gap-x-1 rounded-md px-2.5 py-1 text-xs font-medium text-white shadow-xs transition-all duration-200 hover:scale-105 hover:shadow-md active:scale-95"
-                    style={{
-                      backgroundColor: color,
-                    }}
-                    onClick={() => removeColorHandler(color)}
-                  >
-                    {color}
+          <Route
+            path="/settings"
+            element={
+              <SettingsPage
+                darkMode={darkMode}
+                toggleDarkMode={toggleDarkMode}
+                addToast={addToast}
+              />
+            }
+          />
+        </Routes>
 
-                    <span className="ms-0.5 text-[10px] font-bold opacity-75 hover:opacity-100">
-                      ×
+        <Footer />
+
+        <Toast toasts={toasts} onDismiss={dismissToast} />
+
+        {/* Floating AI Assistant Button & Chat Panel */}
+        <FloatingAIButton />
+        <AIChatPanel />
+
+        {/* Add & Edit Product Modal */}
+        <Modal
+          isOpen={isOpen}
+          closeModal={closeModal}
+          title={
+            productToEdit
+              ? t("common.edit", "Edit Product")
+              : t("products.addModalTitle", "Add A New Product")
+          }
+        >
+          <form className="flex flex-col gap-y-3" onSubmit={onSubmitHandler}>
+            {renderFormInputs}
+
+            <Select
+              label={t("products.inputs.category", "Category")}
+              options={categories.map((cat) => ({
+                value: cat.name,
+                label: t(`categories.${cat.name.toLowerCase()}`, cat.name),
+                imageURL: cat.imageURL,
+              }))}
+              value={selectedCategory.name}
+              onChange={(val: string) => {
+                const matched = categories.find((c) => c.name === val);
+
+                if (matched) {
+                  setSelectedCategory(matched);
+                }
+              }}
+            />
+
+            <div className="flex flex-wrap items-center justify-center gap-2 py-1">
+              {renderProductColors}
+            </div>
+
+            <div
+              className={`grid transition-all duration-300 ease-in-out ${
+                tempColors.length > 0
+                  ? "mt-1 grid-rows-[1fr] opacity-100"
+                  : "mt-0 grid-rows-[0fr] opacity-0"
+              }`}
+            >
+              <div className="min-h-0 overflow-hidden">
+                <div className="flex flex-wrap items-center justify-center gap-1.5 py-1.5">
+                  {tempColors.map((color) => (
+                    <span
+                      key={color}
+                      className="inline-flex cursor-pointer items-center gap-x-1 rounded-md px-2.5 py-1 text-xs font-medium text-white shadow-xs transition-all duration-200 hover:scale-105 hover:shadow-md active:scale-95"
+                      style={{
+                        backgroundColor: color,
+                      }}
+                      onClick={() => removeColorHandler(color)}
+                    >
+                      {color}
+
+                      <span className="ms-0.5 text-[10px] font-bold opacity-75 hover:opacity-100">
+                        ×
+                      </span>
                     </span>
-                  </span>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          <ErrorMessage msg={errors.colors} />
+            <ErrorMessage msg={errors.colors} />
 
-          <div className="flex items-center gap-x-3 pt-2">
-            <Button
-              className="border border-gray-200 bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
-              type="button"
-              onClick={onCancelHandler}
-            >
-              {t("common.cancel", "Cancel")}
-            </Button>
+            <div className="flex items-center gap-x-3 pt-2">
+              <Button
+                className="border border-gray-200 bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                type="button"
+                onClick={onCancelHandler}
+              >
+                {t("common.cancel", "Cancel")}
+              </Button>
 
-            <Button className="bg-zinc-900 font-semibold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:text-white">
-              {productToEdit
-                ? t("common.update", "Update")
-                : t("common.submit", "Submit")}
-            </Button>
-          </div>
-        </form>
-      </Modal>
+              <Button className="bg-zinc-900 font-semibold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:text-white">
+                {productToEdit
+                  ? t("common.update", "Update")
+                  : t("common.submit", "Submit")}
+              </Button>
+            </div>
+          </form>
+        </Modal>
 
-      {/* Delete Confirmation Modal */}
-      <Modal
-        isOpen={!!productToDelete}
-        closeModal={() => setProductToDelete(null)}
-        title={t("products.delete", "DELETE")}
-      >
-        <div className="flex flex-col gap-4">
-          <p className="text-sm leading-relaxed text-gray-600 dark:text-slate-300">
-            {t("products.deleteConfirmation", {
-              title: productToDelete
-                ? getLocalizedText(productToDelete.title, currentLang)
-                : "",
-              defaultValue: `Are you sure you want to remove "${
-                productToDelete
+        {/* Delete Confirmation Modal */}
+        <Modal
+          isOpen={!!productToDelete}
+          closeModal={() => setProductToDelete(null)}
+          title={t("products.delete", "DELETE")}
+        >
+          <div className="flex flex-col gap-4">
+            <p className="text-sm leading-relaxed text-gray-600 dark:text-slate-300">
+              {t("products.deleteConfirmation", {
+                title: productToDelete
                   ? getLocalizedText(productToDelete.title, currentLang)
-                  : ""
-              }" from the catalog?`,
-            })}
-          </p>
+                  : "",
+                defaultValue: `Are you sure you want to remove "${
+                  productToDelete
+                    ? getLocalizedText(productToDelete.title, currentLang)
+                    : ""
+                }" from the catalog?`,
+              })}
+            </p>
 
-          <div className="flex items-center justify-end gap-x-3 pt-2">
-            <Button
-              type="button"
-              className="border border-gray-200 bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
-              onClick={() => setProductToDelete(null)}
-            >
-              {t("common.cancel", "Cancel")}
-            </Button>
+            <div className="flex items-center justify-end gap-x-3 pt-2">
+              <Button
+                type="button"
+                className="border border-gray-200 bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                onClick={() => setProductToDelete(null)}
+              >
+                {t("common.cancel", "Cancel")}
+              </Button>
 
-            <Button
-              type="button"
-              className="bg-rose-600 font-semibold text-white shadow-xs hover:bg-rose-700"
-              onClick={handleConfirmDelete}
-            >
-              {t("products.delete", "DELETE")}
-            </Button>
+              <Button
+                type="button"
+                className="bg-rose-600 font-semibold text-white shadow-xs hover:bg-rose-700"
+                onClick={handleConfirmDelete}
+              >
+                {t("products.delete", "DELETE")}
+              </Button>
+            </div>
           </div>
-        </div>
-      </Modal>
-    </div>
+        </Modal>
+      </div>
+    </AIProvider>
   );
 }
 

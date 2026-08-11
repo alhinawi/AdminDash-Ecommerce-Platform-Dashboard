@@ -511,5 +511,22 @@
     "validImageUrl": "Se requiere una URL de imagen válida",
     "validPrice": "¡Se requiere un precio válido!",
     "selectColor": "¡Por favor selecciona al menos un color!"
+  },
+  "ai": {
+    "askAiTooltip": "Preguntar al Asistente IA",
+    "headerTitle": "Asistente IA de Comercio Electrónico",
+    "onlineStatus": "Contexto de Tienda en Vivo",
+    "clearHistory": "Limpiar conversación",
+    "suggestedPrompts": "Preguntas sugeridas",
+    "suggestionSales": "Dame el resumen de ventas de hoy",
+    "suggestionRestock": "¿Qué productos necesitan reposición?",
+    "suggestionTopProducts": "Muéstrame los productos más vendidos",
+    "suggestionCategory": "Comparar valoraciones de categorías",
+    "thinking": "Analizando datos de la tienda...",
+    "actionCompleted": "Acción verificada y ejecutada con éxito.",
+    "actionCancelled": "La acción fue cancelada.",
+    "inputPlaceholder": "Pregunta sobre productos, ventas o inventario...",
+    "send": "Enviar mensaje",
+    "disclaimer": "La IA utiliza datos del catálogo y estadísticas en vivo."
   }
 }

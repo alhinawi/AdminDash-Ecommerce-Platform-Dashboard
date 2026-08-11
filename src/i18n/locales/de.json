@@ -511,5 +511,22 @@
     "validImageUrl": "Gültige Bild-URL ist erforderlich",
     "validPrice": "Gültiger Preis ist erforderlich!",
     "selectColor": "Bitte wählen Sie mindestens eine Farbe aus!"
+  },
+  "ai": {
+    "askAiTooltip": "KI-Assistent fragen",
+    "headerTitle": "E-Commerce KI-Assistent",
+    "onlineStatus": "Live-Shop-Kontext",
+    "clearHistory": "Verlauf löschen",
+    "suggestedPrompts": "Vorgeschlagene Fragen",
+    "suggestionSales": "Verkaufsübersicht für heute anzeigen",
+    "suggestionRestock": "Welche Produkte müssen nachbestellt werden?",
+    "suggestionTopProducts": "Zeige meine meistverkauften Produkte",
+    "suggestionCategory": "Kategoriebewertungen vergleichen",
+    "thinking": "Analysiere Geschäftsdaten...",
+    "actionCompleted": "Aktion erfolgreich verifiziert und ausgeführt.",
+    "actionCancelled": "Aktion wurde abgebrochen.",
+    "inputPlaceholder": "Fragen Sie nach Produkten, Verkäufen, Bestand...",
+    "send": "Nachricht senden",
+    "disclaimer": "Die KI nutzt Live-Katalog- und Statistikdaten."
   }
 }

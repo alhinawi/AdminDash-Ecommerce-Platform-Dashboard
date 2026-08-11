@@ -27,3 +27,8 @@ dist-ssr
 .agents/
 .cursor/
 graphify-out/
+
+# Environment variables
+.env
+.env.*
+!.env.example

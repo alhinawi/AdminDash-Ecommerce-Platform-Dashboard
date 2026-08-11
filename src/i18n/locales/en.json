@@ -511,5 +511,22 @@
     "validImageUrl": "Valid image URL is required",
     "validPrice": "Valid price is required!",
     "selectColor": "Please select at least one color!"
+  },
+  "ai": {
+    "askAiTooltip": "Ask AI Assistant",
+    "headerTitle": "Ecommerce AI Assistant",
+    "onlineStatus": "Live Store Context",
+    "clearHistory": "Clear conversation",
+    "suggestedPrompts": "Suggested Questions",
+    "suggestionSales": "Give me today's sales summary",
+    "suggestionRestock": "What products need restocking?",
+    "suggestionTopProducts": "Show me my best-selling products",
+    "suggestionCategory": "Compare category valuations",
+    "thinking": "Analyzing store data...",
+    "actionCompleted": "Action verified and executed successfully.",
+    "actionCancelled": "Action was cancelled by user.",
+    "inputPlaceholder": "Ask about products, sales, inventory...",
+    "send": "Send message",
+    "disclaimer": "AI utilizes live store catalog & statistics context."
   }
 }
