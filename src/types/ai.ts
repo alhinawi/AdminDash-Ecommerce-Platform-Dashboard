@@ -1,7 +1,7 @@
 import type { Product } from "../interfaces";
 import type { User } from "./user";
 
-export type Role = "user" | "assistant" | "system" | "tool";
+export type Role = "user" | "assistant" | "system" | "tool" | "model";
 
 export type ToolName =
   | "getDashboardStats"
@@ -9,11 +9,17 @@ export type ToolName =
   | "getProduct"
   | "searchProducts"
   | "getLowStockProducts"
+  | "getOutOfStockProducts"
   | "getInventory"
+  | "getInventorySummary"
   | "getCategoryPerformance"
+  | "getTopSellingProducts"
   | "getSales"
+  | "getSalesStatistics"
   | "getRevenue"
+  | "getRevenueStatistics"
   | "getCustomers"
+  | "getCustomerStatistics"
   | "getOrders"
   | "createProduct"
   | "updateProduct"

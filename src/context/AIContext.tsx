@@ -11,7 +11,6 @@ import type { ChatMessage, PendingAction } from "../types/ai";
 import type { Product } from "../interfaces";
 import type { User } from "../types/user";
 import { generateDashboardContext } from "../services/ai/aiContext";
-import { executeTool } from "../services/ai/toolExecutor";
 import { sendChatMessage } from "../services/ai/aiService";
 import { getLocalizedText } from "../utils/productUtils";
 
@@ -81,36 +80,10 @@ export function AIProvider({
           context: contextData,
         });
 
-        // If response contains tool calls, execute them
-        let toolResultsText = "";
-        if (aiResponse.toolCalls && aiResponse.toolCalls.length > 0) {
-          for (const call of aiResponse.toolCalls) {
-            const execResult = executeTool({
-              toolName: call.name,
-              args: call.arguments,
-              products,
-              users,
-              currentLang: i18n.language || "en",
-            });
-
-            // Format formatted summary
-            if (Array.isArray(execResult.result)) {
-              toolResultsText +=
-                `\n\n` +
-                execResult.result
-                  .map((item, idx) => {
-                    const rec = item as Record<string, unknown>;
-                    return `${idx + 1}. **${rec.title || rec.category || rec.id}** — ${rec.price || rec.totalValuation || rec.status || ""}`;
-                  })
-                  .join("\n");
-            }
-          }
-        }
-
         const assistantMsg: ChatMessage = {
           id: `ai_${Date.now()}`,
           role: "assistant",
-          content: `${aiResponse.content || ""}${toolResultsText}`,
+          content: aiResponse.content || "I've processed your store request.",
           timestamp: new Date().toISOString(),
           toolCalls: aiResponse.toolCalls,
           pendingAction: aiResponse.pendingAction,
@@ -128,12 +101,13 @@ export function AIProvider({
         setIsThinking(false);
       }
     },
-    [messages, contextData, products, users, i18n.language],
+    [messages, contextData],
   );
 
   const retryLastMessage = useCallback(async () => {
     const lastUserMsg = [...messages].reverse().find((m) => m.role === "user");
     if (lastUserMsg) {
+      setError(null);
       await sendMessage(lastUserMsg.content);
     }
   }, [messages, sendMessage]);
@@ -149,20 +123,21 @@ export function AIProvider({
       if (!targetMsg || !targetMsg.pendingAction) return;
 
       const action: PendingAction = targetMsg.pendingAction;
+      const lang = i18n.language || "en";
 
       if (action.toolName === "deleteProduct") {
         const searchTerm = (
           (action.arguments.searchTerm as string) ||
           action.targetItemName ||
           ""
-        ).toLowerCase();
+        )
+          .toLowerCase()
+          .trim();
 
         const match = products.find((p) => {
-          const title = getLocalizedText(
-            p.title,
-            i18n.language || "en",
-          ).toLowerCase();
-          return title.includes(searchTerm) || p.id === action.arguments.id;
+          if (action.arguments.id && p.id === action.arguments.id) return true;
+          const title = getLocalizedText(p.title, lang).toLowerCase();
+          return title === searchTerm || title.includes(searchTerm);
         });
 
         if (match) {
@@ -171,27 +146,31 @@ export function AIProvider({
             "success",
             t("products.productDeleted", "Product Deleted! 🗑️"),
             t("products.productDeletedMsg", {
-              title: getLocalizedText(match.title, i18n.language || "en"),
+              title: getLocalizedText(match.title, lang),
+              defaultValue: `Removed "${getLocalizedText(match.title, lang)}" from catalog.`,
             }),
           );
         }
       } else if (action.toolName === "updateProductPrice") {
-        const newPrice = String(action.arguments.newPrice || "199");
+        const newPrice = String(action.arguments.newPrice || "0").replace(
+          /[^0-9.]/g,
+          "",
+        );
         const searchTerm = (
           (action.arguments.searchTerm as string) ||
           action.targetItemName ||
           ""
-        ).toLowerCase();
+        )
+          .toLowerCase()
+          .trim();
 
         const match = products.find((p) => {
+          if (action.arguments.id && p.id === action.arguments.id) return true;
           if (searchTerm) {
-            const title = getLocalizedText(
-              p.title,
-              i18n.language || "en",
-            ).toLowerCase();
-            return title.includes(searchTerm);
+            const title = getLocalizedText(p.title, lang).toLowerCase();
+            return title === searchTerm || title.includes(searchTerm);
           }
-          return true;
+          return false;
         });
 
         if (match) {
@@ -202,8 +181,39 @@ export function AIProvider({
           );
           addToast?.(
             "success",
-            t("products.productUpdated", "Product Updated! ✨"),
-            `Updated price of "${getLocalizedText(match.title, i18n.language || "en")}" to $${newPrice}.`,
+            t("products.productUpdated", "Product Price Updated! ✨"),
+            `Updated price of "${getLocalizedText(match.title, lang)}" to $${newPrice}.`,
+          );
+        }
+      } else if (action.toolName === "updateInventory") {
+        const newStock = Number(action.arguments.newStock) || 0;
+        const searchTerm = (
+          (action.arguments.searchTerm as string) ||
+          action.targetItemName ||
+          ""
+        )
+          .toLowerCase()
+          .trim();
+
+        const match = products.find((p) => {
+          if (action.arguments.id && p.id === action.arguments.id) return true;
+          if (searchTerm) {
+            const title = getLocalizedText(p.title, lang).toLowerCase();
+            return title === searchTerm || title.includes(searchTerm);
+          }
+          return false;
+        });
+
+        if (match) {
+          setProducts((prev) =>
+            prev.map((p) =>
+              p.id === match.id ? { ...p, stock: newStock } : p,
+            ),
+          );
+          addToast?.(
+            "success",
+            t("products.inventoryUpdated", "Inventory Updated! 📦"),
+            `Updated stock of "${getLocalizedText(match.title, lang)}" to ${newStock} units.`,
           );
         }
       }

@@ -33,6 +33,12 @@ export function executeTool({
       const avgPrice =
         totalProducts > 0 ? Math.round(catalogValue / totalProducts) : 0;
       const activeUsers = users.filter((u) => u.status === "Active").length;
+      const lowStockCount = products.filter(
+        (p) => (p.stock ?? 15) > 0 && (p.stock ?? 15) <= 10,
+      ).length;
+      const outOfStockCount = products.filter(
+        (p) => (p.stock ?? 15) === 0,
+      ).length;
 
       return {
         toolCallId,
@@ -44,6 +50,8 @@ export function executeTool({
           averageProductPrice: `$${avgPrice}`,
           totalRegisteredUsers: users.length,
           activeUsersCount: activeUsers,
+          lowStockCount,
+          outOfStockCount,
         },
       };
     }
@@ -64,6 +72,14 @@ export function executeTool({
         list = list.filter((p) => Number(p.price) <= (args.maxPrice as number));
       }
 
+      if (args.stockStatus === "low_stock") {
+        list = list.filter((p) => (p.stock ?? 15) > 0 && (p.stock ?? 15) <= 10);
+      } else if (args.stockStatus === "out_of_stock") {
+        list = list.filter((p) => (p.stock ?? 15) === 0);
+      } else if (args.stockStatus === "in_stock") {
+        list = list.filter((p) => (p.stock ?? 15) > 10);
+      }
+
       if (args.sortBy === "rating") {
         list.sort((a, b) => (b.rating ?? 4.5) - (a.rating ?? 4.5));
       } else if (args.sortBy === "price_desc") {
@@ -72,6 +88,8 @@ export function executeTool({
         list.sort((a, b) => Number(a.price) - Number(b.price));
       } else if (args.sortBy === "stock") {
         list.sort((a, b) => (a.stock ?? 15) - (b.stock ?? 15));
+      } else if (args.sortBy === "reviews") {
+        list.sort((a, b) => (b.reviewCount ?? 100) - (a.reviewCount ?? 100));
       }
 
       const limit = typeof args.limit === "number" ? args.limit : 5;
@@ -94,7 +112,7 @@ export function executeTool({
 
     case "getProduct": {
       const targetId = args.id as string | undefined;
-      const targetTitle = args.title as string | undefined;
+      const targetTitle = (args.searchTerm || args.title) as string | undefined;
 
       const found = products.find((p) => {
         if (targetId && p.id === targetId) return true;
@@ -191,7 +209,28 @@ export function executeTool({
       };
     }
 
-    case "getInventory": {
+    case "getOutOfStockProducts": {
+      const outItems = products
+        .filter((p) => (p.stock ?? 15) === 0)
+        .map((p) => ({
+          id: p.id,
+          title: getLocalizedText(p.title, currentLang),
+          price: `$${p.price}`,
+          category: p.category.name,
+        }));
+
+      return {
+        toolCallId,
+        name: toolName,
+        result: {
+          count: outItems.length,
+          items: outItems,
+        },
+      };
+    }
+
+    case "getInventory":
+    case "getInventorySummary": {
       const totalUnits = products.reduce((sum, p) => sum + (p.stock ?? 15), 0);
       const totalWorth = products.reduce(
         (sum, p) => sum + (Number(p.price) || 0) * (p.stock ?? 15),
@@ -216,6 +255,28 @@ export function executeTool({
       };
     }
 
+    case "getTopSellingProducts": {
+      const limit = typeof args.limit === "number" ? args.limit : 5;
+      const list = [...products].sort(
+        (a, b) =>
+          (b.rating ?? 4.5) * (b.reviewCount ?? 100) -
+          (a.rating ?? 4.5) * (a.reviewCount ?? 100),
+      );
+
+      return {
+        toolCallId,
+        name: toolName,
+        result: list.slice(0, limit).map((p) => ({
+          title: getLocalizedText(p.title, currentLang),
+          price: `$${p.price}`,
+          category: p.category.name,
+          rating: p.rating ?? 4.8,
+          reviews: p.reviewCount ?? 200,
+          currentStock: p.stock ?? 15,
+        })),
+      };
+    }
+
     case "getCategoryPerformance": {
       const catMap: Record<
         string,
@@ -228,7 +289,7 @@ export function executeTool({
           catMap[cat] = { count: 0, totalVal: 0, items: [] };
         }
         catMap[cat].count += 1;
-        catMap[cat].totalVal += Number(p.price) || 0;
+        catMap[cat].totalVal += (Number(p.price) || 0) * (p.stock ?? 1);
         catMap[cat].items.push(p);
       });
 
@@ -236,7 +297,7 @@ export function executeTool({
         category,
         productCount: data.count,
         totalValuation: `$${data.totalVal.toLocaleString("en-US")}`,
-        averagePrice: `$${Math.round(data.totalVal / data.count)}`,
+        averagePrice: `$${Math.round(data.totalVal / (data.count || 1))}`,
       }));
 
       return {
@@ -246,7 +307,8 @@ export function executeTool({
       };
     }
 
-    case "getCustomers": {
+    case "getCustomers":
+    case "getCustomerStatistics": {
       const total = users.length;
       const active = users.filter((u) => u.status === "Active").length;
       const pro = users.filter((u) => u.plan === "Pro").length;
@@ -270,7 +332,9 @@ export function executeTool({
     }
 
     case "getSales":
-    case "getRevenue": {
+    case "getSalesStatistics":
+    case "getRevenue":
+    case "getRevenueStatistics": {
       return {
         toolCallId,
         name: toolName,

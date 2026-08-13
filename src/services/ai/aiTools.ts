@@ -46,10 +46,16 @@ export const AI_TOOLS: ToolDefinition[] = [
           type: "number",
           description: "Maximum price filter in USD",
         },
+        stockStatus: {
+          type: "string",
+          description: "Stock filter: all, low_stock, out_of_stock, in_stock",
+          enum: ["all", "low_stock", "out_of_stock", "in_stock"],
+        },
         sortBy: {
           type: "string",
-          description: "Sort by 'rating', 'price_asc', 'price_desc', 'stock'",
-          enum: ["rating", "price_asc", "price_desc", "stock"],
+          description:
+            "Sort by 'rating', 'price_asc', 'price_desc', 'stock', 'reviews'",
+          enum: ["rating", "price_asc", "price_desc", "stock", "reviews"],
         },
         limit: {
           type: "number",
@@ -66,7 +72,10 @@ export const AI_TOOLS: ToolDefinition[] = [
       type: "object",
       properties: {
         id: { type: "string", description: "Product ID" },
-        title: { type: "string", description: "Product name/title" },
+        searchTerm: {
+          type: "string",
+          description: "Product name/title search",
+        },
       },
     },
   },
@@ -97,12 +106,40 @@ export const AI_TOOLS: ToolDefinition[] = [
     },
   },
   {
+    name: "getOutOfStockProducts",
+    description: "Retrieve all products with 0 units in stock.",
+    parameters: {
+      type: "object",
+      properties: {},
+    },
+  },
+  {
     name: "getInventory",
     description:
       "Get comprehensive inventory overview including total units, stock distribution, and valuation.",
     parameters: {
       type: "object",
       properties: {},
+    },
+  },
+  {
+    name: "getInventorySummary",
+    description:
+      "Get comprehensive inventory overview including total units, valuation, and category breakdown.",
+    parameters: {
+      type: "object",
+      properties: {},
+    },
+  },
+  {
+    name: "getTopSellingProducts",
+    description: "Retrieve best-selling products by rating and review count.",
+    parameters: {
+      type: "object",
+      properties: {
+        limit: { type: "number", description: "Max number of items" },
+        category: { type: "string", description: "Filter by category" },
+      },
     },
   },
   {
@@ -129,6 +166,14 @@ export const AI_TOOLS: ToolDefinition[] = [
     },
   },
   {
+    name: "getSalesStatistics",
+    description: "Retrieve sales metrics and growth statistics.",
+    parameters: {
+      type: "object",
+      properties: {},
+    },
+  },
+  {
     name: "getRevenue",
     description:
       "Retrieve financial revenue breakdown and historical projections.",
@@ -138,9 +183,25 @@ export const AI_TOOLS: ToolDefinition[] = [
     },
   },
   {
+    name: "getRevenueStatistics",
+    description: "Retrieve revenue breakdown and projections.",
+    parameters: {
+      type: "object",
+      properties: {},
+    },
+  },
+  {
     name: "getCustomers",
     description:
       "Get customer account stats, tier distribution (Free, Pro, Enterprise), and activity.",
+    parameters: {
+      type: "object",
+      properties: {},
+    },
+  },
+  {
+    name: "getCustomerStatistics",
+    description: "Get customer account stats and tier distribution.",
     parameters: {
       type: "object",
       properties: {},
