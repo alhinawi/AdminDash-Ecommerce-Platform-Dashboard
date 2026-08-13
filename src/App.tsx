@@ -319,7 +319,7 @@ function ProductsView({
 
           {totalPages > 1 && (
             <div className="mt-8 flex w-full min-w-0 flex-col items-center justify-between gap-4 border-t border-gray-200 pt-6 sm:flex-row dark:border-zinc-800">
-              <span className="text-center text-xs font-medium break-words text-gray-500 sm:text-start dark:text-zinc-400">
+              <span className="text-center text-xs font-medium wrap-break-word text-gray-500 sm:text-start dark:text-zinc-400">
                 {t("common.showing", "Showing")}{" "}
                 <span className="font-semibold text-gray-900 dark:text-white">
                   {startIndex + 1}-{endIndex}
