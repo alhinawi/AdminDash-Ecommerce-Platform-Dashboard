@@ -1,6 +1,6 @@
-onlyBuiltDependencies:
-  - "@google/genai"
-  - protobufjs
+allowBuilds:
+  '@google/genai': true
+  protobufjs: true
 
 minimumReleaseAgeExclude:
   - eslint-plugin-react-refresh@0.5.4
