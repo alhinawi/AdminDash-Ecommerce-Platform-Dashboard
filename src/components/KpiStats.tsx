@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+
 import type { Product } from "../interfaces";
 
 interface KpiStatsProps {
@@ -123,29 +124,29 @@ const KpiStats = ({ products }: KpiStatsProps) => {
       {stats.map((stat) => (
         <div
           key={stat.id}
-          className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-gray-200/80 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
+          className="group relative min-w-0 overflow-hidden rounded-2xl border border-gray-100 bg-white p-4 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-gray-200/80 hover:shadow-md min-[360px]:p-5 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
         >
           {/* Subtle Top Accent Line */}
           <div
             className={`absolute top-0 right-0 left-0 h-1 bg-linear-to-r ${stat.accentColor} opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
           />
 
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-slate-400">
+          <div className="flex min-w-0 items-center justify-between gap-2">
+            <span className="min-w-0 flex-1 text-xs font-semibold tracking-wider [overflow-wrap:anywhere] break-words text-gray-500 uppercase dark:text-slate-400">
               {stat.title}
             </span>
             <div
-              className={`flex h-10 w-10 items-center justify-center rounded-xl border ${stat.badgeColor} dark:bg-opacity-20 transition-transform duration-300 group-hover:scale-110`}
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${stat.badgeColor} dark:bg-opacity-20 transition-transform duration-300 group-hover:scale-110`}
             >
               {stat.icon}
             </div>
           </div>
 
-          <div className="mt-3">
-            <div className="text-2xl font-black tracking-tight text-gray-900 dark:text-white">
+          <div className="mt-3 min-w-0">
+            <div className="truncate text-2xl font-black tracking-tight text-gray-900 dark:text-white">
               {stat.value}
             </div>
-            <p className="mt-1 text-xs font-medium text-gray-500 dark:text-slate-400">
+            <p className="mt-1 text-xs font-medium [overflow-wrap:anywhere] break-words text-gray-500 dark:text-slate-400">
               {stat.subtitle}
             </p>
           </div>

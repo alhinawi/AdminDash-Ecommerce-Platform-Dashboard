@@ -1,7 +1,8 @@
 import { Sparkles, User as UserIcon, Wrench } from "lucide-react";
+
 import type { ChatMessage } from "../../types/ai";
-import AIConfirmation from "./AIConfirmation";
 import AIChartRenderer from "./AIChartRenderer";
+import AIConfirmation from "./AIConfirmation";
 
 interface AIMessageProps {
   message: ChatMessage;

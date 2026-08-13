@@ -1,5 +1,5 @@
 import i18n from "../i18n";
-import type { ProductFormFields, ProductFormErrors } from "../types";
+import type { ProductFormErrors, ProductFormFields } from "../types";
 
 export const productValidation = (product: ProductFormFields) => {
   const errors: ProductFormErrors = {

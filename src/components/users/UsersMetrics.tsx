@@ -1,4 +1,12 @@
 import { useMemo } from "react";
+
+import {
+  ShieldCheck,
+  Sparkles,
+  TrendingUp,
+  UserCheck,
+  Users,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   Area,
@@ -11,13 +19,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import {
-  Users,
-  UserCheck,
-  ShieldCheck,
-  TrendingUp,
-  Sparkles,
-} from "lucide-react";
+
 import type { User } from "../../types/user";
 
 interface UsersMetricsProps {

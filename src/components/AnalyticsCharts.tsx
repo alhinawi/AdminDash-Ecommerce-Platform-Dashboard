@@ -1,5 +1,7 @@
 import { useState } from "react";
+
 import { useTranslation } from "react-i18next";
+
 import type { Product } from "../interfaces";
 import GoogleFinanceChart from "./GoogleFinanceChart";
 import Toggle from "./ui/Toggle";
@@ -363,10 +365,10 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
     <div className="mb-10 rounded-2xl border border-gray-100 bg-white p-6 shadow-xs transition-all dark:border-slate-800 dark:bg-slate-900">
       {/* Header & Controls */}
       <div className="flex flex-col justify-between gap-y-4 border-b border-gray-100 pb-6 sm:flex-row sm:items-center dark:border-slate-800">
-        <div>
-          <div className="flex items-center gap-x-2">
-            <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-indigo-600 dark:bg-indigo-400" />
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <span className="h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-indigo-600 dark:bg-indigo-400" />
+            <h3 className="text-lg font-bold [overflow-wrap:anywhere] break-words text-gray-900 dark:text-white">
               {t(
                 "analytics.realTimeCatalog",
                 "Catalog Analytics & Visual Graphs",
@@ -378,7 +380,7 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
               </span>
             )}
           </div>
-          <p className="mt-0.5 text-xs text-gray-500 dark:text-slate-400">
+          <p className="mt-0.5 text-xs leading-relaxed [overflow-wrap:anywhere] break-words text-gray-500 dark:text-slate-400">
             {t(
               "analytics.analyticsDescription",
               "Interactive SVG charts, inventory market share, and price curves",
@@ -387,9 +389,9 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
         </div>
 
         {/* Controls */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex max-w-full flex-wrap items-center gap-2 sm:gap-3">
           {/* Global Demo Mode Toggle */}
-          <div className="flex items-center gap-x-2 rounded-xl border border-gray-200/50 bg-gray-100/80 px-3 py-1.5 text-xs font-medium transition-all dark:border-slate-700/50 dark:bg-slate-800/80">
+          <div className="flex shrink-0 items-center gap-x-2 rounded-xl border border-gray-200/50 bg-gray-100/80 px-3 py-1.5 text-xs font-medium transition-all dark:border-slate-700/50 dark:bg-slate-800/80">
             <span className="flex items-center gap-1.5 font-semibold text-gray-700 select-none dark:text-slate-300">
               <span
                 className={`h-2 w-2 rounded-full transition-colors ${
@@ -409,11 +411,11 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
           </div>
 
           {/* Tabs */}
-          <div className="flex items-center rounded-xl bg-gray-100/80 p-1 text-xs font-medium dark:bg-slate-800/80">
+          <div className="flex max-w-full flex-wrap items-center gap-1 rounded-xl bg-gray-100/80 p-1 text-xs font-medium dark:bg-slate-800/80">
             <button
               type="button"
               onClick={() => setActiveTab("overview")}
-              className={`cursor-pointer rounded-lg px-3 py-1.5 transition-all ${
+              className={`min-w-0 cursor-pointer rounded-lg px-2.5 py-1.5 text-center break-words whitespace-normal transition-all ${
                 activeTab === "overview"
                   ? "text-accent bg-white font-semibold shadow-xs dark:bg-slate-700"
                   : "text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white"
@@ -424,7 +426,7 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
             <button
               type="button"
               onClick={() => setActiveTab("categories")}
-              className={`cursor-pointer rounded-lg px-3 py-1.5 transition-all ${
+              className={`min-w-0 cursor-pointer rounded-lg px-2.5 py-1.5 text-center break-words whitespace-normal transition-all ${
                 activeTab === "categories"
                   ? "text-accent bg-white font-semibold shadow-xs dark:bg-slate-700"
                   : "text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white"
@@ -436,7 +438,7 @@ const AnalyticsCharts = ({ products }: AnalyticsChartsProps) => {
             <button
               type="button"
               onClick={() => setActiveTab("pricing")}
-              className={`cursor-pointer rounded-lg px-3 py-1.5 transition-all ${
+              className={`min-w-0 cursor-pointer rounded-lg px-2.5 py-1.5 text-center break-words whitespace-normal transition-all ${
                 activeTab === "pricing"
                   ? "text-accent bg-white font-semibold shadow-xs dark:bg-slate-700"
                   : "text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white"

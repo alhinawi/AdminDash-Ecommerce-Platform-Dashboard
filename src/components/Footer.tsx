@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -47,51 +48,24 @@ const Footer = () => {
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <a href="#" className="transition-colors hover:text-white">
+                <Link to="/?category=all" className="transition-colors hover:text-white">
                   {t("footer.productCatalog", "Product Catalog")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#products-grid"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document
-                      .getElementById("products-grid")
-                      ?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="transition-colors hover:text-white"
-                >
+                <Link to="/#products-grid" className="transition-colors hover:text-white">
                   {t("footer.allProducts", "All Products")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#categories-section"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document
-                      .getElementById("categories-section")
-                      ?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="transition-colors hover:text-white"
-                >
+                <Link to="/#categories-section" className="transition-colors hover:text-white">
                   {t("footer.categories", "Categories")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#analytics-section"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document
-                      .getElementById("analytics-section")
-                      ?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="transition-colors hover:text-white"
-                >
+                <Link to="/#analytics-section" className="transition-colors hover:text-white">
                   {t("footer.analyticsReports", "Analytics & Reports")}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -103,24 +77,24 @@ const Footer = () => {
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <a href="#" className="transition-colors hover:text-white">
+                <Link to="/?category=electronics" className="transition-colors hover:text-white">
                   {t("footer.electronics", "Electronics")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="transition-colors hover:text-white">
+                <Link to="/?category=clothes" className="transition-colors hover:text-white">
                   {t("footer.clothesFashion", "Clothes & Fashion")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="transition-colors hover:text-white">
+                <Link to="/?category=furniture" className="transition-colors hover:text-white">
                   {t("footer.furnitureDecor", "Furniture & Decor")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="transition-colors hover:text-white">
+                <Link to="/?category=automotive" className="transition-colors hover:text-white">
                   {t("footer.automotive", "Automotive & Vehicles")}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -132,24 +106,24 @@ const Footer = () => {
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <a href="#" className="transition-colors hover:text-white">
+                <Link to="/docs" className="transition-colors hover:text-white">
                   {t("footer.documentation", "Documentation")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="transition-colors hover:text-white">
+                <Link to="/api-reference" className="transition-colors hover:text-white">
                   {t("footer.apiReference", "API Reference")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="transition-colors hover:text-white">
+                <Link to="/help-center" className="transition-colors hover:text-white">
                   {t("footer.helpCenter", "Help Center")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="transition-colors hover:text-white">
+                <Link to="/privacy-policy" className="transition-colors hover:text-white">
                   {t("footer.privacyPolicy", "Privacy Policy")}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -162,15 +136,15 @@ const Footer = () => {
             {t("footer.copyright", "All rights reserved.")}
           </p>
           <div className="flex gap-x-4">
-            <a href="#" className="transition-colors hover:text-slate-400">
+            <Link to="/terms" className="transition-colors hover:text-slate-400">
               {t("footer.terms", "Terms")}
-            </a>
-            <a href="#" className="transition-colors hover:text-slate-400">
+            </Link>
+            <Link to="/privacy-policy" className="transition-colors hover:text-slate-400">
               {t("footer.privacy", "Privacy")}
-            </a>
-            <a href="#" className="transition-colors hover:text-slate-400">
+            </Link>
+            <Link to="/cookie-policy" className="transition-colors hover:text-slate-400">
               {t("footer.cookies", "Cookies")}
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
+
 import { useAI } from "../../context/AIContext";
 
 export default function FloatingAIButton() {

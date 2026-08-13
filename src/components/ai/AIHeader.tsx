@@ -1,5 +1,6 @@
-import { Sparkles, X, Trash2 } from "lucide-react";
+import { Sparkles, Trash2, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+
 import { useAI } from "../../context/AIContext";
 
 interface AIHeaderProps {

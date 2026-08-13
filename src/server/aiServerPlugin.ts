@@ -1,5 +1,6 @@
-import type { Plugin, ViteDevServer } from "vite";
 import type { IncomingMessage, ServerResponse } from "http";
+import type { Plugin, ViteDevServer } from "vite";
+
 import handler from "../../api/chat";
 
 export function aiServerPlugin(): Plugin {

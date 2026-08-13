@@ -1,14 +1,15 @@
-import { useState, useRef, useEffect, useCallback } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useCallback, useEffect, useRef, useState } from "react";
+
 import {
-  ChevronDown,
-  Settings,
-  LogOut,
-  ShieldCheck,
   BarChart2,
+  ChevronDown,
+  LogOut,
+  Settings,
+  ShieldCheck,
   Users,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useThemeContext } from "../context/ThemeContext";
 
@@ -121,8 +122,8 @@ export default function ProfileMenu({
           />
         </div>
 
-        {/* User Info (Visible on Tablet / Desktop) */}
-        <div className="hidden flex-col text-left md:flex">
+        {/* User Info (Visible on Desktop >= 1280px) */}
+        <div className="hidden flex-col text-left xl:flex">
           <span className="truncate text-xs font-semibold text-zinc-900 dark:text-zinc-100">
             {user.name}
           </span>
@@ -133,7 +134,7 @@ export default function ProfileMenu({
 
         {/* Dropdown Caret Icon */}
         <ChevronDown
-          className={`h-3.5 w-3.5 shrink-0 text-zinc-400 transition-transform duration-200 group-hover:text-zinc-600 sm:h-4 sm:w-4 dark:group-hover:text-zinc-200 ${
+          className={`h-3.5 w-3.5 shrink-0 text-zinc-400 transition-transform duration-200 group-hover:text-zinc-600 sm:h-4 sm:w-4 dark:group-hover:text-zinc-200 hidden xl:inline ${
             isOpen ? "rotate-180" : ""
           }`}
         />

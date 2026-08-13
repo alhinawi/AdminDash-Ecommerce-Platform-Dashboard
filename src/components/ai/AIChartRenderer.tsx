@@ -1,11 +1,12 @@
 import {
-  BarChart,
   Bar,
+  BarChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
-  ResponsiveContainer,
 } from "recharts";
+
 import type { ChartData } from "../../types/ai";
 
 interface AIChartRendererProps {

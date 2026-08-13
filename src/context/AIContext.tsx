@@ -1,17 +1,19 @@
-import type { ReactNode } from "react";
 import {
   createContext,
-  useContext,
-  useState,
   useCallback,
+  useContext,
   useMemo,
+  useState,
 } from "react";
+
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import type { ChatMessage, PendingAction } from "../types/ai";
+
 import type { Product } from "../interfaces";
-import type { User } from "../types/user";
 import { generateDashboardContext } from "../services/ai/aiContext";
 import { sendChatMessage } from "../services/ai/aiService";
+import type { ChatMessage, PendingAction } from "../types/ai";
+import type { User } from "../types/user";
 import { getLocalizedText } from "../utils/productUtils";
 
 interface AIContextType {

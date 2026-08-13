@@ -1,5 +1,6 @@
-import { TrendingUp, AlertTriangle, Star, BarChart3 } from "lucide-react";
+import { AlertTriangle, BarChart3, Star, TrendingUp } from "lucide-react";
 import { useTranslation } from "react-i18next";
+
 import { useAI } from "../../context/AIContext";
 
 export default function AISuggestions() {

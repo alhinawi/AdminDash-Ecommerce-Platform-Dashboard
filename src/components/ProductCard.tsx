@@ -1,11 +1,12 @@
-import { useTranslation } from "react-i18next";
-import Button from "./ui/Button";
-import Image from "./Image";
-import ColorCircle from "./ui/ColorCircle";
-import type { Product } from "../interfaces";
-import { categories } from "../data";
 import { Star } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
+import { categories } from "../data";
+import type { Product } from "../interfaces";
 import { getLocalizedText } from "../utils/productUtils";
+import Image from "./Image";
+import Button from "./ui/Button";
+import ColorCircle from "./ui/ColorCircle";
 
 interface Props {
   product?: Product;
@@ -77,7 +78,7 @@ const ProductCard = ({ product, setProductToEdit, onDelete }: Props) => {
   };
 
   return (
-    <div className="group relative mx-auto flex w-full max-w-sm flex-col overflow-hidden rounded-2xl border border-gray-200/90 bg-white p-3.5 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl sm:mx-0 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 dark:hover:shadow-2xl dark:hover:shadow-black/60">
+    <div className="group relative mx-auto flex w-full max-w-sm min-w-0 flex-col overflow-hidden rounded-2xl border border-gray-200/90 bg-white p-3.5 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl sm:mx-0 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 dark:hover:shadow-2xl dark:hover:shadow-black/60">
       {/* Product Image Container */}
       <div className="relative aspect-16/15 w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-slate-800">
         <Image
@@ -90,19 +91,19 @@ const ProductCard = ({ product, setProductToEdit, onDelete }: Props) => {
         />
 
         {/* Top Badges overlay */}
-        <div className="pointer-events-none absolute top-2 right-2 left-2 flex items-center justify-between">
-          <span className="rounded-md bg-black/60 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-zinc-200 backdrop-blur-md">
+        <div className="pointer-events-none absolute top-2 right-2 left-2 flex items-center justify-between gap-1">
+          <span className="truncate rounded-md bg-black/60 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-zinc-200 backdrop-blur-md">
             {sku}
           </span>
-          {stockBadge}
+          <div className="shrink-0">{stockBadge}</div>
         </div>
       </div>
 
       {/* Product Information */}
-      <div className="flex flex-1 flex-col gap-y-2 pt-3">
+      <div className="flex min-w-0 flex-1 flex-col gap-y-2 pt-3">
         {/* Rating and Reviews */}
-        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-slate-400">
-          <div className="flex items-center gap-1">
+        <div className="flex items-center justify-between gap-1 text-xs text-gray-500 dark:text-slate-400">
+          <div className="flex shrink-0 items-center gap-1">
             <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
             <span className="font-bold text-gray-900 dark:text-white">
               {rating}
@@ -111,15 +112,15 @@ const ProductCard = ({ product, setProductToEdit, onDelete }: Props) => {
               ({reviewCount})
             </span>
           </div>
-          <span className="text-[11px] font-medium text-gray-400 capitalize dark:text-slate-500">
+          <span className="text-end text-[11px] leading-tight font-medium wrap-break-word text-gray-400 capitalize dark:text-slate-500">
             {t("categories." + category.name.toLowerCase(), category.name)}
           </span>
         </div>
 
-        <h3 className="group-hover:text-accent line-clamp-1 text-base font-bold text-gray-900 transition-colors dark:text-white">
+        <h3 className="group-hover:text-accent line-clamp-1 text-base font-bold wrap-anywhere text-gray-900 transition-colors dark:text-white">
           {displayTitle}
         </h3>
-        <p className="line-clamp-2 min-h-8 text-xs leading-relaxed wrap-break-word text-gray-600 dark:text-slate-300">
+        <p className="line-clamp-2 min-h-8 text-xs leading-relaxed wrap-anywhere text-gray-600 dark:text-slate-300">
           {displayDescription}
         </p>
 
@@ -135,35 +136,35 @@ const ProductCard = ({ product, setProductToEdit, onDelete }: Props) => {
         </div>
 
         {/* Price & Category */}
-        <div className="mt-auto flex items-center justify-between gap-x-2 pt-1">
-          <span className="text-accent text-xl font-extrabold tracking-tight">
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-1">
+          <span className="text-accent shrink-0 text-xl font-extrabold tracking-tight">
             ${Number(price).toLocaleString("en-US")}
           </span>
 
-          <div className="flex items-center gap-x-1.5 rounded-full border border-gray-200 bg-gray-100/80 px-2.5 py-1 shadow-2xs dark:border-slate-700 dark:bg-slate-800">
-            <p className="text-xs font-semibold text-gray-800 capitalize dark:text-slate-200">
+          <div className="flex max-w-full min-w-0 items-center gap-x-1.5 rounded-full border border-gray-200 bg-gray-100/80 px-2.5 py-1 shadow-2xs dark:border-slate-700 dark:bg-slate-800">
+            <span className="text-xs leading-tight font-semibold wrap-break-word whitespace-normal text-gray-800 capitalize dark:text-slate-200">
               {t("categories." + category.name.toLowerCase(), category.name)}
-            </p>
+            </span>
             <Image
               imageSrc={categoryImageURL}
               altText={category.name}
-              className="h-6 w-6 rounded-full object-cover ring-1 ring-gray-300 dark:ring-slate-600"
+              className="h-6 w-6 shrink-0 rounded-full object-cover ring-1 ring-gray-300 dark:ring-slate-600"
             />
           </div>
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-x-2.5 pt-3">
+        <div className="flex flex-col items-stretch gap-2 pt-3 min-[350px]:flex-row">
           <Button
             type="button"
-            className="bg-accent shadow-accent-glow hover:bg-accent-hover text-xs font-semibold tracking-wider text-white shadow-xs transition-all duration-200 hover:shadow-md"
+            className="bg-accent shadow-accent-glow hover:bg-accent-hover min-w-0 px-2 py-2 text-center text-xs font-semibold tracking-wider wrap-break-word text-white shadow-xs transition-all duration-200 hover:shadow-md"
             onClick={handleProductEdit}
           >
             {t("products.edit", "EDIT")}
           </Button>
           <Button
             type="button"
-            className="bg-rose-600 text-xs font-semibold tracking-wider text-white shadow-xs shadow-rose-600/20 transition-all duration-200 hover:bg-rose-700 hover:shadow-md"
+            className="min-w-0 bg-rose-600 px-2 py-2 text-center text-xs font-semibold tracking-wider wrap-break-word text-white shadow-xs shadow-rose-600/20 transition-all duration-200 hover:bg-rose-700 hover:shadow-md"
             onClick={() => {
               if (product?.id && onDelete) {
                 onDelete(product.id);

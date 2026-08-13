@@ -1,18 +1,19 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+
 import {
-  Package,
-  Mail,
-  Lock,
+  ArrowRight,
+  DollarSign,
   Eye,
   EyeOff,
-  TrendingUp,
-  DollarSign,
   Layers,
-  ArrowRight,
+  Lock,
+  Mail,
+  Package,
   ShieldCheck,
+  TrendingUp,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const { t } = useTranslation();

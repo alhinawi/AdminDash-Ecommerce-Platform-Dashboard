@@ -1,16 +1,17 @@
-import { useTranslation } from "react-i18next";
 import {
-  X,
-  Mail,
-  Globe,
+  AlertTriangle,
   Calendar,
+  CheckCircle2,
   Clock,
+  Globe,
+  Mail,
   Shield,
   Sparkles,
-  CheckCircle2,
-  AlertTriangle,
   Trash2,
+  X,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
 import type { User } from "../../types/user";
 
 interface UserDetailDrawerProps {

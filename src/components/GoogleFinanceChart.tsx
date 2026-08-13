@@ -1,4 +1,5 @@
 import { useId, useState } from "react";
+
 import { useTranslation } from "react-i18next";
 
 type TimeRange = "1M" | "6M" | "1Y" | "ALL";
@@ -142,6 +143,52 @@ const GoogleFinanceChart = () => {
     });
 
     setHoveredIndex(closestIdx);
+  };
+
+  const getLocalizedLabel = (label: string) => {
+    const parts = label.trim().split(" ");
+    if (parts.length === 2) {
+      const monthPart = parts[0].toLowerCase();
+      const dayPart = parts[1];
+      let monthName = parts[0];
+      if (monthPart.startsWith("jan")) monthName = t("months.jan", "Jan");
+      else if (monthPart.startsWith("feb")) monthName = t("months.feb", "Feb");
+      else if (monthPart.startsWith("mar") || monthPart.startsWith("mär"))
+        monthName = t("months.mar", "Mar");
+      else if (monthPart.startsWith("apr")) monthName = t("months.apr", "Apr");
+      else if (monthPart.startsWith("may") || monthPart.startsWith("mai"))
+        monthName = t("months.may", "May");
+      else if (monthPart.startsWith("jun")) monthName = t("months.jun", "Jun");
+      else if (monthPart.startsWith("jul")) monthName = t("months.jul", "Jul");
+      else if (monthPart.startsWith("aug")) monthName = t("months.aug", "Aug");
+      else if (monthPart.startsWith("sep")) monthName = t("months.sep", "Sep");
+      else if (monthPart.startsWith("oct") || monthPart.startsWith("okt"))
+        monthName = t("months.oct", "Oct");
+      else if (monthPart.startsWith("nov")) monthName = t("months.nov", "Nov");
+      else if (monthPart.startsWith("dec") || monthPart.startsWith("dez"))
+        monthName = t("months.dec", "Dec");
+      return `${monthName} ${dayPart}`;
+    }
+
+    const norm = label.toLowerCase();
+    if (norm.startsWith("jan")) return t("months.jan", "Jan");
+    if (norm.startsWith("feb")) return t("months.feb", "Feb");
+    if (norm.startsWith("mar") || norm.startsWith("mär"))
+      return t("months.mar", "Mar");
+    if (norm.startsWith("apr")) return t("months.apr", "Apr");
+    if (norm.startsWith("may") || norm.startsWith("mai"))
+      return t("months.may", "May");
+    if (norm.startsWith("jun")) return t("months.jun", "Jun");
+    if (norm.startsWith("jul")) return t("months.jul", "Jul");
+    if (norm.startsWith("aug")) return t("months.aug", "Aug");
+    if (norm.startsWith("sep")) return t("months.sep", "Sep");
+    if (norm.startsWith("oct") || norm.startsWith("okt"))
+      return t("months.oct", "Oct");
+    if (norm.startsWith("nov")) return t("months.nov", "Nov");
+    if (norm.startsWith("dec") || norm.startsWith("dez"))
+      return t("months.dec", "Dec");
+
+    return label;
   };
 
   const getRangeLabel = (tab: TimeRange) => {
@@ -299,16 +346,23 @@ const GoogleFinanceChart = () => {
 
         {/* X-Axis Labels */}
         <div className="flex items-center justify-between px-1 pt-3 text-[11px] font-medium text-gray-400 dark:text-slate-500">
-          {coords.map((pt, idx) => (
-            <span
-              key={pt.label + idx}
-              className={`transition-colors ${
-                hoveredIndex === idx ? "text-accent font-bold" : ""
-              }`}
-            >
-              {pt.label}
-            </span>
-          ))}
+          {coords.map((pt, idx) => {
+            const isEverySecond = idx % 2 === 1;
+            const hideOnMobile = coords.length > 7 && isEverySecond;
+
+            return (
+              <span
+                key={pt.label + idx}
+                className={`text-center transition-colors ${
+                  hideOnMobile
+                    ? "hidden min-[480px]:inline-block"
+                    : "inline-block"
+                } ${hoveredIndex === idx ? "text-accent font-bold" : ""}`}
+              >
+                {getLocalizedLabel(pt.label)}
+              </span>
+            );
+          })}
         </div>
       </div>
     </div>

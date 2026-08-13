@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
+
 import { useAI } from "../../context/AIContext";
+import AIError from "./AIError";
 import AIMessage from "./AIMessage";
 import AISuggestions from "./AISuggestions";
 import AIThinkingIndicator from "./AIThinkingIndicator";
-import AIError from "./AIError";
 
 export default function AIMessageList() {
   const { messages, isThinking, error } = useAI();

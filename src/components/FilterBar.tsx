@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+
 import type { Category } from "../interfaces";
 import Select, { type SelectOption } from "./ui/Select";
 
@@ -119,14 +120,14 @@ const FilterBar = ({
         </div>
 
         {/* Filters & Sorting Controls */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex w-full flex-wrap items-center gap-2 md:w-auto">
           {/* Category Dropdown */}
           <Select
             options={categoryOptions}
             value={selectedCategory}
             onChange={setSelectedCategory}
             size="sm"
-            className="w-44"
+            className="w-full min-w-0 sm:w-44"
           />
 
           {/* Stock Status Dropdown */}
@@ -136,7 +137,7 @@ const FilterBar = ({
               value={stockStatus}
               onChange={setStockStatus}
               size="sm"
-              className="w-44"
+              className="w-full min-w-0 sm:w-44"
             />
           )}
 
@@ -146,7 +147,7 @@ const FilterBar = ({
             value={sortBy}
             onChange={setSortBy}
             size="sm"
-            className="w-48"
+            className="w-full min-w-0 sm:w-48"
           />
 
           {/* Clear Filters Button */}
@@ -154,7 +155,7 @@ const FilterBar = ({
             <button
               type="button"
               onClick={clearAllFilters}
-              className="cursor-pointer rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5 text-xs font-semibold text-rose-600 transition-all hover:bg-rose-100 dark:border-rose-900/50 dark:bg-rose-950/40 dark:text-rose-400 dark:hover:bg-rose-900/60"
+              className="w-full cursor-pointer rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5 text-xs font-semibold text-rose-600 transition-all hover:bg-rose-100 sm:w-auto dark:border-rose-900/50 dark:bg-rose-950/40 dark:text-rose-400 dark:hover:bg-rose-900/60"
             >
               {t("common.resetFilters", "Clear Filters")}
             </button>

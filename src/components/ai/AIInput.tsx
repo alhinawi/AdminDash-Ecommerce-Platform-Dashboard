@@ -1,7 +1,9 @@
-import type { KeyboardEvent, ChangeEvent } from "react";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
+
 import { SendHorizonal } from "lucide-react";
+import type { ChangeEvent, KeyboardEvent } from "react";
 import { useTranslation } from "react-i18next";
+
 import { useAI } from "../../context/AIContext";
 
 export default function AIInput() {

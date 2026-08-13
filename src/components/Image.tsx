@@ -1,14 +1,16 @@
 import { useState } from "react";
+
 import {
+  Armchair,
+  Camera,
+  Car,
+  Footprints,
+  ImageOff,
   Laptop,
   Shirt,
-  Camera,
-  Armchair,
-  Footprints,
-  Car,
   Watch,
-  ImageOff,
 } from "lucide-react";
+
 import { cn } from "../utils/cn";
 
 interface Props {

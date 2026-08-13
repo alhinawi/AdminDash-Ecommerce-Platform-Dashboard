@@ -1,4 +1,5 @@
 import { v4 as uuid } from "uuid";
+
 import type { Category, FormInput, Product } from "../interfaces";
 
 export const productList: Product[] = [
@@ -553,7 +554,7 @@ export const productList: Product[] = [
     description:
       "Ultra-compact carbon fiber tripod that packs down to the diameter of a water bottle. Holds up to 20 lbs with ergonomic ball head.",
     imageURL:
-      "https://images.unsplash.com/photo-1495707902641-75cac588d2e9?auto=format&fit=crop&w=800&q=80",
+      "https://i.pinimg.com/1200x/01/16/9b/01169b0d7d8827cffc460559bac9bbe5.jpg",
     price: "649",
     colors: ["#121212"],
     stock: 25,

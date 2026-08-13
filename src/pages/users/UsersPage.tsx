@@ -1,12 +1,14 @@
 import { useState } from "react";
+
+import { CheckCircle2, RefreshCw, UserPlus } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { UserPlus, RefreshCw, CheckCircle2 } from "lucide-react";
-import type { User, Status } from "@/types/user";
-import { mockUsers } from "@/data/mockUsers";
-import UsersMetrics from "@/components/users/UsersMetrics";
-import UsersTable from "@/components/users/UsersTable";
+
 import UserDetailDrawer from "@/components/users/UserDetailDrawer";
 import UserFormModal from "@/components/users/UserFormModal";
+import UsersMetrics from "@/components/users/UsersMetrics";
+import UsersTable from "@/components/users/UsersTable";
+import { mockUsers } from "@/data/mockUsers";
+import type { Status, User } from "@/types/user";
 
 export default function UsersPage() {
   const { t } = useTranslation();

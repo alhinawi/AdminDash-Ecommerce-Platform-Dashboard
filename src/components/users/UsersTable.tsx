@@ -1,37 +1,40 @@
-import { useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useMemo, useState } from "react";
+
 import {
-  useReactTable,
+  ArrowUpDown,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsUpDown,
+  ChevronUp,
+  Download,
+  Edit2,
+  Eye,
+  MoreHorizontal,
+  Search,
+  SlidersHorizontal,
+  Sparkles,
+  Trash2,
+  UserCheck,
+  UserX,
+} from "lucide-react";
+import { useTranslation } from "react-i18next";
+
+import type { Plan, Role, Status, User } from "../../types/user";
+import Select from "../ui/Select";
+
+import {
+  type ColumnDef,
+  type ColumnFiltersState,
+  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  flexRender,
-  type ColumnDef,
   type SortingState,
-  type ColumnFiltersState,
+  useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table";
-import {
-  ArrowUpDown,
-  ChevronDown,
-  ChevronUp,
-  ChevronsUpDown,
-  MoreHorizontal,
-  Search,
-  SlidersHorizontal,
-  Download,
-  Eye,
-  Edit2,
-  Trash2,
-  UserCheck,
-  UserX,
-  Sparkles,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
-import type { User, Role, Plan, Status } from "../../types/user";
-import Select from "../ui/Select";
 
 interface UsersTableProps {
   users: User[];

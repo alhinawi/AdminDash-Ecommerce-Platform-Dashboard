@@ -1,26 +1,28 @@
-import { useState, useRef, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { useEffect, useRef, useState } from "react";
+
 import {
-  User,
-  Palette,
-  LayoutDashboard,
   Bell,
-  ShieldCheck,
   Database,
-  Save,
   Download,
-  Upload,
-  Sun,
-  Moon,
   FlaskConical,
   KeyRound,
+  LayoutDashboard,
+  Moon,
+  Palette,
+  Save,
+  ShieldCheck,
   Smartphone,
   Sparkles,
+  Sun,
+  Upload,
+  User,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
 import Button from "../../components/ui/Button";
-import Toggle from "../../components/ui/Toggle";
 import Select from "../../components/ui/Select";
-import { useThemeContext, type AccentColor } from "../../context/ThemeContext";
+import Toggle from "../../components/ui/Toggle";
+import { type AccentColor, useThemeContext } from "../../context/ThemeContext";
 
 interface SettingsPageProps {
   darkMode: boolean;

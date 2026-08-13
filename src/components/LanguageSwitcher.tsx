@@ -1,12 +1,14 @@
-import { useState, useRef, useEffect, useCallback } from "react";
-import { useTranslation } from "react-i18next";
+import { useCallback, useEffect, useRef, useState } from "react";
+
 import { Check } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
+import { useThemeContext } from "../context/ThemeContext";
 import {
+  type LanguageOption,
   SUPPORTED_LANGUAGES,
   type SupportedLanguage,
-  type LanguageOption,
 } from "../i18n/types";
-import { useThemeContext } from "../context/ThemeContext";
 import FlagIcon from "./ui/FlagIcon";
 
 export default function LanguageSwitcher() {
@@ -71,10 +73,10 @@ export default function LanguageSwitcher() {
         aria-haspopup="true"
         aria-label={t("nav.selectLanguage", "Select Language")}
         title={t("nav.language", "Language")}
-        className="flex h-8 cursor-pointer items-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 px-1.5 text-xs font-semibold text-zinc-700 transition-all duration-200 hover:bg-zinc-100 sm:h-9 sm:px-2.5 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+        className="flex h-8 cursor-pointer items-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 px-1.5 text-xs font-semibold text-zinc-700 transition-all duration-200 hover:bg-zinc-100 sm:h-9 sm:px-2 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
       >
-        <FlagIcon code={currentLang.code} className="h-3.5 w-5" />
-        <span className="hidden font-mono text-[11px] font-bold tracking-wider uppercase sm:inline">
+        <FlagIcon code={currentLang.code} className="h-3.5 w-4.5" />
+        <span className="hidden font-mono text-[11px] font-bold tracking-wider uppercase xl:inline">
           {currentLang.code.toUpperCase()}
         </span>
       </button>

@@ -1,10 +1,12 @@
-import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
+
+import { Mail, User as UserIcon, X } from "lucide-react";
+import type { ChangeEvent, FormEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { X, User as UserIcon, Mail } from "lucide-react";
+
 import type { User } from "../../types/user";
-import Select from "../ui/Select";
 import SearchableSelect from "../ui/SearchableSelect";
+import Select from "../ui/Select";
 
 interface UserFormModalProps {
   isOpen: boolean;

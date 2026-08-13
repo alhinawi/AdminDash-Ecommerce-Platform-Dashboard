@@ -1,11 +1,12 @@
-import {
-  GoogleGenAI,
-  Type,
-  type FunctionDeclaration,
-  type Content,
-  type Part,
-} from "@google/genai";
 import type { IncomingMessage, ServerResponse } from "http";
+
+import {
+  type Content,
+  type FunctionDeclaration,
+  GoogleGenAI,
+  type Part,
+  Type,
+} from "@google/genai";
 
 interface ChatMessageInput {
   role: "user" | "assistant" | "system" | "tool" | "model";

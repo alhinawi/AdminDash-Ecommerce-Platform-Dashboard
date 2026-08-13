@@ -1,7 +1,8 @@
-import { AlertTriangle, Check, X, ShieldAlert } from "lucide-react";
+import { AlertTriangle, Check, ShieldAlert, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import type { PendingAction } from "../../types/ai";
+
 import { useAI } from "../../context/AIContext";
+import type { PendingAction } from "../../types/ai";
 
 interface AIConfirmationProps {
   messageId: string;

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 import { Command as CommandPrimitive } from "cmdk";
 import { Search } from "lucide-react";
 
@@ -101,9 +102,9 @@ CommandItem.displayName = CommandPrimitive.Item.displayName;
 
 export {
   Command,
-  CommandInput,
-  CommandList,
   CommandEmpty,
   CommandGroup,
+  CommandInput,
   CommandItem,
+  CommandList,
 };

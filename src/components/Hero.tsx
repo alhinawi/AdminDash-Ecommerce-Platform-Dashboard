@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import useEmblaCarousel from "embla-carousel-react";
+
 import Autoplay from "embla-carousel-autoplay";
+import useEmblaCarousel from "embla-carousel-react";
+import { useTranslation } from "react-i18next";
+
 import Button from "./ui/Button";
 
 interface Props {
@@ -140,33 +142,35 @@ const Hero = ({ onAddProduct }: Props) => {
           {heroSlides.map((s) => (
             <div
               key={s.id}
-              className="relative z-10 flex min-h-70 w-full min-w-full shrink-0 flex-col justify-center p-8 pb-16 md:p-12 md:pb-20"
+              className="relative z-10 flex min-h-70 w-full min-w-full shrink-0 flex-col justify-center p-5 pb-16 min-[360px]:p-8 min-[360px]:pb-16 md:p-12 md:pb-20"
             >
-              <div className="max-w-2xl sm:pl-2">
+              <div className="max-w-2xl min-w-0 sm:pl-2">
                 {/* Badge */}
-                <div className="mb-4 inline-flex w-fit items-center gap-x-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold text-indigo-200 backdrop-blur-md">
-                  <span className="h-2 w-2 animate-pulse rounded-full bg-indigo-400" />
-                  {s.badge}
+                <div className="mb-4 inline-flex max-w-full items-center gap-x-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold [overflow-wrap:anywhere] break-words text-indigo-200 backdrop-blur-md">
+                  <span className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-indigo-400" />
+                  <span className="[overflow-wrap:anywhere] break-words">
+                    {s.badge}
+                  </span>
                 </div>
 
                 {/* Heading */}
-                <h1 className="mb-4 text-3xl leading-tight font-extrabold tracking-tight md:text-5xl">
+                <h1 className="mb-4 text-2xl leading-tight font-extrabold tracking-tight [overflow-wrap:anywhere] break-words min-[360px]:text-3xl md:text-5xl">
                   {s.headingTitle} <br />
-                  <span className="bg-linear-to-r from-indigo-200 via-purple-200 to-pink-200 bg-clip-text text-transparent">
+                  <span className="bg-linear-to-r from-indigo-200 via-purple-200 to-pink-200 bg-clip-text [overflow-wrap:anywhere] break-words text-transparent">
                     {s.headingHighlight}
                   </span>
                 </h1>
 
                 {/* Subtitle */}
-                <p className="mb-6 text-sm leading-relaxed text-indigo-100/80 md:text-base">
+                <p className="mb-6 text-xs leading-relaxed [overflow-wrap:anywhere] break-words text-indigo-100/80 min-[360px]:text-sm md:text-base">
                   {s.subtitle}
                 </p>
 
                 {/* CTAs */}
-                <div className="flex flex-wrap items-center gap-4">
+                <div className="flex flex-col flex-wrap items-stretch gap-3 min-[360px]:flex-row min-[360px]:items-center">
                   <Button
                     onClick={onAddProduct}
-                    className="bg-accent hover:bg-accent-hover w-fit cursor-pointer px-6 py-3 font-medium text-white shadow-lg transition-all"
+                    className="bg-accent hover:bg-accent-hover w-full cursor-pointer px-5 py-2.5 text-center text-xs font-medium text-white shadow-lg transition-all min-[360px]:w-fit min-[360px]:px-6 min-[360px]:py-3 min-[360px]:text-sm"
                   >
                     {s.ctaPrimaryText}
                   </Button>
@@ -180,7 +184,7 @@ const Hero = ({ onAddProduct }: Props) => {
                         .getElementById(targetId)
                         ?.scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="inline-flex cursor-pointer items-center gap-x-2 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-medium text-white backdrop-blur-md transition-all hover:bg-white/20"
+                    className="inline-flex w-full cursor-pointer items-center justify-center gap-x-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-center text-xs font-medium text-white backdrop-blur-md transition-all hover:bg-white/20 min-[360px]:w-auto min-[360px]:px-5 min-[360px]:py-3 min-[360px]:text-sm"
                   >
                     {s.ctaSecondaryText}
                   </a>

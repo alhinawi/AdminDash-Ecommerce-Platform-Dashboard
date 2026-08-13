@@ -1,6 +1,6 @@
 import type { Product } from "../../interfaces";
-import type { User } from "../../types/user";
 import type { DashboardContextData } from "../../types/ai";
+import type { User } from "../../types/user";
 
 export function generateDashboardContext(
   products: Product[],

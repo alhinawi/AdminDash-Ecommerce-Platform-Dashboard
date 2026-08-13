@@ -1,12 +1,14 @@
+import { Check, ChevronDown } from "lucide-react";
 import type { ReactNode } from "react";
+
+import { cn } from "../../utils/cn";
+
 import {
   Listbox,
   ListboxButton,
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import { ChevronDown, Check } from "lucide-react";
-import { cn } from "../../utils/cn";
 
 export interface SelectOption<T = string> {
   value: T;

@@ -1,9 +1,12 @@
+import { useEffect, useRef, useState } from "react";
+
 import type { ChangeEvent, SubmitEvent } from "react";
-import { useEffect, useState, useRef } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { BrowserRouter, Route, Routes, useLocation, useSearchParams } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 
+import AIChatPanel from "./components/ai/AIChatPanel";
+import FloatingAIButton from "./components/ai/FloatingAIButton";
 import AnalyticsCharts from "./components/AnalyticsCharts";
 import FilterBar from "./components/FilterBar";
 import Footer from "./components/Footer";
@@ -18,31 +21,36 @@ import Input from "./components/ui/Input";
 import Modal from "./components/ui/Modal";
 import Select from "./components/ui/Select";
 import Toast, { type ToastMessage } from "./components/ui/Toast";
-import { getLocalizedText } from "./utils/productUtils";
-
-import SettingsPage from "./pages/settings/SettingsPage";
-import UsersPage from "./pages/users/UsersPage";
-import LoginPage from "./pages/login/LoginPage";
-
 import { AIProvider } from "./context/AIContext";
-import FloatingAIButton from "./components/ai/FloatingAIButton";
-import AIChatPanel from "./components/ai/AIChatPanel";
-import { mockUsers } from "./data/mockUsers";
-
 import { categories, colors, formInputsList, productList } from "./data";
+import { mockUsers } from "./data/mockUsers";
 import type { Product } from "./interfaces";
+import CookiesPage from "./pages/legal/CookiesPage";
+import PrivacyPage from "./pages/legal/PrivacyPage";
+import TermsPage from "./pages/legal/TermsPage";
+import LoginPage from "./pages/login/LoginPage";
+import SettingsPage from "./pages/settings/SettingsPage";
+import ApiPage from "./pages/support/ApiPage";
+import DocsPage from "./pages/support/DocsPage";
+import HelpPage from "./pages/support/HelpPage";
+import UsersPage from "./pages/users/UsersPage";
 import { productValidation } from "./schema";
+import { getLocalizedText } from "./utils/productUtils";
 
 function getPaginationRange(
   currentPage: number,
   totalPages: number,
   isMobile: boolean = false,
 ): (number | string)[] {
+  if (!isMobile) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
   if (totalPages <= 5) {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
 
-  const delta = isMobile ? 1 : 2;
+  const delta = 1;
 
   const left = currentPage - delta;
   const right = currentPage + delta;
@@ -267,7 +275,7 @@ function ProductsView({
   };
 
   return (
-    <main className="container mx-auto flex-1 p-5 pt-8">
+    <main className="container mx-auto max-w-full min-w-0 flex-1 p-3.5 pt-6 sm:p-5 sm:pt-8">
       <Hero onAddProduct={open} />
 
       <div id="analytics-section" className="scroll-mt-24">
@@ -310,8 +318,8 @@ function ProductsView({
           </div>
 
           {totalPages > 1 && (
-            <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-gray-200 pt-6 sm:flex-row dark:border-zinc-800">
-              <span className="text-xs font-medium text-gray-500 dark:text-zinc-400">
+            <div className="mt-8 flex w-full min-w-0 flex-col items-center justify-between gap-4 border-t border-gray-200 pt-6 sm:flex-row dark:border-zinc-800">
+              <span className="text-center text-xs font-medium break-words text-gray-500 sm:text-start dark:text-zinc-400">
                 {t("common.showing", "Showing")}{" "}
                 <span className="font-semibold text-gray-900 dark:text-white">
                   {startIndex + 1}-{endIndex}
@@ -323,24 +331,24 @@ function ProductsView({
                 {t("common.products", "products")}
               </span>
 
-              <div className="flex max-w-full flex-row flex-wrap items-center justify-center gap-1 overflow-hidden sm:gap-1.5">
+              <div className="flex max-w-full min-w-0 flex-row flex-nowrap items-center justify-center gap-0.5 min-[360px]:gap-1 sm:gap-1.5">
                 <button
                   type="button"
                   disabled={validPage === 1}
                   onClick={() => handlePageChange(validPage - 1)}
-                  className="flex h-8 cursor-pointer items-center gap-0.5 rounded-lg border border-gray-200 bg-white px-2 text-[11px] font-semibold text-gray-700 shadow-xs transition-all hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 sm:h-9 sm:rounded-xl sm:px-3 sm:text-xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  className="flex h-7.5 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-gray-200 bg-white px-1.5 text-[10px] font-semibold text-gray-700 shadow-xs transition-all hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 min-[380px]:px-2 sm:h-9 sm:rounded-xl sm:px-3 sm:text-xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
                 >
                   {t("common.prev", "← Prev")}
                 </button>
 
-                <div className="flex flex-row flex-nowrap items-center gap-1 sm:gap-1.5">
+                <div className="flex min-w-0 flex-row flex-nowrap items-center justify-center gap-0.5 min-[360px]:gap-1 sm:gap-1.5">
                   {getPaginationRange(validPage, totalPages, isMobile).map(
                     (item, idx) => {
                       if (typeof item === "string") {
                         return (
                           <span
                             key={`dots-${idx}`}
-                            className="flex h-8 min-w-4 items-center justify-center text-[10px] font-bold text-gray-400 select-none sm:h-9 sm:min-w-6 sm:text-xs dark:text-zinc-500"
+                            className="flex h-7.5 min-w-3.5 shrink-0 items-center justify-center text-[10px] font-bold text-gray-400 select-none sm:h-9 sm:min-w-6 sm:text-xs dark:text-zinc-500"
                           >
                             ...
                           </span>
@@ -354,7 +362,7 @@ function ProductsView({
                           key={page}
                           type="button"
                           onClick={() => handlePageChange(page)}
-                          className={`flex h-8 min-w-7 cursor-pointer items-center justify-center rounded-lg px-1.5 text-[11px] font-bold transition-all sm:h-9 sm:min-w-9 sm:rounded-xl sm:px-0 sm:text-xs ${
+                          className={`flex h-7.5 min-w-5.5 shrink-0 cursor-pointer items-center justify-center rounded-lg px-1 text-[10px] font-bold transition-all sm:h-9 sm:min-w-9 sm:rounded-xl sm:px-0 sm:text-xs ${
                             page === validPage
                               ? "bg-accent shadow-accent-glow scale-105 text-white"
                               : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
@@ -371,7 +379,7 @@ function ProductsView({
                   type="button"
                   disabled={validPage === totalPages}
                   onClick={() => handlePageChange(validPage + 1)}
-                  className="flex h-8 cursor-pointer items-center gap-0.5 rounded-lg border border-gray-200 bg-white px-2 text-[11px] font-semibold text-gray-700 shadow-xs transition-all hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 sm:h-9 sm:rounded-xl sm:px-3 sm:text-xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  className="flex h-7.5 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-gray-200 bg-white px-1.5 text-[10px] font-semibold text-gray-700 shadow-xs transition-all hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 min-[380px]:px-2 sm:h-9 sm:rounded-xl sm:px-3 sm:text-xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
                 >
                   {t("common.next", "Next →")}
                 </button>
@@ -415,6 +423,8 @@ function AppContent() {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || "en";
   const location = useLocation();
+
+  const [searchParams] = useSearchParams();
 
   const defaultProduct: Product = {
     title: "",
@@ -473,6 +483,27 @@ function AppContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterCategory, setFilterCategory] = useState("all");
   const [sortBy, setSortBy] = useState("default");
+
+  useEffect(() => {
+    const cat = searchParams.get("category");
+    if (cat) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setFilterCategory(cat.toLowerCase());
+    } else {
+      setFilterCategory("all");
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.substring(1));
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    }
+  }, [location.pathname, location.hash]);
 
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
@@ -831,6 +862,16 @@ function AppContent() {
               />
             }
           />
+
+          <Route path="/docs" element={<DocsPage />} />
+          <Route path="/documentation" element={<DocsPage />} />
+          <Route path="/api-reference" element={<ApiPage />} />
+          <Route path="/help-center" element={<HelpPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/cookie-policy" element={<CookiesPage />} />
+          <Route path="/cookies" element={<CookiesPage />} />
         </Routes>
 
         <Footer />

@@ -1,16 +1,18 @@
 import * as React from "react";
+
+import { Check, ChevronDown, Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Globe, Check, ChevronDown } from "lucide-react";
+
 import { cn } from "../../utils/cn";
-import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 import {
   Command,
-  CommandInput,
-  CommandList,
   CommandEmpty,
   CommandGroup,
+  CommandInput,
   CommandItem,
+  CommandList,
 } from "./Command";
+import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 
 interface CountryOption {
   code: string;

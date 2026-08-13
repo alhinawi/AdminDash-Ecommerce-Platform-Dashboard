@@ -1,8 +1,9 @@
 import { useEffect } from "react";
+
 import { useAI } from "../../context/AIContext";
 import AIHeader from "./AIHeader";
-import AIMessageList from "./AIMessageList";
 import AIInput from "./AIInput";
+import AIMessageList from "./AIMessageList";
 
 export default function AIChatPanel() {
   const { isOpen, setIsOpen } = useAI();

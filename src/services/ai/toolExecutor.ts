@@ -1,6 +1,6 @@
 import type { Product } from "../../interfaces";
-import type { User } from "../../types/user";
 import type { ToolName, ToolResult } from "../../types/ai";
+import type { User } from "../../types/user";
 import { getLocalizedText } from "../../utils/productUtils";
 
 interface ExecuteToolsParams {

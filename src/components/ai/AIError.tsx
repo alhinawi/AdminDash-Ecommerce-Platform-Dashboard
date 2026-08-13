@@ -1,5 +1,6 @@
 import { AlertCircle, RefreshCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
+
 import { useAI } from "../../context/AIContext";
 
 interface AIErrorProps {
